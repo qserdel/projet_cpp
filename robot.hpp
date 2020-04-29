@@ -33,6 +33,8 @@ class Robot {
 		void move(const float x, const float y);
 		void tirer();
 		void ramasser(Collectable* c);
+		void gagner_pv();
+		void perdre_pv();
 
 
 };
