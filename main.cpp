@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <SFML/Graphics.hpp>
+#include "robot.hpp"
 
 using namespace sf;
 
@@ -9,31 +10,16 @@ int main()
     // Create the main window
     RenderWindow window(VideoMode(1000, 1000), "SFML window");
     // Load a sprite to display
+    Robot rob;
     Texture texture[10];
     Texture robotActuel;
-    if (!texture[0].loadFromFile("images/1Rapide.jpg", IntRect(0, 0, 120, 190))) // Charge l'image est l'affiche dans la dimension que l'on souhaite (rognage)
-        return EXIT_FAILURE;
-    if (!texture[1].loadFromFile("images/2Rapide.jpg", IntRect(0, 0, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[2].loadFromFile("images/3Rapide.jpg", IntRect(5, 25, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[3].loadFromFile("images/4Rapide.jpg", IntRect(10, 30, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[4].loadFromFile("images/5Rapide.jpg", IntRect(0, 10, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[5].loadFromFile("images/6Rapide.jpg", IntRect(0, 20, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[6].loadFromFile("images/7Rapide.jpg", IntRect(0, 10, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[7].loadFromFile("images/8Rapide.jpg", IntRect(0, 10, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[8].loadFromFile("images/9Rapide.jpg", IntRect(10, 25, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[9].loadFromFile("images/10Rapide.jpg", IntRect(0, 10, 120, 190)))
-    	return EXIT_FAILURE;
+
     if (!robotActuel.loadFromFile("images/Face.jpg", IntRect(0, 0, 120, 190)))
     	return EXIT_FAILURE;
+    rob.message();
+    rob.chargement_image(texture);
     Sprite sprite(robotActuel);
+
     //Sprite sprite1(texture);
     // Create a graphical text to display
     /*Font font;
@@ -46,6 +32,7 @@ int main()
         return EXIT_FAILURE;
     // Play the music
     music.play();*/
+
 
     Texture fond;
     if(!fond.loadFromFile("images/fond.jpg",IntRect(100,300,1100,1000)))
@@ -66,8 +53,9 @@ int main()
     sprite.setColor(Color(250, 200, 200, 255)); // Choix de la couleur du sprite
     sprite.setPosition(Vector2f(20.f, 200.f)); // Choix de la position du sprite
 
-    int compteur = -1;
 
+    int compteur = -1;
+	float x = 10;
     // Start the game loop
     while (window.isOpen())
     {
@@ -80,22 +68,23 @@ int main()
                 window.close();
             if (Keyboard::isKeyPressed(Keyboard::Right))
             {
-            	sprite.move(Vector2f(10.f, 0.f)); // Déplacement par rapport à la position actuelle
+            	sprite.move(Vector2f(x, 0.f)); // Déplacement par rapport à la position actuelle
             	if(++compteur == 9)
             		compteur = 0;
             	robotActuel = texture[compteur];
-	    }
+	    	}
             if (Keyboard::isKeyPressed(Keyboard::Left))
             {
-            	sprite.move(Vector2f(-10.f, 0.f)); // Déplacement par rapport à la position actuelle
+            	sprite.move(Vector2f(-x, 0.f)); // Déplacement par rapport à la position actuelle
             	if(--compteur == 0)
             		compteur = 9;
             	robotActuel = texture[compteur];
-	    }
+	    	}
             if (Keyboard::isKeyPressed(Keyboard::Up))
             	sprite.move(Vector2f(0.f, -10.f)); // Déplacement par rapport à la position actuelle
             if (Keyboard::isKeyPressed(Keyboard::Down))
             	sprite.move(Vector2f(0.f, 10.f)); // Déplacement par rapport à la position actuelle
+            //rob.move(event, texture, robotActuel, &compteur, sprite);
 
         }
 
@@ -108,6 +97,7 @@ int main()
         // Draw the sprite
         window.draw(spriteFond);
         window.draw(sprite);
+
         //window.draw(spriteMur);
         window.draw(spriteMur2);
         //window.draw(sprite1);
