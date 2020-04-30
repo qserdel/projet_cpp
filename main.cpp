@@ -51,7 +51,7 @@ int main()
     spriteMur2.setPosition(Vector2f(0.f, 660.f));
 
     sprite.setColor(Color(250, 200, 200, 255)); // Choix de la couleur du sprite
-    sprite.setPosition(Vector2f(20.f, 200.f)); // Choix de la position du sprite
+    sprite.setPosition(Vector2f(20.f, 525.f)); // Choix de la position du sprite
 
 
     int compteur = -1;
@@ -66,25 +66,8 @@ int main()
             // Close window: exit
             if (event.type == Event::Closed)
                 window.close();
-            if (Keyboard::isKeyPressed(Keyboard::Right))
-            {
-            	sprite.move(Vector2f(x, 0.f)); // Déplacement par rapport à la position actuelle
-            	if(++compteur == 9)
-            		compteur = 0;
-            	robotActuel = texture[compteur];
-	    	}
-            if (Keyboard::isKeyPressed(Keyboard::Left))
-            {
-            	sprite.move(Vector2f(-x, 0.f)); // Déplacement par rapport à la position actuelle
-            	if(--compteur == 0)
-            		compteur = 9;
-            	robotActuel = texture[compteur];
-	    	}
-            if (Keyboard::isKeyPressed(Keyboard::Up))
-            	sprite.move(Vector2f(0.f, -10.f)); // Déplacement par rapport à la position actuelle
-            if (Keyboard::isKeyPressed(Keyboard::Down))
-            	sprite.move(Vector2f(0.f, 10.f)); // Déplacement par rapport à la position actuelle
-            //rob.move(event, texture, robotActuel, &compteur, sprite);
+
+            rob.move(event, texture, &robotActuel, &compteur, &sprite);
 
         }
 

@@ -23,28 +23,28 @@ Robot::Robot(string name){
 	pv=20;
 }
 		
-void Robot::move(Event e, Texture *texture, Texture robotActuel, int *compteur, Sprite sprite)
+void Robot::move(Event e, Texture *texture, Texture *robotActuel, int *compteur, Sprite *sprite)
 {
 	if (Keyboard::isKeyPressed(Keyboard::Right))
     {
-    	sprite.move(Vector2f(vitesse, 0.f)); // Déplacement par rapport à la position actuelle
-    	*compteur++;
+    	(*sprite).move(Vector2f(vitesse, 0.f)); // Déplacement par rapport à la position actuelle
+    	(*compteur)++;
     	if(*compteur == 9)
     		*compteur = 0;
-    	robotActuel = texture[*compteur];
+    	*robotActuel = texture[*compteur];
 	}
     if (Keyboard::isKeyPressed(Keyboard::Left))
     {
-    	sprite.move(Vector2f(-vitesse, 0.f)); // Déplacement par rapport à la position actuelle
-    	*compteur--;
-    	if(*compteur == 0)
-    		*compteur = 9;
-    	robotActuel = texture[*compteur];
+    	(*sprite).move(Vector2f(-vitesse, 0.f)); // Déplacement par rapport à la position actuelle
+    	(*compteur)--;
+    	if(*compteur == -1)
+    		*compteur = 8;
+    	*robotActuel = texture[*compteur];
 	}
     if (Keyboard::isKeyPressed(Keyboard::Up))
-    	sprite.move(Vector2f(0.f, -vitesse)); // Déplacement par rapport à la position actuelle
+    	(*sprite).move(Vector2f(0.f, -vitesse)); // Déplacement par rapport à la position actuelle
     if (Keyboard::isKeyPressed(Keyboard::Down))
-    	sprite.move(Vector2f(0.f, vitesse)); // Déplacement par rapport à la position actuelle*/
+    	(*sprite).move(Vector2f(0.f, vitesse)); // Déplacement par rapport à la position actuelle*/
 }
 
 void Robot::chargement_image(Texture* texture)

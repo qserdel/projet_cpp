@@ -36,7 +36,7 @@ class Robot {
 		
 		
 		void message();
-		void move(Event e, Texture *texture, Texture robotActuel, int *compteur, Sprite sprite);
+		void move(Event e, Texture *texture, Texture *robotActuel, int *compteur, Sprite *sprite);
 		void tirer();
 		void ramasser(Collectable* c);
 		void gagner_pv();
