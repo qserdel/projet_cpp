@@ -11,16 +11,13 @@ int main()
     RenderWindow window(VideoMode(1000, 1000), "SFML window");
     // Load a sprite to display
     Robot rob;
-    Texture texture[10];
-    Texture robotActuel;
 
-    if (!robotActuel.loadFromFile("images/Face.jpg", IntRect(0, 0, 120, 190)))
-    	return EXIT_FAILURE;
     rob.message();
-    rob.chargement_image(texture);
+    rob.chargement_image();
+    Texture robotActuel = rob.getTexture(10);
     Sprite sprite(robotActuel);
 
-    //Sprite sprite1(texture);
+
     // Create a graphical text to display
     /*Font font;
     if (!font.loadFromFile("arial.ttf"))
@@ -53,23 +50,29 @@ int main()
     sprite.setColor(Color(250, 200, 200, 255)); // Choix de la couleur du sprite
     sprite.setPosition(Vector2f(20.f, 525.f)); // Choix de la position du sprite
 
-
-    int compteur = -1;
-	float x = 10;
+	sf::Clock clock;
+    float elapsed = 0;
+    
     // Start the game loop
     while (window.isOpen())
     {
         // Process events
         Event event;
+        elapsed = clock.restart().asSeconds();
+
         while (window.pollEvent(event))
         {
             // Close window: exit
             if (event.type == Event::Closed)
                 window.close();
-
-            rob.move(event, texture, &robotActuel, &compteur, &sprite);
+            
+            rob.detect_KeyPressed();
+            rob.move(&rob, &robotActuel, &sprite, elapsed);
 
         }
+
+        if((rob.getStatus() != NORMAL) || (rob.getEnPleinJump() == true))
+            rob.move(&rob, &robotActuel, &sprite, elapsed);
 
 	//sprite.scale(Vector2f(0.999f, 0.999f)); // Modifie l'échelle par rapport à l'échelle actuelle
 	//sprite.rotate(1.f); // Tourne d'un certain angle par rapport à l'angle actuel
@@ -83,7 +86,7 @@ int main()
 
         //window.draw(spriteMur);
         window.draw(spriteMur2);
-        //window.draw(sprite1);
+
         // Draw the string
         //window.draw(text);
         // Update the window
