@@ -18,6 +18,8 @@
 #define WALK_LEFT 2
 #define JUMP 3
 #define DOWN 4
+#define GRAND 5
+#define PETIT 6
 
 class Robot {
 
@@ -36,6 +38,14 @@ class Robot {
 		int nbFrame;
 		bool enPleinJump = false;
 		bool aGenoux = false;
+		bool enPleinGrandissement = false;
+		bool enPleinRapetissement = false;
+		int timerGrand = 0;
+		int timerPetit = 0;
+		float min_scale;
+		float max_scale;
+		
+		float taillePrec = 0;
 		
 		Sprite sprite;
 
@@ -52,8 +62,8 @@ class Robot {
 		void ramasser(Collectable* c);
 		void accelerer();
 		void ralentir();
-		void grandir();
-		void rapetisser();
+		void grandir(Sprite *sprite, float max_scale);
+		void rapetisser(Sprite *sprite, float min_scale);
 		void chargement_image();
 		void sauter(Robot *rob, Sprite* sprite, float elapsed, Texture *robotActuel);
 		
@@ -61,6 +71,11 @@ class Robot {
 		int getNbFrame() const;
 		int getHauteurSaut() const;
 		bool getEnPleinJump() const;
+		bool getEnPleinGrandissement() const;
+		bool getEnPleinRapetissement() const;
+		float getMinScale() const;
+		float getMaxScale() const;
+		int getTaille() const;
 		Texture getTexture(int indice) const;
 
 

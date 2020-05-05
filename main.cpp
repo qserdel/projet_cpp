@@ -49,6 +49,7 @@ int main()
 
     sprite.setColor(Color(250, 200, 200, 255)); // Choix de la couleur du sprite
     sprite.setPosition(Vector2f(20.f, 525.f)); // Choix de la position du sprite
+    sprite.setTextureRect(IntRect(0,0,100,135));
 
 	sf::Clock clock;
     float elapsed = 0;
@@ -68,11 +69,23 @@ int main()
             
             rob.detect_KeyPressed();
             rob.move(&rob, &robotActuel, &sprite, elapsed);
+            
+            if ((rob.getEnPleinGrandissement() == true) || (rob.getTaille() == GRAND))
+                rob.grandir(&sprite, rob.getMaxScale());
+            
+            if ((rob.getEnPleinRapetissement() == true) || (rob.getTaille() == PETIT))
+                rob.rapetisser(&sprite, rob.getMinScale());
 
         }
 
-        if((rob.getStatus() != NORMAL) || (rob.getEnPleinJump() == true))
+        if ((rob.getStatus() != NORMAL) || (rob.getEnPleinJump() == true))
             rob.move(&rob, &robotActuel, &sprite, elapsed);
+        
+        if ((rob.getEnPleinGrandissement() == true) || (rob.getTaille() == GRAND))
+            rob.grandir(&sprite, rob.getMaxScale());
+        
+        if ((rob.getEnPleinRapetissement() == true) || (rob.getTaille() == PETIT))
+            rob.rapetisser(&sprite, rob.getMinScale());
 
 	//sprite.scale(Vector2f(0.999f, 0.999f)); // Modifie l'échelle par rapport à l'échelle actuelle
 	//sprite.rotate(1.f); // Tourne d'un certain angle par rapport à l'angle actuel
