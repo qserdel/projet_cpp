@@ -1,6 +1,8 @@
 #include <cstdlib>
 #include <SFML/Graphics.hpp>
 #include "robot.hpp"
+#include "balle.hpp"
+#include "collision.hpp"
 
 using namespace sf;
 
@@ -9,13 +11,14 @@ int main()
 {
     // Create the main window
     RenderWindow window(VideoMode(1000, 1000), "SFML window");
+    window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
+
     // Load a sprite to display
     Robot rob;
+    Balle balle;
+    Collision collision(balle, rob);
 
     rob.message();
-    rob.chargement_image();
-    Texture robotActuel = rob.getTexture(10);
-    Sprite sprite(robotActuel);
 
 
     // Create a graphical text to display
@@ -47,9 +50,7 @@ int main()
     spriteMur.setPosition(Vector2f(0.f, 0.f));
     spriteMur2.setPosition(Vector2f(0.f, 660.f));
 
-    sprite.setColor(Color(250, 200, 200, 255)); // Choix de la couleur du sprite
-    sprite.setPosition(Vector2f(20.f, 525.f)); // Choix de la position du sprite
-    sprite.setTextureRect(IntRect(0,0,100,135));
+    //sprite.setColor(Color(250, 200, 200, 255)); // Choix de la couleur du sprite
 
 	sf::Clock clock;
     float elapsed = 0;
@@ -68,26 +69,25 @@ int main()
                 window.close();
             
             rob.detect_KeyPressed();
-            rob.move(&rob, &robotActuel, &sprite, elapsed);
-            
-            if ((rob.getEnPleinGrandissement() == true) || (rob.getTaille() == GRAND))
-                rob.grandir(&sprite, rob.getMaxScale());
-            
-            if ((rob.getEnPleinRapetissement() == true) || (rob.getTaille() == PETIT))
-                rob.rapetisser(&sprite, rob.getMinScale());
-
+            if (rob.getStatus() == DOWN)
+                rob.move(elapsed);
         }
-
-        if ((rob.getStatus() != NORMAL) || (rob.getEnPleinJump() == true))
-            rob.move(&rob, &robotActuel, &sprite, elapsed);
+        
+        rob.move(elapsed);
         
         if ((rob.getEnPleinGrandissement() == true) || (rob.getTaille() == GRAND))
-            rob.grandir(&sprite, rob.getMaxScale());
+            rob.grandir();
         
         if ((rob.getEnPleinRapetissement() == true) || (rob.getTaille() == PETIT))
-            rob.rapetisser(&sprite, rob.getMinScale());
+            rob.rapetisser();
+        
+        if (rob.getTir() == true) // La balle continue de bouger tant qu'elle est dans la fenêtre
+            rob.setTir(balle.action());
+        
 
-	//sprite.scale(Vector2f(0.999f, 0.999f)); // Modifie l'échelle par rapport à l'échelle actuelle
+        collision.gestionCollision(&rob, &balle);
+
+
 	//sprite.rotate(1.f); // Tourne d'un certain angle par rapport à l'angle actuel
 
 
@@ -95,7 +95,8 @@ int main()
         window.clear();
         // Draw the sprite
         window.draw(spriteFond);
-        window.draw(sprite);
+        window.draw(rob.getSprite());
+        window.draw(balle.getSprite());
 
         //window.draw(spriteMur);
         window.draw(spriteMur2);

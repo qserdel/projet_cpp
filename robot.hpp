@@ -13,19 +13,16 @@
 #define VITESSE_MAX 3
 #define TAILLE_MAX 3
 #define GRAVITE -10
-#define NORMAL 0
-#define WALK_RIGHT 1
-#define WALK_LEFT 2
-#define JUMP 3
-#define DOWN 4
-#define GRAND 5
-#define PETIT 6
+
+enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, GRAND, BLESSE};
+
 
 class Robot {
 
 	private :
 		string _name;
-		Texture texture[14];
+		Texture texture[20];
+		Texture robotActuel;
 		Forme *_forme;
 		int pv;
 		Arme arme;
@@ -40,8 +37,10 @@ class Robot {
 		bool aGenoux = false;
 		bool enPleinGrandissement = false;
 		bool enPleinRapetissement = false;
+		bool tir = false;
 		int timerGrand = 0;
 		int timerPetit = 0;
+		int timerBlesse = 0;
 		float min_scale;
 		float max_scale;
 		
@@ -57,26 +56,36 @@ class Robot {
 		
 		void detect_KeyPressed();
 		void message();
-		void move(Robot *rob, Texture *robotActuel, Sprite *sprite, float elapsed);
+		void move(float elapsed);
 		void tirer();
 		void ramasser(Collectable* c);
-		void accelerer();
-		void ralentir();
-		void grandir(Sprite *sprite, float max_scale);
-		void rapetisser(Sprite *sprite, float min_scale);
+		void grandir();
+		void rapetisser();
 		void chargement_image();
-		void sauter(Robot *rob, Sprite* sprite, float elapsed, Texture *robotActuel);
+		void sauter(float elapsed);
 		
+		// Accesseurs
 		int getStatus() const;
 		int getNbFrame() const;
 		int getHauteurSaut() const;
 		bool getEnPleinJump() const;
 		bool getEnPleinGrandissement() const;
 		bool getEnPleinRapetissement() const;
+		bool getTir() const;
+		void setTir(bool var);
 		float getMinScale() const;
 		float getMaxScale() const;
 		int getTaille() const;
 		Texture getTexture(int indice) const;
+		Sprite getSprite() const;
+		IntRect getRectRobot() const;
+		int getTimerBlesse() const;
+		int getPv() const;
+		void setPv(int nbVie);
+		void setNbFrame(int nbreF);
+		void setRobotActuel(Texture robAct);
+		void setStatus(int etat);
+		void setTimerBlesse(int t);
 
 
 };
