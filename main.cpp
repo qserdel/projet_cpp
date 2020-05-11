@@ -1,5 +1,8 @@
 #include <cstdlib>
 #include <SFML/Graphics.hpp>
+#include "robot.hpp"
+#include "balle.hpp"
+#include "collision.hpp"
 
 using namespace sf;
 
@@ -8,33 +11,16 @@ int main()
 {
     // Create the main window
     RenderWindow window(VideoMode(1000, 1000), "SFML window");
+    window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
+
     // Load a sprite to display
-    Texture texture[10];
-    Texture robotActuel;
-    if (!texture[0].loadFromFile("images/1Rapide.jpg", IntRect(0, 0, 120, 190))) // Charge l'image est l'affiche dans la dimension que l'on souhaite (rognage)
-        return EXIT_FAILURE;
-    if (!texture[1].loadFromFile("images/2Rapide.jpg", IntRect(0, 0, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[2].loadFromFile("images/3Rapide.jpg", IntRect(5, 25, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[3].loadFromFile("images/4Rapide.jpg", IntRect(10, 30, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[4].loadFromFile("images/5Rapide.jpg", IntRect(0, 10, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[5].loadFromFile("images/6Rapide.jpg", IntRect(0, 20, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[6].loadFromFile("images/7Rapide.jpg", IntRect(0, 10, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[7].loadFromFile("images/8Rapide.jpg", IntRect(0, 10, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[8].loadFromFile("images/9Rapide.jpg", IntRect(10, 25, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!texture[9].loadFromFile("images/10Rapide.jpg", IntRect(0, 10, 120, 190)))
-    	return EXIT_FAILURE;
-    if (!robotActuel.loadFromFile("images/Face.jpg", IntRect(0, 0, 120, 190)))
-    	return EXIT_FAILURE;
-    Sprite sprite(robotActuel);
-    //Sprite sprite1(texture);
+    Robot rob;
+    Balle balle;
+    Collision collision(balle, rob);
+
+    rob.message();
+
+
     // Create a graphical text to display
     /*Font font;
     if (!font.loadFromFile("arial.ttf"))
@@ -46,6 +32,7 @@ int main()
         return EXIT_FAILURE;
     // Play the music
     music.play();*/
+
 
     Texture fond;
     if(!fond.loadFromFile("images/fond.jpg",IntRect(100,300,1100,1000)))
@@ -63,43 +50,44 @@ int main()
     spriteMur.setPosition(Vector2f(0.f, 0.f));
     spriteMur2.setPosition(Vector2f(0.f, 660.f));
 
-    sprite.setColor(Color(250, 200, 200, 255)); // Choix de la couleur du sprite
-    sprite.setPosition(Vector2f(20.f, 200.f)); // Choix de la position du sprite
+    //sprite.setColor(Color(250, 200, 200, 255)); // Choix de la couleur du sprite
 
-    int compteur = -1;
-
+	sf::Clock clock;
+    float elapsed = 0;
+    
     // Start the game loop
     while (window.isOpen())
     {
         // Process events
         Event event;
+        elapsed = clock.restart().asSeconds();
+
         while (window.pollEvent(event))
         {
             // Close window: exit
             if (event.type == Event::Closed)
                 window.close();
-            if (Keyboard::isKeyPressed(Keyboard::Right))
-            {
-            	sprite.move(Vector2f(10.f, 0.f)); // Déplacement par rapport à la position actuelle
-            	if(++compteur == 9)
-            		compteur = 0;
-            	robotActuel = texture[compteur];
-	    }
-            if (Keyboard::isKeyPressed(Keyboard::Left))
-            {
-            	sprite.move(Vector2f(-10.f, 0.f)); // Déplacement par rapport à la position actuelle
-            	if(--compteur == 0)
-            		compteur = 9;
-            	robotActuel = texture[compteur];
-	    }
-            if (Keyboard::isKeyPressed(Keyboard::Up))
-            	sprite.move(Vector2f(0.f, -10.f)); // Déplacement par rapport à la position actuelle
-            if (Keyboard::isKeyPressed(Keyboard::Down))
-            	sprite.move(Vector2f(0.f, 10.f)); // Déplacement par rapport à la position actuelle
-
+            
+            rob.detect_KeyPressed();
+            if (rob.getStatus() == DOWN)
+                rob.move(elapsed);
         }
+        
+        rob.move(elapsed);
+        
+        if ((rob.getEnPleinGrandissement() == true) || (rob.getTaille() == GRAND))
+            rob.grandir();
+        
+        if ((rob.getEnPleinRapetissement() == true) || (rob.getTaille() == PETIT))
+            rob.rapetisser();
+        
+        if (rob.getTir() == true) // La balle continue de bouger tant qu'elle est dans la fenêtre
+            rob.setTir(balle.action());
+        
 
-	//sprite.scale(Vector2f(0.999f, 0.999f)); // Modifie l'échelle par rapport à l'échelle actuelle
+        collision.gestionCollision(&rob, &balle);
+
+
 	//sprite.rotate(1.f); // Tourne d'un certain angle par rapport à l'angle actuel
 
 
@@ -107,10 +95,12 @@ int main()
         window.clear();
         // Draw the sprite
         window.draw(spriteFond);
-        window.draw(sprite);
+        window.draw(rob.getSprite());
+        window.draw(balle.getSprite());
+
         //window.draw(spriteMur);
         window.draw(spriteMur2);
-        //window.draw(sprite1);
+
         // Draw the string
         //window.draw(text);
         // Update the window

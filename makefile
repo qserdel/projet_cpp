@@ -1,4 +1,4 @@
-all:main clean
+all: main clean
 
 activable.o: activable.cpp activable.hpp equipement.hpp
 	g++ -c activable.cpp
@@ -6,8 +6,14 @@ activable.o: activable.cpp activable.hpp equipement.hpp
 arme.o: arme.cpp arme.hpp
 	g++ -c arme.cpp
 
+balle.o: balle.cpp balle.hpp
+	g++ -c balle.cpp -I./SFML-2.5.1/include
+
 collectable.o: collectable.cpp collectable.hpp
 	g++ -c collectable.cpp -I./SFML-2.5.1/include
+
+collision.o: collision.cpp collision.hpp
+	g++ -c collision.cpp -I./SFML-2.5.1/include
 
 equipement.o: equipement.cpp equipement.hpp
 	g++ -c equipement.cpp
@@ -18,7 +24,7 @@ forme.o: forme.cpp forme.hpp
 immediat.o: immediat.cpp immediat.hpp equipement.hpp
 	g++ -c immediat.cpp
 
-main.o: main.cpp
+main.o: main.cpp robot.hpp
 	g++ -c main.cpp -I./SFML-2.5.1/include
 
 jeu.o: jeu.cpp jeu.hpp
@@ -33,14 +39,15 @@ menu.o: menu.cpp menu.hpp
 obstacle.o: obstacle.cpp obstacle.hpp
 	g++ -c obstacle.cpp -I./SFML-2.5.1/include
 
-robot.o: robot.cpp robot.hpp
-	#g++ -c robot.cpp -I./SFML-2.5.1/include
+robot.o: robot.cpp robot.hpp forme.hpp balle.hpp
+	g++ -c robot.cpp -I./SFML-2.5.1/include
 
-main: activable.o arme.o collectable.o equipement.o forme.o immediat.o main.o jeu.o map.o menu.o obstacle.o robot.o
-	g++ -o main main.o -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system
+main: activable.o arme.o balle.o collectable.o collision.o equipement.o forme.o immediat.o main.o jeu.o map.o menu.o obstacle.o robot.o
+	g++ -o main $^ -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 play:
 	export LD_LIBRARY_PATH=./SFML-2.5.1/lib && ./main
 
 clean:
 	rm -f *.o
+
