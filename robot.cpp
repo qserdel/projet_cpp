@@ -27,7 +27,9 @@ Robot::Robot(string name){
 void Robot::detect_KeyPressed()
 {
 	if (this->getName()=="Joueur1") {
-		if (Keyboard::isKeyPressed(Keyboard::Right))
+		if (this->state == BLESSE)
+			exit;
+		else if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
 		    state = WALK_RIGHT;
 				this->sprite.setScale(1,1);
@@ -57,7 +59,9 @@ void Robot::detect_KeyPressed()
 		    tir = true;
     }
     else if (this->getName()=="Joueur2") {
-		if (Keyboard::isKeyPressed(Keyboard::D))
+    	if (this->state == BLESSE)
+			exit;
+		else if (Keyboard::isKeyPressed(Keyboard::D))
 		{
 				state = WALK_RIGHT;
 				this->sprite.setScale(1,1);

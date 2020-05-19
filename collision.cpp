@@ -23,7 +23,7 @@ void Collision::gestionCollision(Robot *r, Balle *b)
         r->setRobotActuel(r->getTexture(r->getNbFrame()));
         r->setTimerBlesse(r->getTimerBlesse()+1);
 
-        if (r->getTimerBlesse() > 50)
+        if (r->getTimerBlesse() > 200)
         {
             r->setStatus(NORMAL);
             r->setTimerBlesse(0);

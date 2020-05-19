@@ -71,34 +71,37 @@ int main()
 
             rob.detect_KeyPressed();
             rob2.detect_KeyPressed();
-            if ((rob.getStatus() == DOWN))
-            {
-              rob.move(elapsed);
-            }
-            if((rob2.getStatus() == DOWN))
-            {
-              rob2.move(elapsed);
-            }
+            if (rob.getStatus() == DOWN)
+                rob.move(elapsed);
+            if (rob2.getStatus() == DOWN)
+                rob2.move(elapsed);
         }
+        
+        if (rob.getStatus() != BLESSE)
+        {
+		    rob.move(elapsed);
 
-        rob.move(elapsed);
-        rob2.move(elapsed);
+		    if ((rob.getEnPleinGrandissement() == true) || (rob.getTaille() == GRAND))
+		        rob.grandir();
+		    
+		    if ((rob.getEnPleinRapetissement() == true) || (rob.getTaille() == PETIT))
+		        rob.rapetisser();
+        }
+        
+        if (rob2.getStatus() != BLESSE)
+        {
+		    rob2.move(elapsed);
 
-        if ((rob.getEnPleinGrandissement() == true) || (rob.getTaille() == GRAND))
-            rob.grandir();
-
-        if ((rob.getEnPleinRapetissement() == true) || (rob.getTaille() == PETIT))
-            rob.rapetisser();
-
-        if ((rob2.getEnPleinGrandissement() == true) || (rob2.getTaille() == GRAND))
-            rob2.grandir();
-
-        if ((rob2.getEnPleinRapetissement() == true) || (rob2.getTaille() == PETIT))
-            rob2.rapetisser();
-
+		    if ((rob2.getEnPleinGrandissement() == true) || (rob2.getTaille() == GRAND))
+		        rob2.grandir();
+		    
+		    if ((rob2.getEnPleinRapetissement() == true) || (rob2.getTaille() == PETIT))
+		        rob2.rapetisser();
+        }
+        
         if (rob.getTir() == true) // La balle continue de bouger tant qu'elle est dans la fenêtre
             rob.setTir(balle.action());
-
+        
         collision.gestionCollision(&rob, &balle);
 
 
