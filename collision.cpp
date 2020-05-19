@@ -4,7 +4,7 @@ Collision::Collision(Balle &b, Robot &r)
 : balle(b), robot(r)
 {}
 
-bool Collision::gestionCollision(Robot *r, Balle *b)
+void Collision::gestionCollision(Robot *r, Balle *b)
 {
     if ((detectCollision(b->getRectBalle(), r->getRectRobot()) == true) || (r->getStatus() == BLESSE))
     {
@@ -12,7 +12,6 @@ bool Collision::gestionCollision(Robot *r, Balle *b)
         {
             r->setStatus(BLESSE);
             r->setNbFrame(14);
-            //this->sprite.setTextureRect(IntRect(0,0,145,135));
             r->setPv(r->getPv()-1);
         }
         /*else if ((this->nbFrame != 19) && (this->pv > 0))
@@ -29,7 +28,6 @@ bool Collision::gestionCollision(Robot *r, Balle *b)
             r->setStatus(NORMAL);
             r->setTimerBlesse(0);
             r->setNbFrame(0);
-            //this->sprite.setTextureRect(IntRect(0,0,100,135));
         }
     }
 }

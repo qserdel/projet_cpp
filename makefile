@@ -12,14 +12,11 @@ balle.o: balle.cpp balle.hpp
 collectable.o: collectable.cpp collectable.hpp
 	g++ -c collectable.cpp -I./SFML-2.5.1/include
 
-collision.o: collision.cpp collision.hpp
+collision.o: collision.cpp collision.hpp robot.hpp balle.hpp
 	g++ -c collision.cpp -I./SFML-2.5.1/include
 
 equipement.o: equipement.cpp equipement.hpp
 	g++ -c equipement.cpp
-
-forme.o: forme.cpp forme.hpp
-	g++ -c forme.cpp -I./SFML-2.5.1/include
 
 immediat.o: immediat.cpp immediat.hpp equipement.hpp
 	g++ -c immediat.cpp
@@ -39,10 +36,10 @@ menu.o: menu.cpp menu.hpp
 obstacle.o: obstacle.cpp obstacle.hpp
 	g++ -c obstacle.cpp -I./SFML-2.5.1/include
 
-robot.o: robot.cpp robot.hpp forme.hpp balle.hpp
+robot.o: robot.cpp robot.hpp balle.hpp
 	g++ -c robot.cpp -I./SFML-2.5.1/include
 
-main: activable.o arme.o balle.o collectable.o collision.o equipement.o forme.o immediat.o main.o jeu.o map.o menu.o obstacle.o robot.o
+main: activable.o arme.o balle.o collectable.o collision.o equipement.o immediat.o main.o jeu.o map.o menu.o obstacle.o robot.o
 	g++ -o main $^ -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 play:
@@ -50,4 +47,3 @@ play:
 
 clean:
 	rm -f *.o
-

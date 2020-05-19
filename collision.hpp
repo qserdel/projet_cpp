@@ -20,7 +20,7 @@ class Collision
 
         Collision(Balle &b, Robot &r);
         
-        bool gestionCollision(Robot *r, Balle *b);
+        void gestionCollision(Robot *r, Balle *b);
         
         bool detectCollision(const IntRect &b, const IntRect &r);
         

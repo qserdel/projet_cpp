@@ -1,14 +1,15 @@
 #ifndef ROBOT_HPP
 #define ROBOT_HPP
-#include "forme.hpp"
 #include "equipement.hpp"
 #include "arme.hpp"
 #include <iostream>
 #include "collectable.hpp"
 #include <SFML/Graphics.hpp>
 
-#define HAUTEUR_ROBOT 10
-#define LARGEUR_ROBOT 5 //TODO à définir plus tard
+using namespace sf;
+
+#define HAUTEUR_ROBOT 135
+#define LARGEUR_ROBOT 100
 
 #define VITESSE_MAX 3
 #define TAILLE_MAX 3
@@ -23,11 +24,9 @@ class Robot {
 		string _name;
 		Texture texture[20];
 		Texture robotActuel;
-		Forme *_forme;
 		int pv;
 		Arme arme;
 		Equipement equipement;
-		int x, y; // Coordonnées du coin supérieur gauche du sprite du robot
 		float vitesse;
 		int taille;
 		int hauteurSaut;
@@ -43,17 +42,18 @@ class Robot {
 		int timerBlesse = 0;
 		float min_scale;
 		float max_scale;
-		
+
+
 		float taillePrec = 0;
-		
+
 		Sprite sprite;
 
 	public :
-	
-		Robot();
+
+		//Robot();
 
 		Robot(string name);
-		
+
 		void detect_KeyPressed();
 		void message();
 		void move(float elapsed);
@@ -63,7 +63,7 @@ class Robot {
 		void rapetisser();
 		void chargement_image();
 		void sauter(float elapsed);
-		
+
 		// Accesseurs
 		int getStatus() const;
 		int getNbFrame() const;
@@ -81,6 +81,7 @@ class Robot {
 		IntRect getRectRobot() const;
 		int getTimerBlesse() const;
 		int getPv() const;
+		string getName() const;
 		void setPv(int nbVie);
 		void setNbFrame(int nbreF);
 		void setRobotActuel(Texture robAct);

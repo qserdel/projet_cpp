@@ -14,7 +14,8 @@ int main()
     window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
 
     // Load a sprite to display
-    Robot rob;
+    Robot rob("Joueur1");
+    Robot rob2("Joueur2");
     Balle balle;
     Collision collision(balle, rob);
 
@@ -54,7 +55,7 @@ int main()
 
 	sf::Clock clock;
     float elapsed = 0;
-    
+
     // Start the game loop
     while (window.isOpen())
     {
@@ -67,23 +68,36 @@ int main()
             // Close window: exit
             if (event.type == Event::Closed)
                 window.close();
-            
+
             rob.detect_KeyPressed();
-            if (rob.getStatus() == DOWN)
-                rob.move(elapsed);
+            rob2.detect_KeyPressed();
+            if ((rob.getStatus() == DOWN))
+            {
+              rob.move(elapsed);
+            }
+            if((rob2.getStatus() == DOWN))
+            {
+              rob2.move(elapsed);
+            }
         }
-        
+
         rob.move(elapsed);
-        
+        rob2.move(elapsed);
+
         if ((rob.getEnPleinGrandissement() == true) || (rob.getTaille() == GRAND))
             rob.grandir();
-        
+
         if ((rob.getEnPleinRapetissement() == true) || (rob.getTaille() == PETIT))
             rob.rapetisser();
-        
+
+        if ((rob2.getEnPleinGrandissement() == true) || (rob2.getTaille() == GRAND))
+            rob2.grandir();
+
+        if ((rob2.getEnPleinRapetissement() == true) || (rob2.getTaille() == PETIT))
+            rob2.rapetisser();
+
         if (rob.getTir() == true) // La balle continue de bouger tant qu'elle est dans la fenêtre
             rob.setTir(balle.action());
-        
 
         collision.gestionCollision(&rob, &balle);
 
@@ -96,6 +110,7 @@ int main()
         // Draw the sprite
         window.draw(spriteFond);
         window.draw(rob.getSprite());
+        window.draw(rob2.getSprite());
         window.draw(balle.getSprite());
 
         //window.draw(spriteMur);
