@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 
-Robot::Robot(){
-	_name="Joueur 1";
+Robot::Robot(string name){
+	_name=name;
 	pv = 3;
 	vitesse = 300;
 	taille = 0;
@@ -22,39 +22,66 @@ Robot::Robot(){
 }
 
 
-Robot::Robot(string name){
+/*Robot::Robot(string name){
 	_name=name;
 	if(name!="Joueur1"){
 		_forme = new Forme(0,1000,HAUTEUR_ROBOT,LARGEUR_ROBOT,sprite);
 	}
 	pv=20;
-}
+}*/
 
 void Robot::detect_KeyPressed()
 {
-    if (Keyboard::isKeyPressed(Keyboard::Right))
-        state = WALK_RIGHT;
-    else if (Keyboard::isKeyPressed(Keyboard::Left))
-        state = WALK_LEFT;
-    else if (Keyboard::isKeyPressed(Keyboard::Down))
-        state = DOWN;
-	else if (this->state != BLESSE)
-	    state = NORMAL;
-    if (Keyboard::isKeyPressed(Keyboard::Up))
-        enPleinJump = true;
-    if (Keyboard::isKeyPressed(Keyboard::G))
-    {
-        enPleinGrandissement = true;
-        max_scale = 2.0;
+	if (this->getName()=="Joueur1") {
+		if (Keyboard::isKeyPressed(Keyboard::Right))
+		    state = WALK_RIGHT;
+		else if (Keyboard::isKeyPressed(Keyboard::Left))
+		    state = WALK_LEFT;
+		else if (Keyboard::isKeyPressed(Keyboard::Down))
+		    state = DOWN;
+		else if (this->state != BLESSE)
+			state = NORMAL;
+		if (Keyboard::isKeyPressed(Keyboard::Up))
+		    enPleinJump = true;
+		if (Keyboard::isKeyPressed(Keyboard::G))
+		{
+		    enPleinGrandissement = true;
+		    max_scale = 2.0;
+		}
+		if (Keyboard::isKeyPressed(Keyboard::R))
+		{
+		    enPleinRapetissement = true;
+		    min_scale = 0.5;
+		}
+		if (Keyboard::isKeyPressed(Keyboard::T))
+		    tir = true;
     }
-    if (Keyboard::isKeyPressed(Keyboard::R))
-    {
-        enPleinRapetissement = true;
-        min_scale = 0.5;
+    else if (this->getName()=="Joueur2") {
+		if (Keyboard::isKeyPressed(Keyboard::D))
+		    state = WALK_RIGHT;
+		else if (Keyboard::isKeyPressed(Keyboard::Q))
+		    state = WALK_LEFT;
+		else if (Keyboard::isKeyPressed(Keyboard::S))
+		    state = DOWN;
+		else if (this->state != BLESSE)
+			state = NORMAL;
+		if (Keyboard::isKeyPressed(Keyboard::Z))
+		    enPleinJump = true;
+		if (Keyboard::isKeyPressed(Keyboard::G))
+		{
+		    enPleinGrandissement = true;
+		    max_scale = 2.0;
+		}
+		if (Keyboard::isKeyPressed(Keyboard::R))
+		{
+		    enPleinRapetissement = true;
+		    min_scale = 0.5;
+		}
+		if (Keyboard::isKeyPressed(Keyboard::T))
+		    tir = true;
     }
-    if (Keyboard::isKeyPressed(Keyboard::T))
-        tir = true;
 }
+
 
 void Robot::move(float elapsed)
 {
@@ -252,7 +279,7 @@ void Robot::chargement_image()
 
 void Robot::message()
 {
-	cout<<"Hello !"<<endl;
+	cout<<"La partie peut commencer !"<<endl;
 }
 
 int Robot::getStatus() const {return state;}
@@ -269,6 +296,7 @@ float Robot::getMaxScale() const {return max_scale;};
 Sprite Robot::getSprite() const {return sprite;};
 int Robot::getPv() const {return pv;};
 int Robot::getTimerBlesse() const {return timerBlesse;};
+string Robot::getName() const {return _name;};
 
 void Robot::setPv(int nbVie) {this->pv = nbVie;};
 void Robot::setNbFrame(int nbreF) {this->nbFrame = nbreF;};
@@ -280,9 +308,9 @@ IntRect Robot::getRectRobot() const
 {
     IntRect rectRobot;
     rectRobot.left = sprite.getPosition().x;
-    rectRobot.width = sprite.getPosition().x + sprite.getLocalBounds().width;
+    rectRobot.width = sprite.getPosition().x + sprite.getLocalBounds().width * sprite.getScale().x;
     rectRobot.top = sprite.getPosition().y;
-    rectRobot.height = sprite.getPosition().y + sprite.getLocalBounds().height;
+    rectRobot.height = sprite.getPosition().y + sprite.getLocalBounds().height * sprite.getScale().y;
     return rectRobot;
 }
 

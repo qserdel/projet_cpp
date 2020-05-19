@@ -50,7 +50,7 @@ class Robot {
 
 	public :
 	
-		Robot();
+		//Robot();
 
 		Robot(string name);
 		
@@ -81,6 +81,7 @@ class Robot {
 		IntRect getRectRobot() const;
 		int getTimerBlesse() const;
 		int getPv() const;
+		string getName() const;
 		void setPv(int nbVie);
 		void setNbFrame(int nbreF);
 		void setRobotActuel(Texture robAct);
