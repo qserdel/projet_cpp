@@ -18,7 +18,7 @@ Robot::Robot(){
 	robotActuel = texture[10];
     sprite.setTexture(robotActuel);
     sprite.setPosition(Vector2f(20.f, 525.f)); // Choix de la position du sprite
-    sprite.setTextureRect(IntRect(0,0,100,135));
+    //sprite.setTextureRect(IntRect(0,0,120,190));
 }
 
 
@@ -64,7 +64,7 @@ void Robot::move(float elapsed)
         monte = -20.f*this->sprite.getScale().y;
         this->aGenoux = false;
     }
-    
+
 	if (this->state == WALK_RIGHT)
     {
         this->sprite.move(Vector2f(this->vitesse*elapsed, monte)); // Déplacement par rapport à la position actuelle
@@ -159,7 +159,7 @@ void Robot::grandir()
 
     if (this->taille == GRAND)
         this->timerGrand++;
-    
+
     if ((this->timerGrand > 500) && (this->taille == GRAND))
     {
         this->enPleinRapetissement = true;
@@ -193,7 +193,7 @@ void Robot::rapetisser()
         else
             this->taille = PETIT;
     }
-    
+
     if (this->taille == PETIT)
         this->timerPetit++;
 
@@ -228,7 +228,7 @@ void Robot::chargement_image()
 		exit(EXIT_FAILURE);
 	if (!texture[9].loadFromFile("images/10Rapide.jpg", IntRect(0, 10, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[10].loadFromFile("images/Face.jpg", IntRect(0, 10, 120, 190)))
+	if (!texture[10].loadFromFile("images/Face.jpg",IntRect(0, 10, 120, 190)))
 		exit(EXIT_FAILURE);
 	if (!texture[11].loadFromFile("images/bas.jpg", IntRect(0, 0, 120, 190)))
 		exit(EXIT_FAILURE);
@@ -287,5 +287,3 @@ IntRect Robot::getRectRobot() const
 }
 
 Texture Robot::getTexture(int indice) const {return texture[indice];}
-
-
