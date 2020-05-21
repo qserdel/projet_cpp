@@ -10,10 +10,12 @@ using namespace sf;
 
 #define HAUTEUR_ROBOT 135
 #define LARGEUR_ROBOT 100
+#define TAILLE_WINDOW 1000
 
 #define VITESSE_MAX 3
 #define TAILLE_MAX 3
 #define GRAVITE -10
+#define POS_SOL 700
 
 enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, GRAND, BLESSE};
 
@@ -22,7 +24,7 @@ class Robot {
 
 	private :
 		string _name;
-		Texture texture[20];
+		Texture texture[15];
 		Texture robotActuel;
 		int pv;
 		Arme arme;
@@ -63,6 +65,8 @@ class Robot {
 		void rapetisser();
 		void chargement_image();
 		void sauter(float elapsed);
+		void blessure();
+		void atterrissage(float altitude);
 
 		// Accesseurs
 		int getStatus() const;
@@ -87,6 +91,10 @@ class Robot {
 		void setRobotActuel(Texture robAct);
 		void setStatus(int etat);
 		void setTimerBlesse(int t);
+		void setPosSprite(float x, float y);
+		void setEnPleinJump(bool a);
+		void setHauteurSaut(int h);
+		void setTextRect(float w, float h);
 
 
 };

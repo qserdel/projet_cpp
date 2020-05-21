@@ -10,82 +10,82 @@ Robot::Robot(string name){
 	vitesse = 300;
 	taille = 0;
 	hauteurSaut = 500;
-	nbFrame = -1;
+	nbFrame = 0;
 	chargement_image();
 	robotActuel = texture[10];
-  sprite.setTexture(robotActuel);
+    sprite.setTexture(robotActuel);
 	if(name=="Joueur1")
-  	sprite.setPosition(Vector2f(20.f, 525.f)); // Choix de la position du sprite
+  		sprite.setPosition(Vector2f(20.f, POS_SOL-HAUTEUR_ROBOT)); // Choix de la position du sprite
 	else
 	{
-		sprite.setPosition(Vector2f(960.f, 525.f));
-		sprite.setScale(-1,1);
+		sprite.setPosition(Vector2f(980.f, POS_SOL-HAUTEUR_ROBOT));
+		//sprite.setScale(-1,1);
 	}
-  sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,HAUTEUR_ROBOT));
+  	sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,HAUTEUR_ROBOT));
 }
 
 void Robot::detect_KeyPressed()
 {
-	if (this->getName()=="Joueur1") {
-		if (this->state == BLESSE)
-			exit;
-		else if (Keyboard::isKeyPressed(Keyboard::Right))
+	if ((this->getName()=="Joueur1") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+	{
+		if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
 		    state = WALK_RIGHT;
-				this->sprite.setScale(1,1);
+			this->sprite.setScale(1,1);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
 		    state = WALK_LEFT;
-				this->sprite.setScale(-1,1);
+			//this->sprite.setScale(-1,1);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Down))
 		    state = DOWN;
-		else if (this->state != BLESSE)
+		else
 			state = NORMAL;
+		
 		if (Keyboard::isKeyPressed(Keyboard::Up))
 		    enPleinJump = true;
 		if (Keyboard::isKeyPressed(Keyboard::G))
 		{
 		    enPleinGrandissement = true;
-		    max_scale = 2.0;
+		    max_scale = 2.0;  // La taille maximale qu'il pourra atteindre
 		}
 		if (Keyboard::isKeyPressed(Keyboard::R))
 		{
 		    enPleinRapetissement = true;
-		    min_scale = 0.5;
+		    min_scale = 0.5;  // La taille minimale qu'il pourra atteindre
 		}
 		if (Keyboard::isKeyPressed(Keyboard::T))
 		    tir = true;
     }
-    else if (this->getName()=="Joueur2") {
-    	if (this->state == BLESSE)
-			exit;
-		else if (Keyboard::isKeyPressed(Keyboard::D))
+    else if ((this->getName()=="Joueur2") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+    {
+		if (Keyboard::isKeyPressed(Keyboard::D))
 		{
-				state = WALK_RIGHT;
-				this->sprite.setScale(1,1);
+			state = WALK_RIGHT;
+			this->sprite.setScale(1,1);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Q))
 		{
-				state = WALK_LEFT;
-				this->sprite.setScale(-1,1);
+			state = WALK_LEFT;
+			//this->sprite.setScale(-1,1);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::S))
 		    state = DOWN;
-		else if (this->state != BLESSE)
+		else
 			state = NORMAL;
+		
 		if (Keyboard::isKeyPressed(Keyboard::Z))
 		    enPleinJump = true;
 		if (Keyboard::isKeyPressed(Keyboard::G))
 		{
 		    enPleinGrandissement = true;
-		    max_scale = 2.0;
+		    max_scale = 2.0;  // La taille maximale qu'il pourra atteindre
 		}
 		if (Keyboard::isKeyPressed(Keyboard::R))
 		{
 		    enPleinRapetissement = true;
-		    min_scale = 0.5;
+		    min_scale = 0.5;  // La taille minimale qu'il pourra atteindre
 		}
 		if (Keyboard::isKeyPressed(Keyboard::T))
 		    tir = true;
@@ -102,7 +102,7 @@ void Robot::move(float elapsed)
         this->aGenoux = false;
     }
 
-	if (this->state == WALK_RIGHT && this->sprite.getPosition().x < 1000-LARGEUR_ROBOT)
+	if (this->state == WALK_RIGHT && this->sprite.getPosition().x < TAILLE_WINDOW-LARGEUR_ROBOT)
     {
         this->sprite.move(Vector2f(this->vitesse*elapsed, monte)); // Déplacement par rapport à la position actuelle
         (this->nbFrame)++;
@@ -143,28 +143,12 @@ void Robot::sauter(float elapsed)
     if ((this->hauteurSaut >= 0) && (this->state != DOWN))
     {
         this->robotActuel = texture[12];
-        this->sprite.setTextureRect(IntRect(0,0,100,160));
+        this->sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,160)); // Le Sprite du robot qui saute est plus grand que ceux du robot au sol
     }
     else if ((this->hauteurSaut < 0) && (this->state != DOWN))
     {
         this->robotActuel = texture[13];
-        this->sprite.setTextureRect(IntRect(0,0,100,160));
-    }
-
-    if ((this->sprite.getPosition().y >= 660-this->sprite.getScale().y*135) && (this->state != DOWN))
-    {
-        this->hauteurSaut = 500;
-        this->sprite.setPosition(this->sprite.getPosition().x, 660-this->sprite.getScale().y*135);
-        this->enPleinJump = false;
-        this->robotActuel = texture[10];
-        this->sprite.setTextureRect(IntRect(0,0,100,135));
-    }
-    else if ((this->sprite.getPosition().y >= 660-this->sprite.getScale().y*135+20.f*this->sprite.getScale().y) && (this->state == DOWN))
-    {
-        this->hauteurSaut = 500;
-        this->sprite.setPosition(this->sprite.getPosition().x, 660-this->sprite.getScale().y*135+20.f*this->sprite.getScale().y);
-        this->enPleinJump = false;
-        this->sprite.setTextureRect(IntRect(0,0,100,135));
+        this->sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,160));
     }
 }
 
@@ -205,7 +189,6 @@ void Robot::grandir()
     }
 }
 
-
 void Robot::rapetisser()
 {
     if (this->taillePrec == 0)
@@ -242,6 +225,18 @@ void Robot::rapetisser()
     }
 }
 
+void Robot::blessure()
+{
+    this->timerBlesse++;
+
+    if (this->timerBlesse > 200)
+    {
+        this->state = NORMAL;
+        this->timerBlesse = 0;
+        this->nbFrame = 0;
+    }
+}
+
 
 void Robot::chargement_image()
 {
@@ -275,16 +270,6 @@ void Robot::chargement_image()
 		exit(EXIT_FAILURE);
 	if (!texture[14].loadFromFile("images/blesse.jpg", IntRect(0, 0, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[15].loadFromFile("images/blesse1.jpg"))
-		exit(EXIT_FAILURE);
-	if (!texture[16].loadFromFile("images/blesse2.jpg"))
-		exit(EXIT_FAILURE);
-	if (!texture[17].loadFromFile("images/blesse3.jpg"))
-		exit(EXIT_FAILURE);
-	if (!texture[18].loadFromFile("images/blesse4.jpg"))
-		exit(EXIT_FAILURE);
-	if (!texture[19].loadFromFile("images/blesse5.jpg"))
-		exit(EXIT_FAILURE);
 }
 
 void Robot::message()
@@ -299,7 +284,6 @@ bool Robot::getEnPleinJump() const {return enPleinJump;}
 bool Robot::getEnPleinGrandissement() const {return enPleinGrandissement;};
 bool Robot::getEnPleinRapetissement() const {return enPleinRapetissement;};
 bool Robot::getTir() const {return tir;};
-void Robot::setTir(bool var) {this->tir = var;};
 int Robot::getTaille() const {return taille;};
 float Robot::getMinScale() const {return min_scale;};
 float Robot::getMaxScale() const {return max_scale;};
@@ -313,6 +297,11 @@ void Robot::setNbFrame(int nbreF) {this->nbFrame = nbreF;};
 void Robot::setRobotActuel(Texture robAct) {this->robotActuel = robAct;};
 void Robot::setStatus(int etat) {this->state = etat;};
 void Robot::setTimerBlesse(int t) {this->timerBlesse = t;};
+void Robot::setTir(bool var) {this->tir = var;};
+void Robot::setPosSprite(float x, float y) {this->sprite.setPosition(x, y);};
+void Robot::setEnPleinJump(bool a) {this->enPleinJump = a;};
+void Robot::setHauteurSaut(int h) {this->hauteurSaut = h;};
+void Robot::setTextRect(float w, float h) {this->sprite.setTextureRect(IntRect(0, 0, w, h));};
 
 IntRect Robot::getRectRobot() const
 {
@@ -325,3 +314,6 @@ IntRect Robot::getRectRobot() const
 }
 
 Texture Robot::getTexture(int indice) const {return texture[indice];}
+
+
+
