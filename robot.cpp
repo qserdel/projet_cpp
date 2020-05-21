@@ -31,7 +31,7 @@ void Robot::detect_KeyPressed()
 		if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
 		    state = WALK_RIGHT;
-			this->sprite.setScale(1,1);
+			//this->sprite.setScale(1,1);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
@@ -63,7 +63,7 @@ void Robot::detect_KeyPressed()
 		if (Keyboard::isKeyPressed(Keyboard::D))
 		{
 			state = WALK_RIGHT;
-			this->sprite.setScale(1,1);
+			//this->sprite.setScale(1,1);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Q))
 		{
