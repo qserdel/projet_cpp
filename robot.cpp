@@ -32,12 +32,10 @@ void Robot::detect_KeyPressed()
 		else if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
 		    state = WALK_RIGHT;
-				this->sprite.setScale(1,1);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
 		    state = WALK_LEFT;
-				this->sprite.setScale(-1,1);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Down))
 		    state = DOWN;
@@ -55,7 +53,7 @@ void Robot::detect_KeyPressed()
 		    enPleinRapetissement = true;
 		    min_scale = 0.5;
 		}
-		if (Keyboard::isKeyPressed(Keyboard::T))
+		if (Keyboard::isKeyPressed(Keyboard::Space))
 		    tir = true;
     }
     else if (this->getName()=="Joueur2") {
@@ -64,12 +62,10 @@ void Robot::detect_KeyPressed()
 		else if (Keyboard::isKeyPressed(Keyboard::D))
 		{
 				state = WALK_RIGHT;
-				this->sprite.setScale(1,1);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Q))
 		{
 				state = WALK_LEFT;
-				this->sprite.setScale(-1,1);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::S))
 		    state = DOWN;
@@ -87,7 +83,7 @@ void Robot::detect_KeyPressed()
 		    enPleinRapetissement = true;
 		    min_scale = 0.5;
 		}
-		if (Keyboard::isKeyPressed(Keyboard::T))
+		if (Keyboard::isKeyPressed(Keyboard::A))
 		    tir = true;
     }
 }
@@ -245,35 +241,35 @@ void Robot::rapetisser()
 
 void Robot::chargement_image()
 {
-	if (!texture[0].loadFromFile("images/1Rapide.jpg", IntRect(0, 0, 120, 190)))
+	if (!texture[0].loadFromFile("images/1Rapide.png", IntRect(0, 0, 120, 190)))
 	    exit(EXIT_FAILURE);
-	if (!texture[1].loadFromFile("images/2Rapide.jpg", IntRect(0, 0, 120, 190)))
+	if (!texture[1].loadFromFile("images/2Rapide.png", IntRect(0, 0, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[2].loadFromFile("images/3Rapide.jpg", IntRect(5, 25, 120, 190)))
+	if (!texture[2].loadFromFile("images/3Rapide.png", IntRect(5, 25, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[3].loadFromFile("images/4Rapide.jpg", IntRect(10, 30, 120, 190)))
+	if (!texture[3].loadFromFile("images/4Rapide.png", IntRect(10, 30, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[4].loadFromFile("images/5Rapide.jpg", IntRect(0, 10, 120, 190)))
+	if (!texture[4].loadFromFile("images/5Rapide.png", IntRect(0, 10, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[5].loadFromFile("images/6Rapide.jpg", IntRect(0, 20, 120, 190)))
+	if (!texture[5].loadFromFile("images/6Rapide.png", IntRect(0, 20, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[6].loadFromFile("images/7Rapide.jpg", IntRect(0, 10, 120, 190)))
+	if (!texture[6].loadFromFile("images/7Rapide.png", IntRect(0, 10, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[7].loadFromFile("images/8Rapide.jpg", IntRect(0, 10, 120, 190)))
+	if (!texture[7].loadFromFile("images/8Rapide.png", IntRect(0, 10, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[8].loadFromFile("images/9Rapide.jpg", IntRect(10, 25, 120, 190)))
+	if (!texture[8].loadFromFile("images/9Rapide.png", IntRect(10, 25, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[9].loadFromFile("images/10Rapide.jpg", IntRect(0, 10, 120, 190)))
+	if (!texture[9].loadFromFile("images/10Rapide.png", IntRect(0, 10, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[10].loadFromFile("images/Face.jpg",IntRect(0, 10, 120, 190)))
+	if (!texture[10].loadFromFile("images/Face.png",IntRect(0, 10, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[11].loadFromFile("images/bas.jpg", IntRect(0, 0, 120, 190)))
+	if (!texture[11].loadFromFile("images/bas.png", IntRect(0, 0, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[12].loadFromFile("images/saut1.jpg", IntRect(0, 15, 120, 190)))
+	if (!texture[12].loadFromFile("images/saut1.png", IntRect(0, 15, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[13].loadFromFile("images/saut2.jpg", IntRect(0, 5, 120, 190)))
+	if (!texture[13].loadFromFile("images/saut2.png", IntRect(0, 5, 120, 190)))
 		exit(EXIT_FAILURE);
-	if (!texture[14].loadFromFile("images/blesse.jpg", IntRect(0, 0, 120, 190)))
+	if (!texture[14].loadFromFile("images/blesse.png", IntRect(0, 0, 120, 190)))
 		exit(EXIT_FAILURE);
 	if (!texture[15].loadFromFile("images/blesse1.jpg"))
 		exit(EXIT_FAILURE);
