@@ -1,0 +1,319 @@
+#include "robot.hpp"
+#include <cstdlib>
+#include <iostream>
+#include <SFML/Graphics.hpp>
+
+
+Robot::Robot(string name){
+	_name=name;
+	pv = 3;
+	vitesse = 300;
+	taille = 0;
+	hauteurSaut = 500;
+	nbFrame = 0;
+	chargement_image();
+	robotActuel = texture[10];
+    sprite.setTexture(robotActuel);
+	if(name=="Joueur1")
+  		sprite.setPosition(Vector2f(20.f, POS_SOL-HAUTEUR_ROBOT)); // Choix de la position du sprite
+	else
+	{
+		sprite.setPosition(Vector2f(980.f, POS_SOL-HAUTEUR_ROBOT));
+		//sprite.setScale(-1,1);
+	}
+  	sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,HAUTEUR_ROBOT));
+}
+
+void Robot::detect_KeyPressed()
+{
+	if ((this->getName()=="Joueur1") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+	{
+		if (Keyboard::isKeyPressed(Keyboard::Right))
+		{
+		    state = WALK_RIGHT;
+			//this->sprite.setScale(1,1);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Left))
+		{
+		    state = WALK_LEFT;
+			//this->sprite.setScale(-1,1);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Down))
+		    state = DOWN;
+		else
+			state = NORMAL;
+		
+		if (Keyboard::isKeyPressed(Keyboard::Up))
+		    enPleinJump = true;
+		if (Keyboard::isKeyPressed(Keyboard::G))
+		{
+		    enPleinGrandissement = true;
+		    max_scale = 2.0;  // La taille maximale qu'il pourra atteindre
+		}
+		if (Keyboard::isKeyPressed(Keyboard::R))
+		{
+		    enPleinRapetissement = true;
+		    min_scale = 0.5;  // La taille minimale qu'il pourra atteindre
+		}
+		if (Keyboard::isKeyPressed(Keyboard::T))
+		    tir = true;
+    }
+    else if ((this->getName()=="Joueur2") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+    {
+		if (Keyboard::isKeyPressed(Keyboard::D))
+		{
+			state = WALK_RIGHT;
+			//this->sprite.setScale(1,1);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Q))
+		{
+			state = WALK_LEFT;
+			//this->sprite.setScale(-1,1);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::S))
+		    state = DOWN;
+		else
+			state = NORMAL;
+		
+		if (Keyboard::isKeyPressed(Keyboard::Z))
+		    enPleinJump = true;
+		if (Keyboard::isKeyPressed(Keyboard::G))
+		{
+		    enPleinGrandissement = true;
+		    max_scale = 2.0;  // La taille maximale qu'il pourra atteindre
+		}
+		if (Keyboard::isKeyPressed(Keyboard::R))
+		{
+		    enPleinRapetissement = true;
+		    min_scale = 0.5;  // La taille minimale qu'il pourra atteindre
+		}
+		if (Keyboard::isKeyPressed(Keyboard::T))
+		    tir = true;
+    }
+}
+
+
+void Robot::move(float elapsed)
+{
+    float monte = 0.f;
+    if ((this->aGenoux == true) && (this->state != DOWN)) // Si le robot était baissé sur la frame précédente et qu'il se relève, alors on remonte le robot
+    {
+        monte = -20.f*this->sprite.getScale().y;
+        this->aGenoux = false;
+    }
+
+	if (this->state == WALK_RIGHT && this->sprite.getPosition().x < TAILLE_WINDOW-LARGEUR_ROBOT)
+    {
+        this->sprite.move(Vector2f(this->vitesse*elapsed, monte)); // Déplacement par rapport à la position actuelle
+        (this->nbFrame)++;
+        if(this->nbFrame == 9)
+	        this->nbFrame = 0;
+        this->robotActuel = texture[this->nbFrame];
+	}
+    else if (this->state == WALK_LEFT && this->sprite.getPosition().x > 0)
+    {
+    	this->sprite.move(Vector2f(-this->vitesse*elapsed, monte)); // Déplacement vers la gauche
+    	(this->nbFrame)--;
+    	if(this->nbFrame == -1)
+    		this->nbFrame = 8;
+    	this->robotActuel = texture[this->nbFrame];
+	}
+	else if ((this->state == DOWN) && (this->aGenoux == false))
+	{
+	    this->robotActuel = texture[11];
+	    this->sprite.move(Vector2f(0.f, 20.f*this->sprite.getScale().y));
+        this->aGenoux = true;
+	}
+	else if (this->state == NORMAL)
+	{
+	    this->robotActuel = texture[10];
+	    if(monte != 0.f) // Si le robot n'est pas au niveau du sol parce que le robot s'est baissé sur la frame précédente, je remonte
+	        this->sprite.move(Vector2f(0.f, monte));
+    }
+
+    if (this->enPleinJump == true)
+    	this->sauter(elapsed);
+}
+
+
+void Robot::sauter(float elapsed)
+{
+    this->hauteurSaut += GRAVITE;
+    this->sprite.move(Vector2f(0.f, -(this->hauteurSaut)*elapsed));
+    if ((this->hauteurSaut >= 0) && (this->state != DOWN))
+    {
+        this->robotActuel = texture[12];
+        this->sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,160)); // Le Sprite du robot qui saute est plus grand que ceux du robot au sol
+    }
+    else if ((this->hauteurSaut < 0) && (this->state != DOWN))
+    {
+        this->robotActuel = texture[13];
+        this->sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,160));
+    }
+}
+
+
+void Robot::grandir()
+{
+    if (this->taillePrec == 0)
+        this->taillePrec = this->sprite.getLocalBounds().height*this->sprite.getScale().y; // Récupère la hauteur du sprite initial
+
+    if ((this->sprite.getScale().x*1.1 <= this->max_scale) && (taille != GRAND))
+    {
+        this->sprite.scale(Vector2f(1.1f, 1.1f)); // Modifie l'échelle par rapport à l'échelle actuelle
+        this->sprite.move(Vector2f(0.f, -this->taillePrec*0.1));
+        this->taillePrec *= 1.1;
+    }
+    else
+    {
+        this->enPleinGrandissement = false;
+        this->taillePrec = 0;
+        if (this->max_scale == 1.0)
+        {
+            this->taille = NORMAL;
+            this->sprite.move(Vector2f(0.f, this->sprite.getLocalBounds().height*(this->sprite.getScale().y-1)));
+            this->sprite.setScale(Vector2f(1.f, 1.f));
+        }
+        else
+            this->taille = GRAND;
+    }
+
+    if (this->taille == GRAND)
+        this->timerGrand++;
+
+    if ((this->timerGrand > 500) && (this->taille == GRAND))
+    {
+        this->enPleinRapetissement = true;
+        this->min_scale = 1.0;
+        this->timerGrand = 0;
+    }
+}
+
+void Robot::rapetisser()
+{
+    if (this->taillePrec == 0)
+        this->taillePrec = this->sprite.getLocalBounds().height*this->sprite.getScale().y;
+
+    if ((this->sprite.getScale().x*0.9 >= this->min_scale) && (this->taille != PETIT))
+    {
+        this->sprite.scale(Vector2f(0.9f, 0.9f)); // Modifie l'échelle par rapport à l'échelle actuelle
+        this->sprite.move(Vector2f(0.f, this->taillePrec*0.1));
+        this->taillePrec *= 0.9;
+    }
+    else
+    {
+        this->enPleinRapetissement = false;
+        this->taillePrec = 0;
+        if (this->min_scale == 1.0)
+        {
+            this->taille = NORMAL;
+            this->sprite.move(Vector2f(0.f, this->sprite.getLocalBounds().height*(this->sprite.getScale().y-1)));
+            this->sprite.setScale(Vector2f(1.f, 1.f));
+        }
+        else
+            this->taille = PETIT;
+    }
+
+    if (this->taille == PETIT)
+        this->timerPetit++;
+
+    if ((this->timerPetit > 500) && (this->taille == PETIT))
+    {
+        this->enPleinGrandissement = true;
+        this->max_scale = 1.0;
+        this->timerPetit = 0;
+    }
+}
+
+void Robot::blessure()
+{
+    this->timerBlesse++;
+
+    if (this->timerBlesse > 200)
+    {
+        this->state = NORMAL;
+        this->timerBlesse = 0;
+        this->nbFrame = 0;
+    }
+}
+
+
+void Robot::chargement_image()
+{
+	if (!texture[0].loadFromFile("images/1Rapide.png", IntRect(0, 0, 120, 190)))
+	    exit(EXIT_FAILURE);
+	if (!texture[1].loadFromFile("images/2Rapide.png", IntRect(0, 0, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[2].loadFromFile("images/3Rapide.png", IntRect(5, 25, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[3].loadFromFile("images/4Rapide.png", IntRect(10, 30, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[4].loadFromFile("images/5Rapide.png", IntRect(0, 10, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[5].loadFromFile("images/6Rapide.png", IntRect(0, 20, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[6].loadFromFile("images/7Rapide.png", IntRect(0, 10, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[7].loadFromFile("images/8Rapide.png", IntRect(0, 10, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[8].loadFromFile("images/9Rapide.png", IntRect(10, 25, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[9].loadFromFile("images/10Rapide.png", IntRect(0, 10, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[10].loadFromFile("images/Face.png",IntRect(0, 10, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[11].loadFromFile("images/bas.png", IntRect(0, 0, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[12].loadFromFile("images/saut1.png", IntRect(0, 15, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[13].loadFromFile("images/saut2.png", IntRect(0, 5, 120, 190)))
+		exit(EXIT_FAILURE);
+	if (!texture[14].loadFromFile("images/blesse.png", IntRect(0, 0, 120, 190)))
+		exit(EXIT_FAILURE);
+}
+
+void Robot::message()
+{
+	cout<<"La partie peut commencer !"<<endl;
+}
+
+int Robot::getStatus() const {return state;}
+int Robot::getNbFrame() const {return nbFrame;}
+int Robot::getHauteurSaut() const {return hauteurSaut;}
+bool Robot::getEnPleinJump() const {return enPleinJump;}
+bool Robot::getEnPleinGrandissement() const {return enPleinGrandissement;};
+bool Robot::getEnPleinRapetissement() const {return enPleinRapetissement;};
+bool Robot::getTir() const {return tir;};
+int Robot::getTaille() const {return taille;};
+float Robot::getMinScale() const {return min_scale;};
+float Robot::getMaxScale() const {return max_scale;};
+Sprite Robot::getSprite() const {return sprite;};
+int Robot::getPv() const {return pv;};
+int Robot::getTimerBlesse() const {return timerBlesse;};
+string Robot::getName() const {return _name;};
+
+void Robot::setPv(int nbVie) {this->pv = nbVie;};
+void Robot::setNbFrame(int nbreF) {this->nbFrame = nbreF;};
+void Robot::setRobotActuel(Texture robAct) {this->robotActuel = robAct;};
+void Robot::setStatus(int etat) {this->state = etat;};
+void Robot::setTimerBlesse(int t) {this->timerBlesse = t;};
+void Robot::setTir(bool var) {this->tir = var;};
+void Robot::setPosSprite(float x, float y) {this->sprite.setPosition(x, y);};
+void Robot::setEnPleinJump(bool a) {this->enPleinJump = a;};
+void Robot::setHauteurSaut(int h) {this->hauteurSaut = h;};
+void Robot::setTextRect(float w, float h) {this->sprite.setTextureRect(IntRect(0, 0, w, h));};
+
+IntRect Robot::getRectRobot() const
+{
+    IntRect rectRobot;
+    rectRobot.left = sprite.getPosition().x;
+    rectRobot.width = sprite.getPosition().x + sprite.getLocalBounds().width * sprite.getScale().x;
+    rectRobot.top = sprite.getPosition().y;
+    rectRobot.height = sprite.getPosition().y + sprite.getLocalBounds().height * sprite.getScale().y;
+    return rectRobot;
+}
+
+Texture Robot::getTexture(int indice) const {return texture[indice];}
+
+
+
