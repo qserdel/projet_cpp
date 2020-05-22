@@ -6,7 +6,7 @@ Balle::Balle()
     if (!balle.loadFromFile("images/Tir.png"))
         exit(EXIT_FAILURE);
     sp.setTexture(balle);
-    sp.setPosition(Vector2f(600.f, 530.f));
+    sp.setPosition(Vector2f(600.f, 560.f));
     sp.setScale(Vector2f(1.3f, 1.3f));
 }
 

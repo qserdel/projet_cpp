@@ -3,14 +3,13 @@
 #include "robot.hpp"
 #include "balle.hpp"
 #include "collision.hpp"
-
-using namespace sf;
+#include "map.hpp"
 
 
 int main()
 {
     // Create the main window
-    RenderWindow window(VideoMode(1000, 1000), "SFML window");
+    RenderWindow window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window");
     window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
 
     // Load a sprite to display
@@ -18,40 +17,18 @@ int main()
     Robot rob2("Joueur2");
     Balle balle;
     Collision collision(balle, rob);
+    Map map;
 
     rob.message();
 
 
-    // Create a graphical text to display
-    /*Font font;
-    if (!font.loadFromFile("arial.ttf"))
-        return EXIT_FAILURE;
-    Text text("Hello SFML", font, 50);
     // Load a music to play
-    Music music;
+    /*Music music;
     if (!music.openFromFile("nice_music.ogg"))
         return EXIT_FAILURE;
     // Play the music
     music.play();*/
 
-
-    Texture fond;
-    if(!fond.loadFromFile("images/fond.jpg",IntRect(100,300,1100,1000)))
-      return EXIT_FAILURE;
-    Sprite spriteFond(fond);
-    spriteFond.setPosition(Vector2f(0.f, 0.f));
-
-    Texture mur;
-    if(!mur.loadFromFile("images/mur.jpg",IntRect(0,0,1000,50)))
-      return EXIT_FAILURE;
-    Sprite spriteMur(mur);
-    Sprite spriteMur2(mur);
-    Sprite spriteMur3(mur);
-    Sprite spriteMur4(mur);
-    spriteMur.setPosition(Vector2f(0.f, 0.f));
-    spriteMur2.setPosition(Vector2f(0.f, 660.f));
-
-    //sprite.setColor(Color(250, 200, 200, 255)); // Choix de la couleur du sprite
 
 	sf::Clock clock;
     float elapsed = 0;
@@ -102,25 +79,28 @@ int main()
         if (rob.getTir() == true) // La balle continue de bouger tant qu'elle est dans la fenêtre
             rob.setTir(balle.action());
         
-        collision.gestionCollision(&rob, &balle);
-
-
-	//sprite.rotate(1.f); // Tourne d'un certain angle par rapport à l'angle actuel
-
+        collision.gestionCollision(&rob, &balle, &map, elapsed);
+        collision.gestionCollision(&rob2, &balle, &map, elapsed);
+        
+        if (rob.getStatus() == BLESSE)
+        	rob.blessure();
+    	if (rob2.getStatus() == BLESSE)
+        	rob2.blessure();
 
         // Clear screen
         window.clear();
         // Draw the sprite
-        window.draw(spriteFond);
+        window.draw(map.getSpriteFond());
+        window.draw(map.getSpriteSol());
         window.draw(rob.getSprite());
         window.draw(rob2.getSprite());
         window.draw(balle.getSprite());
+        for (int i = 0; i < map.getListObjets().size(); i++)
+        {
+        	window.draw(map.getListObjets()[i]);
+        }
 
-        //window.draw(spriteMur);
-        window.draw(spriteMur2);
 
-        // Draw the string
-        //window.draw(text);
         // Update the window
         window.display();
     }
