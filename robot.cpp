@@ -12,7 +12,7 @@ Robot::Robot(string name){
 	hauteurSaut = 500;
 	nbFrame = 0;
 	chargement_image();
-	if(name=="Joueur1")
+	if(_name == "Joueur1")
 	{
   		sprite.setPosition(Vector2f(20.f, POS_SOL-HAUTEUR_ROBOT)); // Choix de la position du sprite
   		robotActuel = texture[10];
@@ -20,7 +20,8 @@ Robot::Robot(string name){
 	else
 	{
 		sprite.setPosition(Vector2f(TAILLE_WINDOW - LARGEUR_ROBOT - 20.f, POS_SOL-HAUTEUR_ROBOT));
-		robotActuel = texture[25];
+		increment_left = 15;
+		robotActuel = texture[10+increment_left];
 	}
 	sprite.setTexture(robotActuel);
   	sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, HAUTEUR_ROBOT));
@@ -28,7 +29,7 @@ Robot::Robot(string name){
 
 void Robot::detect_KeyPressed()
 {
-	if ((this->getName()=="Joueur1") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+	if ((this->_name == "Joueur1") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
 	{
 		if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
@@ -62,7 +63,7 @@ void Robot::detect_KeyPressed()
 		if (Keyboard::isKeyPressed(Keyboard::T))
 		    tir = true;
     }
-    else if ((this->getName()=="Joueur2") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+    else if ((this->_name == "Joueur2") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
     {
 		if (Keyboard::isKeyPressed(Keyboard::D))
 		{
@@ -105,7 +106,7 @@ void Robot::move(float elapsed)
     int increment = 0;
     if (this->_name == "Joueur2")
     	increment = 20;
-    if ((this->aGenoux == true) && (this->state != DOWN)) // Si le robot était baissé sur la frame précédente et qu'il se relève, alors on remonte le robot
+    if ((this->aGenoux == true) && (this->state != DOWN))  // Si le robot était baissé sur la frame précédente et qu'il se relève, alors on remonte le robot
     {
         monte = -20.f*this->sprite.getScale().y;
         this->aGenoux = false;
@@ -113,7 +114,7 @@ void Robot::move(float elapsed)
 
 	if (this->state == WALK_RIGHT && this->sprite.getPosition().x < TAILLE_WINDOW-LARGEUR_ROBOT)
     {
-        this->sprite.move(Vector2f(this->vitesse*elapsed, monte)); // Déplacement par rapport à la position actuelle
+        this->sprite.move(Vector2f(this->vitesse*elapsed, monte));  // Déplacement par rapport à la position actuelle
         (this->nbFrame)++;
         if(this->nbFrame == 10)
 	        this->nbFrame = 0;
@@ -121,7 +122,7 @@ void Robot::move(float elapsed)
 	}
     else if (this->state == WALK_LEFT && this->sprite.getPosition().x > 0)
     {
-    	this->sprite.move(Vector2f(-this->vitesse*elapsed, monte)); // Déplacement vers la gauche
+    	this->sprite.move(Vector2f(-this->vitesse*elapsed, monte));  // Déplacement vers la gauche
     	(this->nbFrame)++;
     	if(this->nbFrame == 10)
     		this->nbFrame = 0;
@@ -136,7 +137,7 @@ void Robot::move(float elapsed)
 	else if (this->state == NORMAL)
 	{
 	    this->robotActuel = this->texture[10+this->increment_left];
-	    if(monte != 0.f) // Si le robot n'est pas au niveau du sol parce que le robot s'est baissé sur la frame précédente, je remonte
+	    if(monte != 0.f)  // Si le robot n'est pas au niveau du sol parce que le robot s'est baissé sur la frame précédente, je remonte
 	        this->sprite.move(Vector2f(0.f, monte));
     }
 
@@ -246,67 +247,6 @@ void Robot::blessure()
     }
 }
 
-
-/*void Robot::chargement_image()
-{
-	string fin_nom = ".png";
-	string dossier;
-	for (int i = 0; i < 4; i++)
-	{
-		if (i == 1)
-			fin_nom = "L.png";
-		else if (i == 2)
-			fin_nom = "2.png";
-		else if (i == 3)
-			fin_nom = "2L.png";
-		dossier = "images/";
-	    if (!texture[0+15*i].loadFromFile(dossier.append(to_string(1)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
-	    	exit(EXIT_FAILURE);
-    	dossier = "images/";
-    	if (!texture[1+15*i].loadFromFile(dossier.append(to_string(2)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[2+15*i].loadFromFile(dossier.append(to_string(3)).append("Rapide").append(fin_nom), IntRect(5, 25, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[3+15*i].loadFromFile(dossier.append(to_string(4)).append("Rapide").append(fin_nom), IntRect(10, 30, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[4+15*i].loadFromFile(dossier.append(to_string(5)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[5+15*i].loadFromFile(dossier.append(to_string(6)).append("Rapide").append(fin_nom), IntRect(0, 20, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[6+15*i].loadFromFile(dossier.append(to_string(7)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[7+15*i].loadFromFile(dossier.append(to_string(8)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[8+15*i].loadFromFile(dossier.append(to_string(9)).append("Rapide").append(fin_nom), IntRect(10, 25, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[9+15*i].loadFromFile(dossier.append(to_string(10)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
-			exit(EXIT_FAILURE);	
-		dossier = "images/";
-		if (!texture[10+15*i].loadFromFile(dossier.append("Face").append(fin_nom),IntRect(0, 10, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[11+15*i].loadFromFile(dossier.append("bas").append(fin_nom), IntRect(0, 0, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[12+15*i].loadFromFile(dossier.append("saut").append(to_string(1)).append(fin_nom), IntRect(0, 15, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[13+15*i].loadFromFile(dossier.append("saut").append(to_string(2)).append(fin_nom), IntRect(0, 5, 120, 190)))
-			exit(EXIT_FAILURE);
-		dossier = "images/";
-		if (!texture[14+15*i].loadFromFile(dossier.append("blesse").append(fin_nom), IntRect(0, 0, 120, 190)))
-			exit(EXIT_FAILURE);	
-	}
-}*/
-
 void Robot::chargement_image()
 {
 	string fin_nom;
@@ -395,6 +335,7 @@ Sprite Robot::getSprite() const {return sprite;};
 int Robot::getPv() const {return pv;};
 int Robot::getTimerBlesse() const {return timerBlesse;};
 string Robot::getName() const {return _name;};
+int Robot::getIncrementLeft() const {return increment_left;};
 
 void Robot::setPv(int nbVie) {this->pv = nbVie;};
 void Robot::setNbFrame(int nbreF) {this->nbFrame = nbreF;};

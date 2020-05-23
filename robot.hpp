@@ -24,7 +24,7 @@ class Robot {
 
 	private :
 		string _name;
-		Texture texture[29];
+		Texture texture[30];
 		Texture robotActuel;
 		int pv;
 		Arme arme;
@@ -81,6 +81,7 @@ class Robot {
 		float getMinScale() const;
 		float getMaxScale() const;
 		int getTaille() const;
+		int getIncrementLeft() const;
 		Texture getTexture(int indice) const;
 		Sprite getSprite() const;
 		IntRect getRectRobot() const;
