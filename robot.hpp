@@ -24,7 +24,7 @@ class Robot {
 
 	private :
 		string _name;
-		Texture texture[15];
+		Texture texture[29];
 		Texture robotActuel;
 		int pv;
 		Arme arme;
@@ -44,6 +44,7 @@ class Robot {
 		int timerBlesse = 0;
 		float min_scale;
 		float max_scale;
+		int increment_left = 0;
 
 
 		float taillePrec = 0;

@@ -12,16 +12,18 @@ Robot::Robot(string name){
 	hauteurSaut = 500;
 	nbFrame = 0;
 	chargement_image();
-	robotActuel = texture[10];
-    sprite.setTexture(robotActuel);
 	if(name=="Joueur1")
+	{
   		sprite.setPosition(Vector2f(20.f, POS_SOL-HAUTEUR_ROBOT)); // Choix de la position du sprite
+  		robotActuel = texture[10];
+	}
 	else
 	{
-		sprite.setPosition(Vector2f(980.f, POS_SOL-HAUTEUR_ROBOT));
-		//sprite.setScale(-1,1);
+		sprite.setPosition(Vector2f(TAILLE_WINDOW - LARGEUR_ROBOT - 20.f, POS_SOL-HAUTEUR_ROBOT));
+		robotActuel = texture[25];
 	}
-  	sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,HAUTEUR_ROBOT));
+	sprite.setTexture(robotActuel);
+  	sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, HAUTEUR_ROBOT));
 }
 
 void Robot::detect_KeyPressed()
@@ -30,14 +32,16 @@ void Robot::detect_KeyPressed()
 	{
 		if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
+			if (this->state != WALK_RIGHT)
+				this->increment_left = 0;
 		    state = WALK_RIGHT;
-			//this->sprite.setScale(1,1);
-		}
+	    }
 		else if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
+			if (this->state != WALK_LEFT)
+				this->increment_left = 15;
 		    state = WALK_LEFT;
-			//this->sprite.setScale(-1,1);
-		}
+	    }
 		else if (Keyboard::isKeyPressed(Keyboard::Down))
 		    state = DOWN;
 		else
@@ -62,14 +66,16 @@ void Robot::detect_KeyPressed()
     {
 		if (Keyboard::isKeyPressed(Keyboard::D))
 		{
-			state = WALK_RIGHT;
-			//this->sprite.setScale(1,1);
-		}
+			if (this->state != WALK_RIGHT)
+				this->increment_left = 0;
+		    state = WALK_RIGHT;
+	    }
 		else if (Keyboard::isKeyPressed(Keyboard::Q))
 		{
-			state = WALK_LEFT;
-			//this->sprite.setScale(-1,1);
-		}
+			if (this->state != WALK_LEFT)
+				this->increment_left = 15;
+		    state = WALK_LEFT;
+	    }
 		else if (Keyboard::isKeyPressed(Keyboard::S))
 		    state = DOWN;
 		else
@@ -96,6 +102,9 @@ void Robot::detect_KeyPressed()
 void Robot::move(float elapsed)
 {
     float monte = 0.f;
+    int increment = 0;
+    if (this->_name == "Joueur2")
+    	increment = 20;
     if ((this->aGenoux == true) && (this->state != DOWN)) // Si le robot était baissé sur la frame précédente et qu'il se relève, alors on remonte le robot
     {
         monte = -20.f*this->sprite.getScale().y;
@@ -106,27 +115,27 @@ void Robot::move(float elapsed)
     {
         this->sprite.move(Vector2f(this->vitesse*elapsed, monte)); // Déplacement par rapport à la position actuelle
         (this->nbFrame)++;
-        if(this->nbFrame == 9)
+        if(this->nbFrame == 10)
 	        this->nbFrame = 0;
-        this->robotActuel = texture[this->nbFrame];
+        this->robotActuel = this->texture[this->nbFrame];
 	}
     else if (this->state == WALK_LEFT && this->sprite.getPosition().x > 0)
     {
     	this->sprite.move(Vector2f(-this->vitesse*elapsed, monte)); // Déplacement vers la gauche
-    	(this->nbFrame)--;
-    	if(this->nbFrame == -1)
-    		this->nbFrame = 8;
-    	this->robotActuel = texture[this->nbFrame];
+    	(this->nbFrame)++;
+    	if(this->nbFrame == 10)
+    		this->nbFrame = 0;
+    	this->robotActuel = this->texture[this->nbFrame+this->increment_left];
 	}
 	else if ((this->state == DOWN) && (this->aGenoux == false))
 	{
-	    this->robotActuel = texture[11];
+	    this->robotActuel = this->texture[11+this->increment_left];
 	    this->sprite.move(Vector2f(0.f, 20.f*this->sprite.getScale().y));
         this->aGenoux = true;
 	}
 	else if (this->state == NORMAL)
 	{
-	    this->robotActuel = texture[10];
+	    this->robotActuel = this->texture[10+this->increment_left];
 	    if(monte != 0.f) // Si le robot n'est pas au niveau du sol parce que le robot s'est baissé sur la frame précédente, je remonte
 	        this->sprite.move(Vector2f(0.f, monte));
     }
@@ -142,12 +151,12 @@ void Robot::sauter(float elapsed)
     this->sprite.move(Vector2f(0.f, -(this->hauteurSaut)*elapsed));
     if ((this->hauteurSaut >= 0) && (this->state != DOWN))
     {
-        this->robotActuel = texture[12];
+        this->robotActuel = this->texture[12+this->increment_left];
         this->sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,160)); // Le Sprite du robot qui saute est plus grand que ceux du robot au sol
     }
     else if ((this->hauteurSaut < 0) && (this->state != DOWN))
     {
-        this->robotActuel = texture[13];
+        this->robotActuel = this->texture[13+this->increment_left];
         this->sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,160));
     }
 }
@@ -238,38 +247,133 @@ void Robot::blessure()
 }
 
 
+/*void Robot::chargement_image()
+{
+	string fin_nom = ".png";
+	string dossier;
+	for (int i = 0; i < 4; i++)
+	{
+		if (i == 1)
+			fin_nom = "L.png";
+		else if (i == 2)
+			fin_nom = "2.png";
+		else if (i == 3)
+			fin_nom = "2L.png";
+		dossier = "images/";
+	    if (!texture[0+15*i].loadFromFile(dossier.append(to_string(1)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
+	    	exit(EXIT_FAILURE);
+    	dossier = "images/";
+    	if (!texture[1+15*i].loadFromFile(dossier.append(to_string(2)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[2+15*i].loadFromFile(dossier.append(to_string(3)).append("Rapide").append(fin_nom), IntRect(5, 25, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[3+15*i].loadFromFile(dossier.append(to_string(4)).append("Rapide").append(fin_nom), IntRect(10, 30, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[4+15*i].loadFromFile(dossier.append(to_string(5)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[5+15*i].loadFromFile(dossier.append(to_string(6)).append("Rapide").append(fin_nom), IntRect(0, 20, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[6+15*i].loadFromFile(dossier.append(to_string(7)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[7+15*i].loadFromFile(dossier.append(to_string(8)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[8+15*i].loadFromFile(dossier.append(to_string(9)).append("Rapide").append(fin_nom), IntRect(10, 25, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[9+15*i].loadFromFile(dossier.append(to_string(10)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);	
+		dossier = "images/";
+		if (!texture[10+15*i].loadFromFile(dossier.append("Face").append(fin_nom),IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[11+15*i].loadFromFile(dossier.append("bas").append(fin_nom), IntRect(0, 0, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[12+15*i].loadFromFile(dossier.append("saut").append(to_string(1)).append(fin_nom), IntRect(0, 15, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[13+15*i].loadFromFile(dossier.append("saut").append(to_string(2)).append(fin_nom), IntRect(0, 5, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!texture[14+15*i].loadFromFile(dossier.append("blesse").append(fin_nom), IntRect(0, 0, 120, 190)))
+			exit(EXIT_FAILURE);	
+	}
+}*/
+
 void Robot::chargement_image()
 {
-	if (!texture[0].loadFromFile("images/1Rapide.png", IntRect(0, 0, 120, 190)))
-	    exit(EXIT_FAILURE);
-	if (!texture[1].loadFromFile("images/2Rapide.png", IntRect(0, 0, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[2].loadFromFile("images/3Rapide.png", IntRect(5, 25, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[3].loadFromFile("images/4Rapide.png", IntRect(10, 30, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[4].loadFromFile("images/5Rapide.png", IntRect(0, 10, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[5].loadFromFile("images/6Rapide.png", IntRect(0, 20, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[6].loadFromFile("images/7Rapide.png", IntRect(0, 10, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[7].loadFromFile("images/8Rapide.png", IntRect(0, 10, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[8].loadFromFile("images/9Rapide.png", IntRect(10, 25, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[9].loadFromFile("images/10Rapide.png", IntRect(0, 10, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[10].loadFromFile("images/Face.png",IntRect(0, 10, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[11].loadFromFile("images/bas.png", IntRect(0, 0, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[12].loadFromFile("images/saut1.png", IntRect(0, 15, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[13].loadFromFile("images/saut2.png", IntRect(0, 5, 120, 190)))
-		exit(EXIT_FAILURE);
-	if (!texture[14].loadFromFile("images/blesse.png", IntRect(0, 0, 120, 190)))
-		exit(EXIT_FAILURE);
+	string fin_nom;
+	string dossier;
+	for (int i = 0; i < 2; i++)
+	{
+		if (this->_name == "Joueur1")
+		{
+			if (i == 0)
+				fin_nom = ".png";
+			else if (i == 1)
+				fin_nom = "L.png";
+		}
+		else
+		{
+			if (i == 0)
+				fin_nom = "2.png";
+			else if (i == 1)
+				fin_nom = "2L.png";
+		}
+
+		dossier = "images/";
+	    if (!this->texture[0+15*i].loadFromFile(dossier.append(to_string(1)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
+	    	exit(EXIT_FAILURE);
+    	dossier = "images/";
+    	if (!this->texture[1+15*i].loadFromFile(dossier.append(to_string(2)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[2+15*i].loadFromFile(dossier.append(to_string(3)).append("Rapide").append(fin_nom), IntRect(5, 25, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[3+15*i].loadFromFile(dossier.append(to_string(4)).append("Rapide").append(fin_nom), IntRect(10, 30, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[4+15*i].loadFromFile(dossier.append(to_string(5)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[5+15*i].loadFromFile(dossier.append(to_string(6)).append("Rapide").append(fin_nom), IntRect(0, 20, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[6+15*i].loadFromFile(dossier.append(to_string(7)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[7+15*i].loadFromFile(dossier.append(to_string(8)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[8+15*i].loadFromFile(dossier.append(to_string(9)).append("Rapide").append(fin_nom), IntRect(10, 25, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[9+15*i].loadFromFile(dossier.append(to_string(10)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);	
+		dossier = "images/";
+		if (!this->texture[10+15*i].loadFromFile(dossier.append("Face").append(fin_nom),IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[11+15*i].loadFromFile(dossier.append("bas").append(fin_nom), IntRect(0, 0, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[12+15*i].loadFromFile(dossier.append("saut1").append(fin_nom), IntRect(0, 15, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[13+15*i].loadFromFile(dossier.append("saut2").append(fin_nom), IntRect(0, 5, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[14+15*i].loadFromFile(dossier.append("blesse").append(fin_nom), IntRect(0, 0, 120, 190)))
+			exit(EXIT_FAILURE);	
+	}
 }
 
 void Robot::message()
