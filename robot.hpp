@@ -17,6 +17,10 @@ using namespace sf;
 #define GRAVITE -10
 #define POS_SOL 700
 
+#define TIMER_BLESSE 200
+#define TIMER_PETIT 500
+#define TIMER_GRAND 500
+
 enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, GRAND, BLESSE};
 
 
@@ -39,14 +43,12 @@ class Robot {
 		bool enPleinGrandissement = false;
 		bool enPleinRapetissement = false;
 		bool tir = false;
-		int timerGrand = 0;
-		int timerPetit = 0;
-		int timerBlesse = 0;
+		int timerGrand = TIMER_GRAND;
+		int timerPetit = TIMER_PETIT;
+		int timerBlesse = TIMER_BLESSE;
 		float min_scale;
 		float max_scale;
 		int increment_left = 0;
-
-
 		float taillePrec = 0;
 
 		Sprite sprite;
@@ -67,7 +69,7 @@ class Robot {
 		void chargement_image();
 		void sauter(float elapsed);
 		void blessure();
-		void atterrissage(float altitude);
+
 
 		// Accesseurs
 		int getStatus() const;
@@ -77,7 +79,6 @@ class Robot {
 		bool getEnPleinGrandissement() const;
 		bool getEnPleinRapetissement() const;
 		bool getTir() const;
-		void setTir(bool var);
 		float getMinScale() const;
 		float getMaxScale() const;
 		int getTaille() const;
@@ -88,6 +89,8 @@ class Robot {
 		int getTimerBlesse() const;
 		int getPv() const;
 		string getName() const;
+		
+		void setTir(bool var);
 		void setPv(int nbVie);
 		void setNbFrame(int nbreF);
 		void setRobotActuel(Texture robAct);

@@ -1,4 +1,4 @@
-all: main clean
+all: main tests_catch clean
 
 activable.o: activable.cpp activable.hpp equipement.hpp
 	g++ -c activable.cpp
@@ -44,6 +44,19 @@ main: activable.o arme.o balle.o collectable.o collision.o equipement.o immediat
 
 play:
 	export LD_LIBRARY_PATH=./SFML-2.5.1/lib && ./main
+
+# Tests
+
+tests_catch: tests_catch_robot.o robot.o
+	g++ -o tests_catch $^ -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system
+
+
+tests_catch_robot.o: tests_catch_robot.cpp robot.hpp catch.hpp
+	g++ -c tests_catch_robot.cpp -I./SFML-2.5.1/include
+
+tests:
+	export LD_LIBRARY_PATH=./SFML-2.5.1/lib && ./tests_catch
+
 
 clean:
 	rm -f *.o

@@ -153,12 +153,12 @@ void Robot::sauter(float elapsed)
     if ((this->hauteurSaut >= 0) && (this->state != DOWN))
     {
         this->robotActuel = this->texture[12+this->increment_left];
-        this->sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,160)); // Le Sprite du robot qui saute est plus grand que ceux du robot au sol
+        this->sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, 160)); // Le Sprite du robot qui saute est plus grand que ceux du robot au sol
     }
     else if ((this->hauteurSaut < 0) && (this->state != DOWN))
     {
         this->robotActuel = this->texture[13+this->increment_left];
-        this->sprite.setTextureRect(IntRect(0,0,LARGEUR_ROBOT,160));
+        this->sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, 160));
     }
 }
 
@@ -189,13 +189,13 @@ void Robot::grandir()
     }
 
     if (this->taille == GRAND)
-        this->timerGrand++;
+        this->timerGrand--;
 
-    if ((this->timerGrand > 500) && (this->taille == GRAND))
+    if ((this->timerGrand <= 0) && (this->taille == GRAND))
     {
         this->enPleinRapetissement = true;
         this->min_scale = 1.0;
-        this->timerGrand = 0;
+        this->timerGrand = TIMER_GRAND;
     }
 }
 
@@ -225,24 +225,24 @@ void Robot::rapetisser()
     }
 
     if (this->taille == PETIT)
-        this->timerPetit++;
+        this->timerPetit--;
 
-    if ((this->timerPetit > 500) && (this->taille == PETIT))
+    if ((this->timerPetit <= 0) && (this->taille == PETIT))
     {
         this->enPleinGrandissement = true;
         this->max_scale = 1.0;
-        this->timerPetit = 0;
+        this->timerPetit = TIMER_PETIT;
     }
 }
 
 void Robot::blessure()
 {
-    this->timerBlesse++;
+    this->timerBlesse--;
 
-    if (this->timerBlesse > 200)
+    if (this->timerBlesse <= 0)
     {
         this->state = NORMAL;
-        this->timerBlesse = 0;
+        this->timerBlesse = TIMER_BLESSE;
         this->nbFrame = 0;
     }
 }
