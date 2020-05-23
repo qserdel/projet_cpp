@@ -8,7 +8,7 @@ Robot::Robot(string name){
 	_name=name;
 	pv = 3;
 	vitesse = 300;
-	taille = 0;
+	taille = STANDARD;
 	hauteurSaut = 500;
 	nbFrame = 0;
 	chargement_image();
@@ -20,7 +20,7 @@ Robot::Robot(string name){
 	else
 	{
 		sprite.setPosition(Vector2f(TAILLE_WINDOW - LARGEUR_ROBOT - 20.f, POS_SOL-HAUTEUR_ROBOT));
-		increment_left = 15;
+		increment_left = NI;
 		robotActuel = texture[10+increment_left];
 	}
 	sprite.setTexture(robotActuel);
@@ -40,7 +40,7 @@ void Robot::detect_KeyPressed()
 		else if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
 			if (this->state != WALK_LEFT)
-				this->increment_left = 15;
+				this->increment_left = NI;
 		    state = WALK_LEFT;
 	    }
 		else if (Keyboard::isKeyPressed(Keyboard::Down))
@@ -61,7 +61,10 @@ void Robot::detect_KeyPressed()
 		    min_scale = 0.5;  // La taille minimale qu'il pourra atteindre
 		}
 		if (Keyboard::isKeyPressed(Keyboard::T))
+		{
 		    tir = true;
+		    this->robotActuel = this->texture[15+this->increment_left];
+	    }
     }
     else if ((this->_name == "Joueur2") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
     {
@@ -74,7 +77,7 @@ void Robot::detect_KeyPressed()
 		else if (Keyboard::isKeyPressed(Keyboard::Q))
 		{
 			if (this->state != WALK_LEFT)
-				this->increment_left = 15;
+				this->increment_left = NI;
 		    state = WALK_LEFT;
 	    }
 		else if (Keyboard::isKeyPressed(Keyboard::S))
@@ -95,7 +98,10 @@ void Robot::detect_KeyPressed()
 		    min_scale = 0.5;  // La taille minimale qu'il pourra atteindre
 		}
 		if (Keyboard::isKeyPressed(Keyboard::T))
+		{
 		    tir = true;
+		    this->robotActuel = this->texture[15+this->increment_left];
+	    }
     }
 }
 
@@ -112,7 +118,7 @@ void Robot::move(float elapsed)
         this->aGenoux = false;
     }
 
-	if (this->state == WALK_RIGHT && this->sprite.getPosition().x < TAILLE_WINDOW-LARGEUR_ROBOT)
+	if (this->state == WALK_RIGHT && this->sprite.getPosition().x < TAILLE_WINDOW-LARGEUR_ROBOT)  // Si le robot n'est pas hors de la fenêtre à droite
     {
         this->sprite.move(Vector2f(this->vitesse*elapsed, monte));  // Déplacement par rapport à la position actuelle
         (this->nbFrame)++;
@@ -120,7 +126,7 @@ void Robot::move(float elapsed)
 	        this->nbFrame = 0;
         this->robotActuel = this->texture[this->nbFrame];
 	}
-    else if (this->state == WALK_LEFT && this->sprite.getPosition().x > 0)
+    else if (this->state == WALK_LEFT && this->sprite.getPosition().x > 0)  // Si le robot n'est pas hors de la fenêtre à gauche
     {
     	this->sprite.move(Vector2f(-this->vitesse*elapsed, monte));  // Déplacement vers la gauche
     	(this->nbFrame)++;
@@ -134,7 +140,7 @@ void Robot::move(float elapsed)
 	    this->sprite.move(Vector2f(0.f, 20.f*this->sprite.getScale().y));
         this->aGenoux = true;
 	}
-	else if (this->state == NORMAL)
+	else if (this->state == NORMAL && this->tir != true)
 	{
 	    this->robotActuel = this->texture[10+this->increment_left];
 	    if(monte != 0.f)  // Si le robot n'est pas au niveau du sol parce que le robot s'est baissé sur la frame précédente, je remonte
@@ -166,11 +172,11 @@ void Robot::sauter(float elapsed)
 void Robot::grandir()
 {
     if (this->taillePrec == 0)
-        this->taillePrec = this->sprite.getLocalBounds().height*this->sprite.getScale().y; // Récupère la hauteur du sprite initial
+        this->taillePrec = this->sprite.getLocalBounds().height*this->sprite.getScale().y;  // Récupère la hauteur du sprite initial
 
-    if ((this->sprite.getScale().x*1.1 <= this->max_scale) && (taille != GRAND))
+    if ((this->sprite.getScale().x*1.1 <= this->max_scale) && (taille != GRAND))  // Si le robot est en plein changement de taille
     {
-        this->sprite.scale(Vector2f(1.1f, 1.1f)); // Modifie l'échelle par rapport à l'échelle actuelle
+        this->sprite.scale(Vector2f(1.1f, 1.1f));  // Modifie l'échelle par rapport à l'échelle actuelle
         this->sprite.move(Vector2f(0.f, -this->taillePrec*0.1));
         this->taillePrec *= 1.1;
     }
@@ -180,7 +186,7 @@ void Robot::grandir()
         this->taillePrec = 0;
         if (this->max_scale == 1.0)
         {
-            this->taille = NORMAL;
+            this->taille = STANDARD;
             this->sprite.move(Vector2f(0.f, this->sprite.getLocalBounds().height*(this->sprite.getScale().y-1)));
             this->sprite.setScale(Vector2f(1.f, 1.f));
         }
@@ -202,11 +208,11 @@ void Robot::grandir()
 void Robot::rapetisser()
 {
     if (this->taillePrec == 0)
-        this->taillePrec = this->sprite.getLocalBounds().height*this->sprite.getScale().y;
+        this->taillePrec = this->sprite.getLocalBounds().height*this->sprite.getScale().y;  // Récupère la hauteur du sprite initial
 
-    if ((this->sprite.getScale().x*0.9 >= this->min_scale) && (this->taille != PETIT))
+    if ((this->sprite.getScale().x*0.9 >= this->min_scale) && (this->taille != PETIT))  // Si le robot est en plein changement de taille
     {
-        this->sprite.scale(Vector2f(0.9f, 0.9f)); // Modifie l'échelle par rapport à l'échelle actuelle
+        this->sprite.scale(Vector2f(0.9f, 0.9f));  // Modifie l'échelle par rapport à l'échelle actuelle
         this->sprite.move(Vector2f(0.f, this->taillePrec*0.1));
         this->taillePrec *= 0.9;
     }
@@ -214,9 +220,9 @@ void Robot::rapetisser()
     {
         this->enPleinRapetissement = false;
         this->taillePrec = 0;
-        if (this->min_scale == 1.0)
+        if (this->min_scale == 1.0)  // Si le robot retourne à la taille standard
         {
-            this->taille = NORMAL;
+            this->taille = STANDARD;
             this->sprite.move(Vector2f(0.f, this->sprite.getLocalBounds().height*(this->sprite.getScale().y-1)));
             this->sprite.setScale(Vector2f(1.f, 1.f));
         }
@@ -224,7 +230,7 @@ void Robot::rapetisser()
             this->taille = PETIT;
     }
 
-    if (this->taille == PETIT)
+    if (this->taille == PETIT)  // Si le robot a atteint la petite taille alors on lance le timer
         this->timerPetit--;
 
     if ((this->timerPetit <= 0) && (this->taille == PETIT))
@@ -235,7 +241,7 @@ void Robot::rapetisser()
     }
 }
 
-void Robot::blessure()
+void Robot::blessure()  // Le robot est paralysé pendant un certain temps
 {
     this->timerBlesse--;
 
@@ -269,57 +275,56 @@ void Robot::chargement_image()
 		}
 
 		dossier = "images/";
-	    if (!this->texture[0+15*i].loadFromFile(dossier.append(to_string(1)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
+	    if (!this->texture[0+NI*i].loadFromFile(dossier.append(to_string(1)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
 	    	exit(EXIT_FAILURE);
     	dossier = "images/";
-    	if (!this->texture[1+15*i].loadFromFile(dossier.append(to_string(2)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
+    	if (!this->texture[1+NI*i].loadFromFile(dossier.append(to_string(2)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[2+15*i].loadFromFile(dossier.append(to_string(3)).append("Rapide").append(fin_nom), IntRect(5, 25, 120, 190)))
+		if (!this->texture[2+NI*i].loadFromFile(dossier.append(to_string(3)).append("Rapide").append(fin_nom), IntRect(5, 25, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[3+15*i].loadFromFile(dossier.append(to_string(4)).append("Rapide").append(fin_nom), IntRect(10, 30, 120, 190)))
+		if (!this->texture[3+NI*i].loadFromFile(dossier.append(to_string(4)).append("Rapide").append(fin_nom), IntRect(10, 30, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[4+15*i].loadFromFile(dossier.append(to_string(5)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!this->texture[4+NI*i].loadFromFile(dossier.append(to_string(5)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[5+15*i].loadFromFile(dossier.append(to_string(6)).append("Rapide").append(fin_nom), IntRect(0, 20, 120, 190)))
+		if (!this->texture[5+NI*i].loadFromFile(dossier.append(to_string(6)).append("Rapide").append(fin_nom), IntRect(0, 20, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[6+15*i].loadFromFile(dossier.append(to_string(7)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!this->texture[6+NI*i].loadFromFile(dossier.append(to_string(7)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[7+15*i].loadFromFile(dossier.append(to_string(8)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!this->texture[7+NI*i].loadFromFile(dossier.append(to_string(8)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[8+15*i].loadFromFile(dossier.append(to_string(9)).append("Rapide").append(fin_nom), IntRect(10, 25, 120, 190)))
+		if (!this->texture[8+NI*i].loadFromFile(dossier.append(to_string(9)).append("Rapide").append(fin_nom), IntRect(10, 25, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[9+15*i].loadFromFile(dossier.append(to_string(10)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!this->texture[9+NI*i].loadFromFile(dossier.append(to_string(10)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
 			exit(EXIT_FAILURE);	
 		dossier = "images/";
-		if (!this->texture[10+15*i].loadFromFile(dossier.append("Face").append(fin_nom),IntRect(0, 10, 120, 190)))
+		if (!this->texture[10+NI*i].loadFromFile(dossier.append("Face").append(fin_nom),IntRect(0, 10, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[11+15*i].loadFromFile(dossier.append("bas").append(fin_nom), IntRect(0, 0, 120, 190)))
+		if (!this->texture[11+NI*i].loadFromFile(dossier.append("bas").append(fin_nom)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[12+15*i].loadFromFile(dossier.append("saut1").append(fin_nom), IntRect(0, 15, 120, 190)))
+		if (!this->texture[12+NI*i].loadFromFile(dossier.append("saut1").append(fin_nom), IntRect(0, 15, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[13+15*i].loadFromFile(dossier.append("saut2").append(fin_nom), IntRect(0, 5, 120, 190)))
+		if (!this->texture[13+NI*i].loadFromFile(dossier.append("saut2").append(fin_nom), IntRect(0, 5, 120, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!this->texture[14+15*i].loadFromFile(dossier.append("blesse").append(fin_nom), IntRect(0, 0, 120, 190)))
-			exit(EXIT_FAILURE);	
+		if (!this->texture[14+NI*i].loadFromFile(dossier.append("blesse").append(fin_nom)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[15+NI*i].loadFromFile(dossier.append("Tirer").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
 	}
 }
 
-void Robot::message()
-{
-	cout<<"La partie peut commencer !"<<endl;
-}
 
 int Robot::getStatus() const {return state;}
 int Robot::getNbFrame() const {return nbFrame;}

@@ -8,12 +8,12 @@
 
 using namespace sf;
 
+#define NI 16 // Nombre d'images dans un sens (robot profil droit par exemple)
+
 #define HAUTEUR_ROBOT 135
 #define LARGEUR_ROBOT 100
 #define TAILLE_WINDOW 1000
 
-#define VITESSE_MAX 3
-#define TAILLE_MAX 3
 #define GRAVITE -10
 #define POS_SOL 700
 
@@ -21,14 +21,14 @@ using namespace sf;
 #define TIMER_PETIT 500
 #define TIMER_GRAND 500
 
-enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, GRAND, BLESSE};
+enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, STANDARD, GRAND, BLESSE};
 
 
 class Robot {
 
 	private :
 		string _name;
-		Texture texture[30];
+		Texture texture[32];
 		Texture robotActuel;
 		int pv;
 		Arme arme;
@@ -46,8 +46,8 @@ class Robot {
 		int timerGrand = TIMER_GRAND;
 		int timerPetit = TIMER_PETIT;
 		int timerBlesse = TIMER_BLESSE;
-		float min_scale;
-		float max_scale;
+		float min_scale = 0.5;
+		float max_scale = 2;
 		int increment_left = 0;
 		float taillePrec = 0;
 
@@ -60,10 +60,8 @@ class Robot {
 		Robot(string name);
 
 		void detect_KeyPressed();
-		void message();
 		void move(float elapsed);
 		void tirer();
-		void ramasser(Collectable* c);
 		void grandir();
 		void rapetisser();
 		void chargement_image();

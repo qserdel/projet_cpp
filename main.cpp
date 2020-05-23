@@ -19,8 +19,6 @@ int main()
     Collision collision(balle, rob);
     Map map;
 
-    rob.message();
-
 
     // Load a music to play
     /*Music music;
@@ -76,8 +74,10 @@ int main()
 		        rob2.rapetisser();
         }
         
-        if (rob.getTir() == true) // La balle continue de bouger tant qu'elle est dans la fenêtre
+        if (rob.getTir() == true)  // La balle continue de bouger tant qu'elle est dans la fenêtre
             rob.setTir(balle.action());
+        if (rob2.getTir() == true)  // La balle continue de bouger tant qu'elle est dans la fenêtre
+            rob2.setTir(balle.action());
         
         collision.gestionCollision(&rob, &balle, &map, elapsed);
         collision.gestionCollision(&rob2, &balle, &map, elapsed);
