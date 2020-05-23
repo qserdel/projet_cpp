@@ -12,12 +12,15 @@ void Collision::gestionCollision(Robot *r, Balle *b, Map *map, float elapsed)
         r->setPv(r->getPv()-1);
     }
 
-	if (detectAtterrissage(r->getRectRobot(), *map) && (r->getHauteurSaut() < 0))
+	if (detectAtterrissage(r->getRectRobot(), *map) && (r->getHauteurSaut() < 0)) // Détecte uniquement en cas de saut, à revoir !
 		atterrissage(altitude_atterrissage, r);
 
-    if (!detectAtterrissage(r->getRectRobot(), *map) && (!r->getEnPleinJump()))  // Si le robot n'est sur aucun support
-    	r->setPosSprite(r->getSprite().getPosition().x, r->getSprite().getPosition().y + 400*elapsed); // Le robot est en chute libre
-
+    if (!r->getEnPleinJump() && !detectAtterrissage(r->getRectRobot(), *map)) // Si le robot n'est sur aucun support
+    {
+    		r->setPosSprite(r->getSprite().getPosition().x, r->getSprite().getPosition().y + 400*elapsed);  // Le robot est en chute libre
+    		if (detectAtterrissage(r->getRectRobot(), *map))
+    			atterrissage(altitude_atterrissage, r);
+	}
 }
 
 
@@ -42,7 +45,7 @@ bool Collision::detectAtterrissage(const IntRect &r, const Map &map)
 	for (size_t i = 0; i < map.getListObjets().size(); i++)
     {
     	obj = map.getRectObj(i);
-    	if (abs(obj.top - r.height) <= 10)
+    	if (abs(obj.top - r.height) <= 20)
 		{
 			if (((r.left < obj.width) && (r.left > obj.left)) || ((r.width > obj.left) && (r.width < obj.width)) || ((r.left < obj.left) && (r.width > obj.width)))
 			{
@@ -76,5 +79,4 @@ void Collision::atterrissage(float altitude, Robot *r)
 		r->setPosSprite(r->getSprite().getPosition().x, altitude-r->getSprite().getScale().y*HAUTEUR_ROBOT+20.f*r->getSprite().getScale().y);
 }
 
-// Problème : Lorsque le robot saute et appuie sur DOWN aligné à un support.
 
