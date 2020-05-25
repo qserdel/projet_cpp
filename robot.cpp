@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <cmath>
 
 
 Robot::Robot(string name){
@@ -47,7 +48,7 @@ void Robot::detect_KeyPressed()
 		    state = DOWN;
 		else
 			state = NORMAL;
-		
+
 		if (Keyboard::isKeyPressed(Keyboard::Up))
 		    enPleinJump = true;
 		if (Keyboard::isKeyPressed(Keyboard::G))
@@ -60,7 +61,7 @@ void Robot::detect_KeyPressed()
 		    enPleinRapetissement = true;
 		    min_scale = 0.5;  // La taille minimale qu'il pourra atteindre
 		}
-		if (Keyboard::isKeyPressed(Keyboard::T))
+		if (Keyboard::isKeyPressed(Keyboard::Space))
 		{
 		    tir = true;
 		    this->robotActuel = this->texture[15+this->increment_left];
@@ -84,7 +85,7 @@ void Robot::detect_KeyPressed()
 		    state = DOWN;
 		else
 			state = NORMAL;
-		
+
 		if (Keyboard::isKeyPressed(Keyboard::Z))
 		    enPleinJump = true;
 		if (Keyboard::isKeyPressed(Keyboard::G))
@@ -97,7 +98,7 @@ void Robot::detect_KeyPressed()
 		    enPleinRapetissement = true;
 		    min_scale = 0.5;  // La taille minimale qu'il pourra atteindre
 		}
-		if (Keyboard::isKeyPressed(Keyboard::T))
+		if (Keyboard::isKeyPressed(Keyboard::E))
 		{
 		    tir = true;
 		    this->robotActuel = this->texture[15+this->increment_left];
@@ -303,7 +304,7 @@ void Robot::chargement_image()
 			exit(EXIT_FAILURE);
 		dossier = "images/";
 		if (!this->texture[9+NI*i].loadFromFile(dossier.append(to_string(10)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
-			exit(EXIT_FAILURE);	
+			exit(EXIT_FAILURE);
 		dossier = "images/";
 		if (!this->texture[10+NI*i].loadFromFile(dossier.append("Face").append(fin_nom),IntRect(0, 10, 120, 190)))
 			exit(EXIT_FAILURE);
@@ -364,6 +365,3 @@ IntRect Robot::getRectRobot() const
 }
 
 Texture Robot::getTexture(int indice) const {return texture[indice];}
-
-
-

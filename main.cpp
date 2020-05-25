@@ -4,6 +4,7 @@
 #include "balle.hpp"
 #include "collision.hpp"
 #include "map.hpp"
+#include <SFML/Audio.hpp>
 
 
 int main()
@@ -15,14 +16,15 @@ int main()
     // Load a sprite to display
     Robot rob("Joueur1");
     Robot rob2("Joueur2");
-    Balle balle;
-    Collision collision(balle, rob);
+    Collision collision;
+    Balle balle = Balle(-1000,0);
+    Balle balle2 = Balle(-1000,0);
     Map map;
 
 
     // Load a music to play
-    /*Music music;
-    if (!music.openFromFile("nice_music.ogg"))
+    /*sf::Music music;
+    if (!music.openFromFile("images/HumbleMatch.ogg"))
         return EXIT_FAILURE;
     // Play the music
     music.play();*/
@@ -51,42 +53,50 @@ int main()
             if (rob2.getStatus() == DOWN)
                 rob2.move(elapsed);
         }
-        
+
         if (rob.getStatus() != BLESSE)
         {
 		    rob.move(elapsed);
 
 		    if ((rob.getEnPleinGrandissement() == true) || (rob.getTaille() == GRAND))
 		        rob.grandir();
-		    
+
 		    if ((rob.getEnPleinRapetissement() == true) || (rob.getTaille() == PETIT))
 		        rob.rapetisser();
         }
-        
+
         if (rob2.getStatus() != BLESSE)
         {
 		    rob2.move(elapsed);
 
 		    if ((rob2.getEnPleinGrandissement() == true) || (rob2.getTaille() == GRAND))
 		        rob2.grandir();
-		    
+
 		    if ((rob2.getEnPleinRapetissement() == true) || (rob2.getTaille() == PETIT))
 		        rob2.rapetisser();
         }
-        
+
         if (rob.getTir() == true)  // La balle continue de bouger tant qu'elle est dans la fenêtre
+            balle = Balle(rob.getSprite().getPosition().x+LARGEUR_ROBOT,rob.getSprite().getPosition().y+HAUTEUR_ROBOT/3);
             rob.setTir(balle.action());
         if (rob2.getTir() == true)  // La balle continue de bouger tant qu'elle est dans la fenêtre
-            rob2.setTir(balle.action());
-        
-        collision.gestionCollision(&rob, &balle, &map, elapsed);
+            balle2 = Balle(rob2.getSprite().getPosition().x+LARGEUR_ROBOT,rob2.getSprite().getPosition().y+HAUTEUR_ROBOT/3);
+            rob2.setTir(balle2.action());
+
+        collision.gestionCollision(&rob, &balle2, &map, elapsed);
         collision.gestionCollision(&rob2, &balle, &map, elapsed);
-        
+
         if (rob.getStatus() == BLESSE)
         	rob.blessure();
-    	if (rob2.getStatus() == BLESSE)
+    	  if (rob2.getStatus() == BLESSE)
         	rob2.blessure();
 
+        //if(balle.getSprite().getPosition().x!=-1000){
+          balle.action();
+        //}
+        //if(balle2.getSprite().getPosition().x!=-1000){
+          balle2.action();
+        //}
         // Clear screen
         window.clear();
         // Draw the sprite

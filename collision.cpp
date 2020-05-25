@@ -1,8 +1,5 @@
 #include "collision.hpp"
 
-Collision::Collision(Balle &b, Robot &r) : balle(b), robot(r)
-{}
-
 void Collision::gestionCollision(Robot *r, Balle *b, Map *map, float elapsed)
 {
     if (detectCollision(b->getRectBalle(), r->getRectRobot()))
@@ -78,5 +75,3 @@ void Collision::atterrissage(float altitude, Robot *r)
     else if (r->getStatus() == DOWN)
 		r->setPosSprite(r->getSprite().getPosition().x, altitude-r->getSprite().getScale().y*HAUTEUR_ROBOT+20.f*r->getSprite().getScale().y);
 }
-
-

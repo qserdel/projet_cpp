@@ -10,16 +10,16 @@ class Balle
 {
     private :
 
-        Texture balle; // partagée par toutes les instances
+        Texture textureBalle; // partagée par toutes les instances
 
         Sprite sp; // un pour chaque instance
-    
+
     public :
 
-        Balle();
-        
+        Balle(float x, float y);
+
         bool action();
-        
+
         Sprite getSprite() const;
         IntRect getRectBalle() const;
 };

@@ -1,12 +1,12 @@
 #include "balle.hpp"
 
 
-Balle::Balle()
+Balle::Balle(float x, float y)
 {
-    if (!balle.loadFromFile("images/Tir.png"))
+    if (!textureBalle.loadFromFile("images/Tir.png"))
         exit(EXIT_FAILURE);
-    sp.setTexture(balle);
-    sp.setPosition(Vector2f(600.f, 560.f));
+    sp.setTexture(textureBalle);
+    sp.setPosition(Vector2f(x, y));
     sp.setScale(Vector2f(1.3f, 1.3f));
 }
 

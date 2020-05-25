@@ -18,9 +18,6 @@ collision.o: collision.cpp collision.hpp robot.hpp balle.hpp
 equipement.o: equipement.cpp equipement.hpp
 	g++ -c equipement.cpp
 
-immediat.o: immediat.cpp immediat.hpp equipement.hpp
-	g++ -c immediat.cpp
-
 main.o: main.cpp robot.hpp
 	g++ -c main.cpp -I./SFML-2.5.1/include
 
@@ -39,8 +36,8 @@ obstacle.o: obstacle.cpp obstacle.hpp
 robot.o: robot.cpp robot.hpp balle.hpp
 	g++ -c robot.cpp -I./SFML-2.5.1/include
 
-main: activable.o arme.o balle.o collectable.o collision.o equipement.o immediat.o main.o jeu.o map.o menu.o obstacle.o robot.o
-	g++ -o main $^ -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system
+main: activable.o arme.o balle.o collectable.o collision.o equipement.o main.o jeu.o map.o menu.o obstacle.o robot.o
+	g++ -o main $^ -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 play:
 	export LD_LIBRARY_PATH=./SFML-2.5.1/lib && ./main
