@@ -13,21 +13,19 @@ int main()
     RenderWindow window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window");
     window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
 
-    // Load a sprite to display
     Robot rob("Joueur1");
     Robot rob2("Joueur2");
     Collision collision;
-    Balle balle = Balle(-1000,0);
-    Balle balle2 = Balle(-1000,0);
+    Balle tabBalles[10];
     Map map;
 
 
     // Load a music to play
-    /*sf::Music music;
-    if (!music.openFromFile("images/HumbleMatch.ogg"))
-        return EXIT_FAILURE;
+    //sf::Music music;
+    //if (!music.openFromFile("images/HumbleMatch.ogg"))
+    //    return EXIT_FAILURE;
     // Play the music
-    music.play();*/
+    //music.play();
 
 
 	sf::Clock clock;
@@ -75,28 +73,51 @@ int main()
 		    if ((rob2.getEnPleinRapetissement() == true) || (rob2.getTaille() == PETIT))
 		        rob2.rapetisser();
         }
-
-        if (rob.getTir() == true)  // La balle continue de bouger tant qu'elle est dans la fenêtre
-            balle = Balle(rob.getSprite().getPosition().x+LARGEUR_ROBOT,rob.getSprite().getPosition().y+HAUTEUR_ROBOT/3);
-            rob.setTir(balle.action());
-        if (rob2.getTir() == true)  // La balle continue de bouger tant qu'elle est dans la fenêtre
-            balle2 = Balle(rob2.getSprite().getPosition().x+LARGEUR_ROBOT,rob2.getSprite().getPosition().y+HAUTEUR_ROBOT/3);
-            rob2.setTir(balle2.action());
-
-        collision.gestionCollision(&rob, &balle2, &map, elapsed);
-        collision.gestionCollision(&rob2, &balle, &map, elapsed);
-
+        //tirs du joueur1
+        if (rob.getStatus() == TIRER)
+        {
+          for (int i=0;i<5;i++){
+            if(tabBalles[i].getX()<=0 || tabBalles[i].getX()>=1000){
+              tabBalles[i] = Balle(rob.getX()+LARGEUR_ROBOT*0.7*rob.getDirection(),rob.getY()+HAUTEUR_ROBOT/3.6,rob.getDirection());
+            }
+            else {
+              tabBalles[0] = Balle(rob.getX()+LARGEUR_ROBOT*0.7*rob.getDirection(),rob.getY()+HAUTEUR_ROBOT/3.6,rob.getDirection());
+            }
+          }
+        }
+        // tirs du joueur 2
+        if (rob2.getStatus() == TIRER)
+        {
+          for (int i=5;i<10;i++){
+            if(tabBalles[i].getX()<=0 || tabBalles[i].getX()>=1000){
+              tabBalles[i] = Balle(rob2.getX()+LARGEUR_ROBOT*0.7*rob2.getDirection(),rob2.getY()+HAUTEUR_ROBOT/3.6,rob2.getDirection());
+            }
+            else {
+              tabBalles[5] = Balle(rob2.getX()+LARGEUR_ROBOT*0.7*rob2.getDirection(),rob2.getY()+HAUTEUR_ROBOT/3.6,rob2.getDirection());
+            }
+          }
+        }
+        //gestion des collisions
+        for(int i=0;i<5;i++)
+        {
+          if(tabBalles[5+i].getX()>=0 && tabBalles[5+i].getX()<=1000){
+            collision.gestionCollision(&rob, &tabBalles[5+i], &map, elapsed);
+            tabBalles[5+i].action();
+          }
+          if(tabBalles[i].getX()>=0 && tabBalles[i].getX()<=1000){
+            collision.gestionCollision(&rob2, &tabBalles[i], &map, elapsed);
+            tabBalles[i].action();
+          }
+        }
+        //collisions pour l'atterissage des robots //TODO separer balle et atterissage
+        collision.gestionCollision(&rob,&tabBalles[5],&map,elapsed);
+        collision.gestionCollision(&rob2,&tabBalles[0],&map,elapsed);
+        //degats si touchés
         if (rob.getStatus() == BLESSE)
         	rob.blessure();
     	  if (rob2.getStatus() == BLESSE)
         	rob2.blessure();
 
-        //if(balle.getSprite().getPosition().x!=-1000){
-          balle.action();
-        //}
-        //if(balle2.getSprite().getPosition().x!=-1000){
-          balle2.action();
-        //}
         // Clear screen
         window.clear();
         // Draw the sprite
@@ -104,7 +125,10 @@ int main()
         window.draw(map.getSpriteSol());
         window.draw(rob.getSprite());
         window.draw(rob2.getSprite());
-        window.draw(balle.getSprite());
+        for(int i=0; i<10;i++){
+          if(tabBalles[i].getX()>=0 && tabBalles[i].getX()<=1000)
+            window.draw(tabBalles[i].getSprite());
+        }
         for (int i = 0; i < map.getListObjets().size(); i++)
         {
         	window.draw(map.getListObjets()[i]);

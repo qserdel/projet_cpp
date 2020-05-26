@@ -1,24 +1,46 @@
 #include "balle.hpp"
 
 
-Balle::Balle(float x, float y)
+Balle::Balle(){}
+
+Balle::Balle(float x, float y, bool dir)
 {
-    if (!textureBalle.loadFromFile("images/Tir.png"))
+    direction = dir;
+    if(dir)
+    {
+      if (!textureBalle.loadFromFile("images/Tir.png"))
         exit(EXIT_FAILURE);
+    } else {
+      if (!textureBalle.loadFromFile("images/TirL.png"))
+        exit(EXIT_FAILURE);
+    }
     sp.setTexture(textureBalle);
     sp.setPosition(Vector2f(x, y));
-    sp.setScale(Vector2f(1.3f, 1.3f));
+    sp.setScale(Vector2f(1.2, 1.2));
 }
 
-bool Balle::action()
+void Balle::action()
 {
-    sp.move(Vector2f(-10.f, 0.f));
-    if (sp.getPosition().x < 0)
-        return false;
-    return true;
+    sp.setTexture(textureBalle);
+    if(direction){
+      if (sp.getPosition().x < 1000)
+      {
+          sp.move(Vector2f(10.f, 0.f));
+      } else {
+        //delete this;
+      }
+    } else {
+        if (sp.getPosition().x > -100)
+        {
+            sp.move(Vector2f(-10.f, 0.f));
+        } else {
+          //delete this;
+        }
+    }
 }
 
 Sprite Balle::getSprite() const {return sp;};
+float Balle::getX() const {return sp.getPosition().x;};
 
 IntRect Balle::getRectBalle() const
 {

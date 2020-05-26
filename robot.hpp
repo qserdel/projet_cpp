@@ -17,11 +17,11 @@ using namespace sf;
 #define GRAVITE -10
 #define POS_SOL 700
 
-#define TIMER_BLESSE 200
-#define TIMER_PETIT 500
-#define TIMER_GRAND 500
+#define TIMER_BLESSE 50
+#define TIMER_PETIT 200
+#define TIMER_GRAND 200
 
-enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, STANDARD, GRAND, BLESSE};
+enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, STANDARD, GRAND, BLESSE, TIRER};
 
 
 class Robot {
@@ -30,7 +30,7 @@ class Robot {
 		string _name;
 		Texture texture[32];
 		Texture robotActuel;
-		int pv;
+		int pv=10;
 		Arme arme;
 		Equipement equipement;
 		float vitesse;
@@ -42,7 +42,6 @@ class Robot {
 		bool aGenoux = false;
 		bool enPleinGrandissement = false;
 		bool enPleinRapetissement = false;
-		bool tir = false;
 		int timerGrand = TIMER_GRAND;
 		int timerPetit = TIMER_PETIT;
 		int timerBlesse = TIMER_BLESSE;
@@ -50,12 +49,11 @@ class Robot {
 		float max_scale = 2;
 		int increment_left = 0;
 		float taillePrec = 0;
+		bool direction; //true vers la droite, false vers la gauche
 
 		Sprite sprite;
 
 	public :
-
-		//Robot();
 
 		Robot(string name);
 
@@ -76,7 +74,6 @@ class Robot {
 		bool getEnPleinJump() const;
 		bool getEnPleinGrandissement() const;
 		bool getEnPleinRapetissement() const;
-		bool getTir() const;
 		float getMinScale() const;
 		float getMaxScale() const;
 		int getTaille() const;
@@ -87,8 +84,10 @@ class Robot {
 		int getTimerBlesse() const;
 		int getPv() const;
 		string getName() const;
-		
-		void setTir(bool var);
+		bool getDirection() const;
+		float getX() const;
+		float getY() const;
+
 		void setPv(int nbVie);
 		void setNbFrame(int nbreF);
 		void setRobotActuel(Texture robAct);
