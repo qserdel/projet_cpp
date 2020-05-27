@@ -1,14 +1,27 @@
 #ifndef COLLECTABLE_HPP
 #define COLLECTABLE_HPP
+#include <SFML/Graphics.hpp>
+#include <cstdlib>
+#include <iostream>
+#include <vector>
+#include <ctime>
+
+using namespace sf;
+
 
 class Collectable {
 
-	private :
+	protected :
+		Texture txt;
+		Sprite sp;
+		bool action_imediate;
 
 	public :
 
-		//Collectable(){
-		//}
+		Collectable();
+		void apparition();
+		
+		Sprite getSprite();
 
 
 };

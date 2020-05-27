@@ -28,6 +28,7 @@ class Robot {
 
 	private :
 		string _name;
+		int ID;
 		Texture texture[32];
 		Texture robotActuel;
 		int pv=10;
@@ -59,7 +60,6 @@ class Robot {
 
 		void detect_KeyPressed();
 		void move(float elapsed);
-		void tirer();
 		void grandir();
 		void rapetisser();
 		void chargement_image();
@@ -87,6 +87,7 @@ class Robot {
 		bool getDirection() const;
 		float getX() const;
 		float getY() const;
+		int getID() const;
 
 		void setPv(int nbVie);
 		void setNbFrame(int nbreF);

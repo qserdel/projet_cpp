@@ -13,16 +13,19 @@ class Collision
 {
     private :
         float altitude_atterrissage;
+
+    
     public :
-        Collision()
-        {
-          altitude_atterrissage=0;
-        }
-        void gestionCollision(Robot *r, Balle *b, Map *map, float elapsed);
+
+        Collision();
+        
+        void gestionCollisionBalle(Robot *r, Balle *b, Map *map, float elapsed);
+        void gestionAtterrissage(Robot *r, Map *map, float elapsed);
         bool detectCollision(const IntRect &b, const IntRect &r);
         bool detectAtterrissage(const IntRect &r,  const Map &map);
         void atterrissage(float altitude, Robot *r);
-
+        void gestionAtterrissageCollec(Map *map, float elapsed);
+        
 
 };
 

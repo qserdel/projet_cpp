@@ -15,19 +15,21 @@ Robot::Robot(string name){
 	chargement_image();
 	if(_name == "Joueur1")
 	{
+		ID = 0;
   		sprite.setPosition(Vector2f(20.f, POS_SOL-HAUTEUR_ROBOT)); // Choix de la position du sprite
   		robotActuel = texture[10];
-			direction=true;
+		direction = true;
 	}
 	else
 	{
+		ID = 1;
 		sprite.setPosition(Vector2f(TAILLE_WINDOW - LARGEUR_ROBOT - 20.f, POS_SOL-HAUTEUR_ROBOT));
 		increment_left = NI;
 		robotActuel = texture[10+increment_left];
-		direction=false;
+		direction = false;
 	}
 	sprite.setTexture(robotActuel);
-  sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, HAUTEUR_ROBOT));
+  	sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, HAUTEUR_ROBOT));
 }
 
 void Robot::detect_KeyPressed()
@@ -39,14 +41,14 @@ void Robot::detect_KeyPressed()
 			if (this->state != WALK_RIGHT)
 				this->increment_left = 0;
 		    state = WALK_RIGHT;
-				direction=true;
+			direction = true;
 	    }
 		else if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
 			if (this->state != WALK_LEFT)
 				this->increment_left = NI;
 		    state = WALK_LEFT;
-				direction=false;
+			direction = false;
 	    }
 		else if (Keyboard::isKeyPressed(Keyboard::Down))
 		    state = DOWN;
@@ -68,7 +70,7 @@ void Robot::detect_KeyPressed()
 		if (Keyboard::isKeyPressed(Keyboard::Space))
 		{
 		    this->robotActuel = this->texture[15+this->increment_left];
-				state=TIRER;
+			state = TIRER;
 	    }
     }
     else if ((this->_name == "Joueur2") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
@@ -78,14 +80,14 @@ void Robot::detect_KeyPressed()
 			if (this->state != WALK_RIGHT)
 				this->increment_left = 0;
 		    state = WALK_RIGHT;
-				direction=true;
+			direction = true;
 	    }
 		else if (Keyboard::isKeyPressed(Keyboard::Q))
 		{
 			if (this->state != WALK_LEFT)
 				this->increment_left = NI;
 		    state = WALK_LEFT;
-				direction=false;
+			direction = false;
 	    }
 		else if (Keyboard::isKeyPressed(Keyboard::S))
 		    state = DOWN;
@@ -107,7 +109,7 @@ void Robot::detect_KeyPressed()
 		if (Keyboard::isKeyPressed(Keyboard::E))
 		{
 		    this->robotActuel = this->texture[15+this->increment_left];
-				state=TIRER;
+			state = TIRER;
 	    }
     }
 }
@@ -350,6 +352,7 @@ int Robot::getIncrementLeft() const {return increment_left;};
 bool Robot::getDirection() const {return direction;};
 float Robot::getX() const {return sprite.getPosition().x;};
 float Robot::getY() const {return sprite.getPosition().y;};
+int Robot::getID() const {return ID;};
 
 void Robot::setPv(int nbVie) {this->pv = nbVie;};
 void Robot::setNbFrame(int nbreF) {this->nbFrame = nbreF;};
