@@ -12,7 +12,7 @@ using namespace sf;
 
 #define HAUTEUR_ROBOT 135
 #define LARGEUR_ROBOT 100
-#define TAILLE_WINDOW 1000
+#define TAILLE_WINDOW 1000 //taille de la fenetre de jeu
 
 #define GRAVITE -10
 #define POS_SOL 700
@@ -20,6 +20,8 @@ using namespace sf;
 #define TIMER_BLESSE 50
 #define TIMER_PETIT 200
 #define TIMER_GRAND 200
+
+#define PV_MAX 30
 
 enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, STANDARD, GRAND, BLESSE, TIRER};
 
@@ -31,7 +33,7 @@ class Robot {
 		int ID;
 		Texture texture[36];
 		Texture robotActuel;
-		int pv=10;
+		int pv=PV_MAX;
 		Arme arme;
 		Equipement equipement;
 		float vitesse;

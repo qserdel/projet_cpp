@@ -41,6 +41,7 @@ void Balle::action()
 
 Sprite Balle::getSprite() const {return sp;};
 float Balle::getX() const {return sp.getPosition().x;};
+void Balle::setX(float newX) {sp.setPosition(newX,sp.getPosition().y);};
 
 IntRect Balle::getRectBalle() const
 {

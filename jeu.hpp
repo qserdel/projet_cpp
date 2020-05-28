@@ -10,6 +10,8 @@
 #include "collectable.hpp"
 #include "bouclier.hpp"
 
+using namespace sf;
+
 #define NB_BALLES 5 // Nombre de balles par personnage sur une frame
 
 
@@ -20,9 +22,13 @@ class Jeu {
 			RenderWindow window;
 			Robot rob;
 			Robot rob2;
+			Texture pvBlue;
+			Texture pvRed;
+			Sprite spritesPv1[PV_MAX];
+			Sprite spritesPv2[PV_MAX];
 			Collision collision;
 			Balle tabBalles[10];
-			sf::Clock clock;
+			Clock clock;
     		float elapsed = 0;
     		Bouclier bouclier;
     		//Music music;
@@ -40,6 +46,3 @@ class Jeu {
 
 };
 #endif
-
-
-	

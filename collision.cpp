@@ -11,6 +11,7 @@ void Collision::gestionCollisionBalle(Robot *r, Balle *b, Map *map, float elapse
         r->setStatus(BLESSE);
         r->setRobotActuel(r->getTexture(14+r->getIncrementLeft()));
         r->setPv(r->getPv()-1);
+				b->setX(-100);
     }
 }
 
@@ -86,7 +87,7 @@ void Collision::gestionAtterrissageCollec(Map *map, float elapsed)
 }
 
 bool Collision::detectCollision(const IntRect &b, const IntRect &r)
-{ 
+{
     if (b.height < r.top)
         return false;
     if (b.top > r.height)
@@ -139,5 +140,3 @@ void Collision::atterrissage(float altitude, Robot *r)
     else if (r->getStatus() == DOWN)
 		r->setPosSprite(r->getSprite().getPosition().x, altitude-r->getSprite().getScale().y*HAUTEUR_ROBOT+20.f*r->getSprite().getScale().y);
 }
-
-

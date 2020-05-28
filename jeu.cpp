@@ -1,9 +1,22 @@
 #include "jeu.hpp"
 
+using namespace sf;
+
 
 Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window"), rob("Joueur1"), rob2("Joueur2")
 {
 	window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
+	//chargement des textures des pv des robots et création du tableau des sprites
+	if (!pvBlue.loadFromFile("images/PVBlue.png"))
+		exit(EXIT_FAILURE);
+	if (!pvRed.loadFromFile("images/PVRed.png"))
+		exit(EXIT_FAILURE);
+	for(int i=0;i<PV_MAX;i++){
+		spritesPv1[i].setTexture(pvBlue,true);
+		spritesPv1[i].setPosition(Vector2f(10+10*i,0));
+		spritesPv2[i].setTexture(pvRed,true);
+		spritesPv2[i].setPosition(Vector2f(TAILLE_WINDOW-20-10*i,0));
+	}
 }
 
 
@@ -86,6 +99,12 @@ void Jeu::draw()
     window.draw(map.getSpriteSol());
     window.draw(rob.getSprite());
     window.draw(rob2.getSprite());
+		
+		//affichage des pv de chaque robots
+		for(int i=0;i<rob.getPv();i++)
+			window.draw(spritesPv1[i]);
+		for(int i=0;i<rob2.getPv();i++)
+			window.draw(spritesPv2[i]);
 
     for(int i = 0; i < 10; i++){
       if(tabBalles[i].getX()>=0 && tabBalles[i].getX()<=TAILLE_WINDOW)
@@ -147,4 +166,3 @@ int Jeu::play()
     }
     return EXIT_SUCCESS;
 }
-

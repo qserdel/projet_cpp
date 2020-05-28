@@ -25,5 +25,6 @@ class Balle
         Sprite getSprite() const;
         IntRect getRectBalle() const;
         float getX() const;
+        void setX(float newX);
 };
 #endif
