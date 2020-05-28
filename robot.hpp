@@ -8,7 +8,7 @@
 
 using namespace sf;
 
-#define NI 16 // Nombre d'images dans un sens (robot profil droit par exemple)
+#define NI 18 // Nombre d'images dans un sens (robot profil droit par exemple)
 
 #define HAUTEUR_ROBOT 135
 #define LARGEUR_ROBOT 100
@@ -29,7 +29,7 @@ class Robot {
 	private :
 		string _name;
 		int ID;
-		Texture texture[32];
+		Texture texture[34];
 		Texture robotActuel;
 		int pv=10;
 		Arme arme;

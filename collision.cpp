@@ -10,6 +10,7 @@ void Collision::gestionCollisionBalle(Robot *r, Balle *b, Map *map, float elapse
     {
         r->setStatus(BLESSE);
         r->setRobotActuel(r->getTexture(14+r->getIncrementLeft()));
+				r->setTextRect(LARGEUR_ROBOT+10, HAUTEUR_ROBOT);
         r->setPv(r->getPv()-1);
     }
 }
@@ -46,7 +47,7 @@ void Collision::gestionAtterrissageCollec(Map *map, float elapsed)
 				break;
 			}
 		}
-		
+
 		if (POS_SOL - obj1.height < 5) // Si on met 0 le sprite tremblotte, on met donc 5 pour autoriser une petite marge d'erreur
 		{
 			sp = map->getListCollec()[i];
@@ -116,5 +117,3 @@ void Collision::atterrissage(float altitude, Robot *r)
     else if (r->getStatus() == DOWN)
 		r->setPosSprite(r->getSprite().getPosition().x, altitude-r->getSprite().getScale().y*HAUTEUR_ROBOT+20.f*r->getSprite().getScale().y);
 }
-
-

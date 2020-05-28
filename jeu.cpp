@@ -117,6 +117,7 @@ int Jeu::play()
     while (window.isOpen())
     {
         // Process events
+				std::cout<<rob.getStatus()<<endl;
         Event event;
         elapsed = clock.restart().asSeconds();
 
@@ -140,4 +141,3 @@ int Jeu::play()
     }
     return EXIT_SUCCESS;
 }
-

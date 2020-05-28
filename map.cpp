@@ -20,7 +20,7 @@ void Map::creation_objets()
 {
 	srand(time(NULL));
 	Sprite obj(mur);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		obj.setTextureRect(IntRect(0, 0, 50, 50));
 		obj.setPosition(Vector2f(rand()%950, rand()%(POS_SOL-300)+135));
@@ -101,5 +101,3 @@ IntRect Map::getRectColl(int indice) const
     rectC.height = c[indice].getPosition().y + c[indice].getLocalBounds().height * c[indice].getScale().y;
     return rectC;
 }
-
-

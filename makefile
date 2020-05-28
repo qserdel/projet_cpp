@@ -36,6 +36,9 @@ menu.o: menu.cpp menu.hpp
 rapetisser.o: rapetisser.cpp rapetisser.hpp collectable.hpp
 	g++ -c rapetisser.cpp -I./SFML-2.5.1/include
 
+reparer.o: reparer.cpp reparer.hpp collectable.hpp
+	g++ -c reparer.cpp -I./SFML-2.5.1/include
+
 robot.o: robot.cpp robot.hpp balle.hpp
 	g++ -c robot.cpp -I./SFML-2.5.1/include
 

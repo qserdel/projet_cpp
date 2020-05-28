@@ -3,8 +3,7 @@
 
 Rapetisser::Rapetisser() : Collectable()
 {
-	if (!txt.loadFromFile("images/R.png"))
+	if (!txt.loadFromFile("images/rapetisser.png"))
 			exit(EXIT_FAILURE);
 	sp.setTexture(txt);
 }
-

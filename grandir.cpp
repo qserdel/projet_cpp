@@ -3,8 +3,7 @@
 
 Grandir::Grandir() : Collectable()
 {
-	if (!txt.loadFromFile("images/R.png"))
+	if (!txt.loadFromFile("images/grandir.png"))
 			exit(EXIT_FAILURE);
 	sp.setTexture(txt);
 }
-

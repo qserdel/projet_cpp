@@ -69,12 +69,12 @@ void Robot::detect_KeyPressed()
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Space))
 		{
-		    this->robotActuel = this->texture[15+this->increment_left];
+		  this->robotActuel = this->texture[15+this->increment_left];
 			state = TIRER;
-	    }
-    }
-    else if ((this->_name == "Joueur2") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
-    {
+	   }
+  }
+  else if ((this->_name == "Joueur2") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+  {
 		if (Keyboard::isKeyPressed(Keyboard::D))
 		{
 			if (this->state != WALK_RIGHT)
@@ -108,10 +108,11 @@ void Robot::detect_KeyPressed()
 		}
 		if (Keyboard::isKeyPressed(Keyboard::E))
 		{
-		    this->robotActuel = this->texture[15+this->increment_left];
+			if(!enPleinJump)
+		  	this->robotActuel = this->texture[15+this->increment_left];
 			state = TIRER;
-	    }
-    }
+	  }
+	}
 }
 
 
@@ -167,13 +168,21 @@ void Robot::sauter(float elapsed)
     this->sprite.move(Vector2f(0.f, -(this->hauteurSaut)*elapsed));
     if ((this->hauteurSaut >= 0) && (this->state != DOWN))
     {
-        this->robotActuel = this->texture[12+this->increment_left];
-        this->sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, 160)); // Le Sprite du robot qui saute est plus grand que ceux du robot au sol
+			if(this->state==TIRER){
+				this->robotActuel = this->texture[16+this->increment_left];
+			} else {
+				this->robotActuel = this->texture[12+this->increment_left];
+			}
+			this->sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, 160));
     }
     else if ((this->hauteurSaut < 0) && (this->state != DOWN))
     {
-        this->robotActuel = this->texture[13+this->increment_left];
-        this->sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, 160));
+				if(this->state==TIRER){
+					this->robotActuel = this->texture[17+this->increment_left];
+				} else {
+					this->robotActuel = this->texture[13+this->increment_left];
+				}
+				this->sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, 160));
     }
 }
 
@@ -330,6 +339,12 @@ void Robot::chargement_image()
 			exit(EXIT_FAILURE);
 		dossier = "images/";
 		if (!this->texture[15+NI*i].loadFromFile(dossier.append("Tirer").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[16+NI*i].loadFromFile(dossier.append("sautTirer1").append(fin_nom), IntRect(0, 10, 120, 190)))
+			exit(EXIT_FAILURE);
+		dossier = "images/";
+		if (!this->texture[17+NI*i].loadFromFile(dossier.append("sautTirer2").append(fin_nom), IntRect(0, 10, 120, 190)))
 			exit(EXIT_FAILURE);
 	}
 }
