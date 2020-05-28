@@ -1,7 +1,7 @@
-#include "grandir.hpp"
+#include "reparer.hpp"
 
 
-Reparer::Reparer() : Collectable()
+Reparer::Reparer() : Collectable(REPARER)
 {
 	if (!txt.loadFromFile("images/reparer.png"))
 			exit(EXIT_FAILURE);

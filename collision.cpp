@@ -10,7 +10,6 @@ void Collision::gestionCollisionBalle(Robot *r, Balle *b, Map *map, float elapse
     {
         r->setStatus(BLESSE);
         r->setRobotActuel(r->getTexture(14+r->getIncrementLeft()));
-				r->setTextRect(LARGEUR_ROBOT+10, HAUTEUR_ROBOT);
         r->setPv(r->getPv()-1);
     }
 }
@@ -28,11 +27,37 @@ void Collision::gestionAtterrissage(Robot *r, Map *map, float elapsed)
 	}
 }
 
+void Collision::collisionCollec(Robot *r, Map *map)
+{
+	for (size_t i = 0; i < map->getListCollec().size(); i++)
+    {
+    	if (detectCollision(map->getRectColl(i), r->getRectRobot()))
+    	{
+    		map->supprimerCollec(i);
+    		int collec = map->getListCollec()[i].getNumber();
+    		switch(collec)
+    		{
+    			case BOUCLIER:
+					break;
+				case GRANDIR:
+					cout<<"Grandir !"<<endl;
+					r->setEnPleinGrandissement(true);
+					break;
+				case RAPETISSER:
+					cout<<"Rapetisser !"<<endl;
+					r->setEnPleinRapetissement(true);
+					break;
+				case REPARER:
+					break;
+    		}
+		}
+    }
+}
+
 void Collision::gestionAtterrissageCollec(Map *map, float elapsed)
 {
 	IntRect obj, obj1;
-	Sprite sp;
-	cout<<"size = "<<map->getListCollec().size()<<endl;
+
 	for (size_t i = 0; i < map->getListCollec().size(); i++)
     {
     	obj1 = map->getRectColl(i);
@@ -41,30 +66,20 @@ void Collision::gestionAtterrissageCollec(Map *map, float elapsed)
 			obj = map->getRectObj(j);
 			if (detectCollision(obj, obj1))
 			{
-				sp = map->getListCollec()[i];
-				sp.setPosition(obj1.left, obj.top - (obj1.height - obj1.top));
-				map->setListCollec(sp, i);
+				map->setPosCollec(obj1.left, obj.top - (obj1.height - obj1.top), i);
 				break;
 			}
 		}
-
+		
 		if (POS_SOL - obj1.height < 5) // Si on met 0 le sprite tremblotte, on met donc 5 pour autoriser une petite marge d'erreur
-		{
-			sp = map->getListCollec()[i];
-			sp.setPosition(obj1.left, POS_SOL - (obj1.height - obj1.top));
-			map->setListCollec(sp, i);
-		}
+			map->setPosCollec(obj1.left, POS_SOL - (obj1.height - obj1.top), i);
 		else
-		{
-			sp = map->getListCollec()[i];
-			sp.move(Vector2f(0.f, 200.f*elapsed));
-			map->setListCollec(sp, i);
-		}
+			map->moveCollec(Vector2f(0.f, 200.f*elapsed), i);
 	}
 }
 
 bool Collision::detectCollision(const IntRect &b, const IntRect &r)
-{
+{ 
     if (b.height < r.top)
         return false;
     if (b.top > r.height)
@@ -117,3 +132,5 @@ void Collision::atterrissage(float altitude, Robot *r)
     else if (r->getStatus() == DOWN)
 		r->setPosSprite(r->getSprite().getPosition().x, altitude-r->getSprite().getScale().y*HAUTEUR_ROBOT+20.f*r->getSprite().getScale().y);
 }
+
+

@@ -69,12 +69,12 @@ void Robot::detect_KeyPressed()
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Space))
 		{
-		  this->robotActuel = this->texture[15+this->increment_left];
+		    this->robotActuel = this->texture[15+this->increment_left];
 			state = TIRER;
-	   }
-  }
-  else if ((this->_name == "Joueur2") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
-  {
+	    }
+    }
+    else if ((this->_name == "Joueur2") && (this->state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+    {
 		if (Keyboard::isKeyPressed(Keyboard::D))
 		{
 			if (this->state != WALK_RIGHT)
@@ -108,11 +108,10 @@ void Robot::detect_KeyPressed()
 		}
 		if (Keyboard::isKeyPressed(Keyboard::E))
 		{
-			if(!enPleinJump)
-		  	this->robotActuel = this->texture[15+this->increment_left];
+		    this->robotActuel = this->texture[15+this->increment_left];
 			state = TIRER;
-	  }
-	}
+	    }
+    }
 }
 
 
@@ -168,21 +167,21 @@ void Robot::sauter(float elapsed)
     this->sprite.move(Vector2f(0.f, -(this->hauteurSaut)*elapsed));
     if ((this->hauteurSaut >= 0) && (this->state != DOWN))
     {
-			if(this->state==TIRER){
-				this->robotActuel = this->texture[16+this->increment_left];
-			} else {
-				this->robotActuel = this->texture[12+this->increment_left];
-			}
-			this->sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, 160));
+    	if(this->state==TIRER){
+			this->robotActuel = this->texture[16+this->increment_left];
+		} else {
+			this->robotActuel = this->texture[12+this->increment_left];
+		}
+        this->sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, 160)); // Le Sprite du robot qui saute est plus grand que ceux du robot au sol
     }
     else if ((this->hauteurSaut < 0) && (this->state != DOWN))
     {
-				if(this->state==TIRER){
-					this->robotActuel = this->texture[17+this->increment_left];
-				} else {
-					this->robotActuel = this->texture[13+this->increment_left];
-				}
-				this->sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, 160));
+    	if(this->state==TIRER){
+			this->robotActuel = this->texture[17+this->increment_left];
+		} else {
+			this->robotActuel = this->texture[13+this->increment_left];
+		}
+        this->sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, 160));
     }
 }
 
@@ -378,6 +377,8 @@ void Robot::setPosSprite(float x, float y) {this->sprite.setPosition(x, y);};
 void Robot::setEnPleinJump(bool a) {this->enPleinJump = a;};
 void Robot::setHauteurSaut(int h) {this->hauteurSaut = h;};
 void Robot::setTextRect(float w, float h) {this->sprite.setTextureRect(IntRect(0, 0, w, h));};
+void Robot::setEnPleinGrandissement(bool r) {enPleinGrandissement = r;};
+void Robot::setEnPleinRapetissement(bool r) {enPleinRapetissement = r;};
 
 IntRect Robot::getRectRobot() const
 {

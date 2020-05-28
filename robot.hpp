@@ -29,7 +29,7 @@ class Robot {
 	private :
 		string _name;
 		int ID;
-		Texture texture[34];
+		Texture texture[36];
 		Texture robotActuel;
 		int pv=10;
 		Arme arme;
@@ -98,6 +98,8 @@ class Robot {
 		void setEnPleinJump(bool a);
 		void setHauteurSaut(int h);
 		void setTextRect(float w, float h);
+		void setEnPleinGrandissement(bool r);
+		void setEnPleinRapetissement(bool r);
 
 
 };

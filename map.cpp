@@ -20,7 +20,7 @@ void Map::creation_objets()
 {
 	srand(time(NULL));
 	Sprite obj(mur);
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		obj.setTextureRect(IntRect(0, 0, 50, 50));
 		obj.setPosition(Vector2f(rand()%950, rand()%(POS_SOL-300)+135));
@@ -39,19 +39,24 @@ void Map::ajoutCollectable()
 		case 0:
 			{
 				Bouclier b;
-				c.push_back(b.getSprite());
+				c.push_back(b);
 			}
 			break;
 		case 1:
 			{
 				Grandir g;
-				c.push_back(g.getSprite());
+				c.push_back(g);
 			}
 			break;
 		case 2:
 			{
 				Rapetisser r;
-				c.push_back(r.getSprite());
+				c.push_back(r);
+			}
+		case 3:
+			{
+				Reparer re;
+				c.push_back(re);
 			}
 			break;
 		default:
@@ -69,17 +74,34 @@ void Map::updateMap()
 	}
 }
 
-void Map::ajouterSpriteListeCollec(Sprite sp)
+void Map::ajouterSpriteListeCollec(Collectable cnew)
 {
-	c.push_back(sp);
+	c.push_back(cnew);
 }
+
+void Map::supprimerCollec(int indice)
+{
+	c.erase(c.begin() + indice);
+}
+
+void Map::setPosCollec(float x, float y, int indice)
+{
+	c[indice].setPos(x, y);
+}
+
+void Map::moveCollec(Vector2f v, int indice)
+{
+	c[indice].move(v);
+}
+
 
 
 Sprite Map::getSpriteSol() const {return spriteSol;};
 Sprite Map::getSpriteFond() const {return spriteFond;};
+Sprite Map::getSpriteCollec(int indice) const {return c[indice].getSprite();};
 vector<Sprite> Map::getListObjets() const {return objets;};
-vector<Sprite> Map::getListCollec() const {return c;};
-void Map::setListCollec(Sprite sp, int i) { c[i] = sp;};
+vector<Collectable> Map::getListCollec() const {return c;};
+void Map::setListCollec(Collectable cnew, int i) { c[i] = cnew;};
 
 
 IntRect Map::getRectObj(int indice) const
@@ -95,9 +117,11 @@ IntRect Map::getRectObj(int indice) const
 IntRect Map::getRectColl(int indice) const
 {
     IntRect rectC;
-    rectC.left = c[indice].getPosition().x;
-    rectC.width = c[indice].getPosition().x + c[indice].getLocalBounds().width * c[indice].getScale().x;
-    rectC.top = c[indice].getPosition().y;
-    rectC.height = c[indice].getPosition().y + c[indice].getLocalBounds().height * c[indice].getScale().y;
+    rectC.left = c[indice].getSprite().getPosition().x;
+    rectC.width = c[indice].getSprite().getPosition().x + c[indice].getSprite().getLocalBounds().width * c[indice].getSprite().getScale().x;
+    rectC.top = c[indice].getSprite().getPosition().y;
+    rectC.height = c[indice].getSprite().getPosition().y + c[indice].getSprite().getLocalBounds().height * c[indice].getSprite().getScale().y;
     return rectC;
 }
+
+

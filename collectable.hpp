@@ -6,6 +6,8 @@
 #include <vector>
 #include <ctime>
 
+enum {BOUCLIER, GRANDIR, RAPETISSER, REPARER};
+
 using namespace sf;
 
 
@@ -15,13 +17,19 @@ class Collectable {
 		Texture txt;
 		Sprite sp;
 		bool action_imediate;
+		int number;
 
 	public :
 
 		Collectable();
-		void apparition();
+		Collectable(int n);
 		
-		Sprite getSprite();
+		void move(Vector2f v);
+		void setPos(float x, float y);
+		
+		Sprite getSprite() const;
+		void setSprite(Sprite s);
+		int getNumber() const;
 
 
 };

@@ -34,6 +34,7 @@ class Jeu {
 		void updatePerso(Robot &rob);
 		void update();
 		void draw();
+		void updateMap();
 		//void playMusic();
 
 

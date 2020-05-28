@@ -97,11 +97,18 @@ void Jeu::draw()
     }
     for (int i = 0; i < map.getListCollec().size(); i++)
     {
-    	window.draw(map.getListCollec()[i]);
+    	window.draw(map.getSpriteCollec(i));
     }
 
     // Update the window
     window.display();
+}
+
+void Jeu::updateMap()
+{
+	map.updateMap();
+	collision.collisionCollec(&rob, &map);
+	collision.collisionCollec(&rob2, &map);
 }
 
 int Jeu::play()
@@ -112,12 +119,11 @@ int Jeu::play()
         return EXIT_FAILURE;
     // Play the music
     music.play();*/
-	map.ajouterSpriteListeCollec(bouclier.getSprite());
+	map.ajouterSpriteListeCollec(bouclier);
     // Start the game loop
     while (window.isOpen())
     {
         // Process events
-				std::cout<<rob.getStatus()<<endl;
         Event event;
         elapsed = clock.restart().asSeconds();
 
@@ -136,8 +142,9 @@ int Jeu::play()
         }
 
         update();
-        map.updateMap();
+        updateMap();
 		draw();
     }
     return EXIT_SUCCESS;
 }
+

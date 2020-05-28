@@ -27,7 +27,7 @@ main.o: main.cpp robot.hpp
 jeu.o: jeu.cpp jeu.hpp
 	g++ -c jeu.cpp -I./SFML-2.5.1/include
 
-map.o: map.cpp map.hpp
+map.o: map.cpp map.hpp reparer.hpp
 	g++ -c map.cpp -I./SFML-2.5.1/include
 
 menu.o: menu.cpp menu.hpp
@@ -42,7 +42,7 @@ reparer.o: reparer.cpp reparer.hpp collectable.hpp
 robot.o: robot.cpp robot.hpp balle.hpp
 	g++ -c robot.cpp -I./SFML-2.5.1/include
 
-main: arme.o balle.o bouclier.o collectable.o collision.o equipement.o grandir.o jeu.o main.o map.o menu.o robot.o rapetisser.o
+main: arme.o balle.o bouclier.o collectable.o collision.o equipement.o grandir.o jeu.o main.o map.o menu.o robot.o rapetisser.o reparer.o
 	g++ -o main $^ -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 play:

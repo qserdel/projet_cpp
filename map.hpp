@@ -4,6 +4,7 @@
 #include "bouclier.hpp"
 #include "grandir.hpp"
 #include "rapetisser.hpp"
+#include "reparer.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -11,7 +12,7 @@
 #include <ctime>
 
 #define POS_SOL 700
-#define TIMER_MAP 500
+#define TIMER_MAP 200
 #define NB_COLLECTABLE 4
 
 using namespace sf;
@@ -25,27 +26,30 @@ class Map {
 		Sprite spriteFond;
 		Sprite spriteSol;
 		vector<Sprite> objets;
-		vector<Sprite> c;
+		vector<Collectable> c;
 		float timerMap;
-
-
+		
+	
 	public :
-
+	
 		Map();
-
+		
 		void creation_objets();
 		void ajoutCollectable();
 		void updateMap();
-		void ajouterSpriteListeCollec(Sprite sp);
-
-
+		void ajouterSpriteListeCollec(Collectable cnew);
+		void supprimerCollec(int indice);
+		void setPosCollec(float x, float y, int indice);
+		void moveCollec(Vector2f v, int indice);
+		
 		Sprite getSpriteFond() const;
 		Sprite getSpriteSol() const;
+		Sprite getSpriteCollec(int indice) const;
 		vector<Sprite> getListObjets() const;
 		IntRect getRectObj(int indice) const;
-		vector<Sprite> getListCollec() const;
+		vector<Collectable> getListCollec() const;
 		IntRect getRectColl(int indice) const;
-		void setListCollec(Sprite sp, int i);
+		void setListCollec(Collectable cnew, int i);
 
 
 };

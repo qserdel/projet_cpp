@@ -1,5 +1,5 @@
-#ifndef GRANDIR_HPP
-#define GRANDIR_HPP
+#ifndef REPARER_HPP
+#define REPARER_HPP
 #include <SFML/Graphics.hpp>
 #include "collectable.hpp"
 

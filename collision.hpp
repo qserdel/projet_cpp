@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "collectable.hpp"
 #include "robot.hpp"
 #include "balle.hpp"
 #include "map.hpp"
@@ -25,6 +26,7 @@ class Collision
         bool detectAtterrissage(const IntRect &r,  const Map &map);
         void atterrissage(float altitude, Robot *r);
         void gestionAtterrissageCollec(Map *map, float elapsed);
+        void collisionCollec(Robot *r, Map *map);
         
 
 };
