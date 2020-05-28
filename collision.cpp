@@ -38,17 +38,12 @@ void Collision::gestionAtterrissageCollec(Map *map, float elapsed)
 		for (size_t j = 0; j < map->getListObjets().size(); j++)
 		{
 			obj = map->getRectObj(j);
-			cout<<"0"<<endl;
-			if (obj.top - obj1.height < 5)
+			if (detectCollision(obj, obj1))
 			{
-				if (((obj1.left < obj.width) && (obj1.left > obj.left)) || ((obj1.width > obj.left) && (obj1.width < obj.width)) || ((obj1.left < obj.left) && (obj1.width > obj.width)))
-				{
-					sp = map->getListCollec()[i];
-					sp.setPosition(obj1.left, obj.top - (obj1.height - obj1.top));
-					map->setListCollec(sp, i);
-					cout<<"1"<<endl;
-					break;
-				}
+				sp = map->getListCollec()[i];
+				sp.setPosition(obj1.left, obj.top - (obj1.height - obj1.top));
+				map->setListCollec(sp, i);
+				break;
 			}
 		}
 		
@@ -57,15 +52,12 @@ void Collision::gestionAtterrissageCollec(Map *map, float elapsed)
 			sp = map->getListCollec()[i];
 			sp.setPosition(obj1.left, POS_SOL - (obj1.height - obj1.top));
 			map->setListCollec(sp, i);
-			cout<<"2"<<endl;
-			break;
 		}
 		else
 		{
 			sp = map->getListCollec()[i];
 			sp.move(Vector2f(0.f, 200.f*elapsed));
 			map->setListCollec(sp, i);
-			cout<<"3"<<endl;
 		}
 	}
 }
