@@ -37,28 +37,21 @@ void Map::ajoutCollectable()
 	switch(alea)
 	{
 		case 0:
-			{
-				Bouclier b;
-				c.push_back(b);
-			}
+			c.push_back(*(new Bouclier));
 			break;
+
 		case 1:
-			{
-				Grandir g;
-				c.push_back(g);
-			}
+			c.push_back(*(new Grandir));
 			break;
+
 		case 2:
-			{
-				Rapetisser r;
-				c.push_back(r);
-			}
-		case 3:
-			{
-				Reparer re;
-				c.push_back(re);
-			}
+			c.push_back(*(new Rapetisser));
 			break;
+
+		case 3:
+			c.push_back(*(new Reparer));
+			break;
+
 		default:
 			break;
 	}

@@ -138,7 +138,7 @@ int Jeu::play()
         return EXIT_FAILURE;
     // Play the music
     music.play();*/
-	map.ajouterSpriteListeCollec(bouclier);
+	//map.ajouterSpriteListeCollec(bouclier);
     // Start the game loop
     while (window.isOpen())
     {

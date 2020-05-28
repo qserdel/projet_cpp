@@ -8,3 +8,4 @@ Bouclier::Bouclier() : Collectable(BOUCLIER)
 	sp.setTexture(txt);
 }
 
+

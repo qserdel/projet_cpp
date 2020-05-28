@@ -24,6 +24,7 @@ class Collectable {
 
 		Collectable();
 		Collectable(int n);
+		Collectable(Collectable const& copy);
 		
 		void move(Vector2f v);
 		void setPos(float x, float y);
