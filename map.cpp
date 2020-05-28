@@ -96,12 +96,14 @@ void Map::moveCollec(Vector2f v, int indice)
 
 
 
-Sprite Map::getSpriteSol() const {return spriteSol;};
-Sprite Map::getSpriteFond() const {return spriteFond;};
-Sprite Map::getSpriteCollec(int indice) const {return c[indice].getSprite();};
-vector<Sprite> Map::getListObjets() const {return objets;};
-vector<Collectable> Map::getListCollec() const {return c;};
-void Map::setListCollec(Collectable cnew, int i) { c[i] = cnew;};
+Sprite Map::getSpriteSol() const { return spriteSol; };
+Sprite Map::getSpriteFond() const { return spriteFond; };
+Sprite Map::getSpriteCollec(int indice) const { return c[indice].getSprite(); };
+bool Map::getSpriteStable(int i) const { return c[i].getSpriteStable(); };
+vector<Sprite> Map::getListObjets() const { return objets; };
+vector<Collectable> Map::getListCollec() const { return c; };
+void Map::setListCollec(Collectable cnew, int i) { c[i] = cnew; };
+void Map::setSpriteStable(bool a, int i) { c[i].setSpriteStable(a); };
 
 
 IntRect Map::getRectObj(int indice) const

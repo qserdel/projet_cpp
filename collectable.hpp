@@ -18,6 +18,7 @@ class Collectable {
 		Sprite sp;
 		bool action_imediate;
 		int number;
+		bool spriteStable = false;
 
 	public :
 
@@ -28,8 +29,10 @@ class Collectable {
 		void setPos(float x, float y);
 		
 		Sprite getSprite() const;
-		void setSprite(Sprite s);
 		int getNumber() const;
+		bool getSpriteStable() const;
+		void setSprite(Sprite s);
+		void setSpriteStable(bool a);
 
 
 };

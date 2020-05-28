@@ -26,6 +26,9 @@ void Collectable::setPos(float x, float y)
 }
 
 
-Sprite Collectable::getSprite() const {return sp;};
-void Collectable::setSprite(Sprite s) {sp = s;};
-int Collectable::getNumber() const {return number;};
+Sprite Collectable::getSprite() const { return sp; };
+int Collectable::getNumber() const { return number; };
+bool Collectable::getSpriteStable() const { return spriteStable; };
+void Collectable::setSprite(Sprite s) { sp = s; };
+void Collectable::setSpriteStable(bool a) { spriteStable = a; };
+

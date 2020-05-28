@@ -60,21 +60,28 @@ void Collision::gestionAtterrissageCollec(Map *map, float elapsed)
 
 	for (size_t i = 0; i < map->getListCollec().size(); i++)
     {
-    	obj1 = map->getRectColl(i);
-		for (size_t j = 0; j < map->getListObjets().size(); j++)
-		{
-			obj = map->getRectObj(j);
-			if (detectCollision(obj, obj1))
+    	if (!map->getSpriteStable(i))
+    	{
+			obj1 = map->getRectColl(i);
+			for (size_t j = 0; j < map->getListObjets().size(); j++)
 			{
-				map->setPosCollec(obj1.left, obj.top - (obj1.height - obj1.top), i);
-				break;
+				obj = map->getRectObj(j);
+				if (detectCollision(obj, obj1))
+				{
+					map->setPosCollec(obj1.left, obj.top - (obj1.height - obj1.top), i);
+					map->setSpriteStable(true, i);
+					break;
+				}
 			}
+
+			if (POS_SOL - obj1.height <= 0)
+			{
+				map->setPosCollec(obj1.left, POS_SOL - (obj1.height - obj1.top), i);
+				map->setSpriteStable(true, i);
+			}
+			else
+				map->moveCollec(Vector2f(0.f, 200.f*elapsed), i);
 		}
-		
-		if (POS_SOL - obj1.height < 5) // Si on met 0 le sprite tremblotte, on met donc 5 pour autoriser une petite marge d'erreur
-			map->setPosCollec(obj1.left, POS_SOL - (obj1.height - obj1.top), i);
-		else
-			map->moveCollec(Vector2f(0.f, 200.f*elapsed), i);
 	}
 }
 

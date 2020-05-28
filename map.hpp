@@ -45,11 +45,13 @@ class Map {
 		Sprite getSpriteFond() const;
 		Sprite getSpriteSol() const;
 		Sprite getSpriteCollec(int indice) const;
+		bool getSpriteStable(int i) const;
 		vector<Sprite> getListObjets() const;
 		IntRect getRectObj(int indice) const;
 		vector<Collectable> getListCollec() const;
 		IntRect getRectColl(int indice) const;
 		void setListCollec(Collectable cnew, int i);
+		void setSpriteStable(bool a, int i);
 
 
 };

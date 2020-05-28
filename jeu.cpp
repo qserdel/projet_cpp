@@ -88,7 +88,7 @@ void Jeu::draw()
     window.draw(rob2.getSprite());
 
     for(int i = 0; i < 10; i++){
-      if(tabBalles[i].getX()>=0 && tabBalles[i].getX()<=1000)
+      if(tabBalles[i].getX()>=0 && tabBalles[i].getX()<=TAILLE_WINDOW)
         window.draw(tabBalles[i].getSprite());
     }
     for (int i = 0; i < map.getListObjets().size(); i++)
