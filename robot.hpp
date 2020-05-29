@@ -22,7 +22,7 @@ using namespace sf;
 #define TIMER_GRAND 200
 #define TIMER_TIR 30
 
-#define PV_MAX 30
+#define PV_MAX 25
 
 enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, STANDARD, GRAND, BLESSE, TIRER};
 

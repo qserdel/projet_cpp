@@ -49,7 +49,7 @@ void Jeu::update()
 				{
 					for (int i = NB_BALLES*rob.getID(); i < NB_BALLES + NB_BALLES*rob.getID(); i++){
 						if(tabBalles[i].getX() <= 0 || tabBalles[i].getX() >= 1000){
-							tabBalles[i] = Balle(rob.getX()+LARGEUR_ROBOT*0.7*rob.getDirection(),rob.getY()+HAUTEUR_ROBOT/3.6,rob.getDirection());
+							tabBalles[i] = Balle(rob.getX()+rob.getSprite().getGlobalBounds().width*0.7*rob.getDirection(),rob.getY()+rob.getSprite().getGlobalBounds().height/3.6,rob.getDirection());
 							break;
 						}
 					}
@@ -60,7 +60,7 @@ void Jeu::update()
 				{
 					for (int i = NB_BALLES*rob2.getID(); i < NB_BALLES + NB_BALLES*rob2.getID(); i++){
 						if(tabBalles[i].getX() <= 0 || tabBalles[i].getX() >= 1000){
-							tabBalles[i] = Balle(rob2.getX()+LARGEUR_ROBOT*0.7*rob2.getDirection(),rob2.getY()+HAUTEUR_ROBOT/3.6,rob2.getDirection());
+							tabBalles[i] = Balle(rob2.getX()+rob2.getSprite().getGlobalBounds().width*0.7*rob2.getDirection(),rob2.getY()+rob2.getSprite().getGlobalBounds().height/3.6,rob2.getDirection());
 							break;
 						}
 					}
@@ -86,8 +86,14 @@ void Jeu::update()
         // degats si touchés
         if (rob.getStatus() == BLESSE)
         	rob.blessure();
-	  	if (rob2.getStatus() == BLESSE)
+	  		if (rob2.getStatus() == BLESSE)
         	rob2.blessure();
+
+				//correction du bug de bas de map
+				if(rob.getY()>590)
+					rob.setPosSprite(rob.getX(),590);
+				if(rob2.getY()>590)
+					rob2.setPosSprite(rob2.getX(),590);
 }
 
 void Jeu::draw()

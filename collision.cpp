@@ -34,21 +34,24 @@ void Collision::collisionCollec(Robot *r, Map *map)
     {
     	if (detectCollision(map->getRectColl(i), r->getRectRobot()))
     	{
+				int collec = map->getListCollec()[i].getNumber();
     		map->supprimerCollec(i);
-    		int collec = map->getListCollec()[i].getNumber();
     		switch(collec)
     		{
     			case BOUCLIER:
 					break;
-				case GRANDIR:
-					cout<<"Grandir !"<<endl;
-					r->setEnPleinGrandissement(true);
+					case GRANDIR:
+						cout<<"Grandir !"<<endl;
+						r->setEnPleinGrandissement(true);
 					break;
-				case RAPETISSER:
-					cout<<"Rapetisser !"<<endl;
-					r->setEnPleinRapetissement(true);
+					case RAPETISSER:
+						cout<<"Rapetisser !"<<endl;
+						r->setEnPleinRapetissement(true);
 					break;
 				case REPARER:
+					r->setPv(r->getPv()+3);
+					if(r->getPv()>PV_MAX)
+						r->setPv(PV_MAX);
 					break;
     		}
 		}
