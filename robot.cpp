@@ -68,11 +68,14 @@ void Robot::detect_KeyPressed()
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Space))
 		{
+			if(timerTir<=0){
 		    robotActuel = texture[15+increment_left];
-			state = TIRER;
+				state = TIRER;
+				timerTir=TIMER_TIR;
 	    }
     }
-    else if ((_name == "Joueur2") && (state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+	}
+  else if ((_name == "Joueur2") && (state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
     {
 		if (Keyboard::isKeyPressed(Keyboard::D))
 		{
@@ -107,15 +110,21 @@ void Robot::detect_KeyPressed()
 		}
 		if (Keyboard::isKeyPressed(Keyboard::E))
 		{
+			if(timerTir<=0){
 		    robotActuel = texture[15+increment_left];
-			state = TIRER;
+				state = TIRER;
+				timerTir=TIMER_TIR;
 	    }
     }
+	}
 }
 
 
 void Robot::move(float elapsed)
 {
+		if(timerTir>0){
+			timerTir--;
+		}
     float monte = 0.f;
     int increment = 0;
     if (_name == "Joueur2")
