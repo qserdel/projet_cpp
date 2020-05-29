@@ -35,7 +35,7 @@ void Map::creation_objets()
 
 void Map::ajoutCollectable()
 {
-	/*srand(time(NULL));
+	srand(time(NULL));
 	int alea = rand() % NB_COLLECTABLE;
 	switch(alea)
 	{
@@ -57,7 +57,7 @@ void Map::ajoutCollectable()
 
 		default:
 			break;
-	}*/
+	}
 }
 
 void Map::updateMap()

@@ -133,11 +133,11 @@ void Jeu::updateMap()
 int Jeu::play()
 {
     // Load a music to play
-    /*sf::Music music;
-    if (!music.openFromFile("images/HumbleMatch.ogg"))
+    if (!music.openFromFile("images/BlazerRail.wav"))
         return EXIT_FAILURE;
     // Play the music
-    music.play();*/
+		music.setLoop(true);
+    music.play();
 	//map.ajouterSpriteListeCollec(bouclier);
     // Start the game loop
     while (window.isOpen())

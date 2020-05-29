@@ -17,7 +17,7 @@ void Collision::gestionCollisionBalle(Robot *r, Balle *b, Map *map, float elapse
 
 void Collision::gestionAtterrissage(Robot *r, Map *map, float elapsed)
 {
-	if (detectAtterrissage(r->getRectRobot(), *map) && (r->getHauteurSaut() < 0)) // Détecte uniquement en cas de saut, à revoir !
+	if (detectAtterrissage(r->getRectRobot(), *map) && (r->getHauteurSaut() < 0))
 		atterrissage(altitude_atterrissage, r);
 
     if (!r->getEnPleinJump() && !detectAtterrissage(r->getRectRobot(), *map)) // Si le robot n'est sur aucun support

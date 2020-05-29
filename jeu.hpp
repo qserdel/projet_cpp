@@ -31,7 +31,7 @@ class Jeu {
 			Clock clock;
     	float elapsed = 0;
     	Bouclier bouclier;
-    	//Music music;
+    	Music music;
 
 	public :
 
