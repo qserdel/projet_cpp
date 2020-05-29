@@ -14,6 +14,8 @@ Collectable::Collectable(int n) : action_imediate(false)
 	sp.setPosition(Vector2f(rand()%950, 0));
 }		
 
+Collectable::Collectable(Collectable const& copy) : txt(copy.txt), sp(copy.sp), number(copy.number), spriteStable(copy.spriteStable)
+{ }
 
 void Collectable::move(Vector2f v)
 {

@@ -43,30 +43,30 @@ void Jeu::update()
 		    if (rob2.getEnPleinRapetissement() || (rob2.getTaille() == PETIT))
 		        rob2.rapetisser();
         }
-        // tirs du joueur1
-        if (rob.getStatus() == TIRER)
-        {
-          for (int i = NB_BALLES*rob.getID(); i < NB_BALLES + NB_BALLES*rob.getID(); i++){
-            if(tabBalles[i].getX() <= 0 || tabBalles[i].getX() >= 1000){
-              tabBalles[i] = Balle(rob.getX()+LARGEUR_ROBOT*0.7*rob.getDirection(),rob.getY()+HAUTEUR_ROBOT/3.6,rob.getDirection());
-            }
-            else {
-              tabBalles[NB_BALLES*rob.getID()] = Balle(rob.getX()+LARGEUR_ROBOT*0.7*rob.getDirection(),rob.getY()+HAUTEUR_ROBOT/3.6,rob.getDirection());
-            }
-          }
-        }
-        // tirs du joueur2
-        if (rob2.getStatus() == TIRER)
-        {
-          for (int i = NB_BALLES*rob2.getID(); i < NB_BALLES + NB_BALLES*rob2.getID(); i++){
-            if(tabBalles[i].getX() <= 0 || tabBalles[i].getX() >= 1000){
-              tabBalles[i] = Balle(rob2.getX()+LARGEUR_ROBOT*0.7*rob2.getDirection(),rob2.getY()+HAUTEUR_ROBOT/3.6,rob2.getDirection());
-            }
-            else {
-              tabBalles[NB_BALLES*rob2.getID()] = Balle(rob2.getX()+LARGEUR_ROBOT*0.7*rob2.getDirection(),rob2.getY()+HAUTEUR_ROBOT/3.6,rob2.getDirection());
-            }
-          }
-        }
+
+				// tirs du joueur1
+				if (rob.getStatus() == TIRER && rob.getTimerTir()<=0)
+				{
+					for (int i = NB_BALLES*rob.getID(); i < NB_BALLES + NB_BALLES*rob.getID(); i++){
+						if(tabBalles[i].getX() <= 0 || tabBalles[i].getX() >= 1000){
+							tabBalles[i] = Balle(rob.getX()+LARGEUR_ROBOT*0.7*rob.getDirection(),rob.getY()+HAUTEUR_ROBOT/3.6,rob.getDirection());
+							break;
+						}
+					}
+					rob.resetTimerTir();
+				}
+				// tirs du joueur2
+				if (rob2.getStatus() == TIRER && rob2.getTimerTir()<=0)
+				{
+					for (int i = NB_BALLES*rob2.getID(); i < NB_BALLES + NB_BALLES*rob2.getID(); i++){
+						if(tabBalles[i].getX() <= 0 || tabBalles[i].getX() >= 1000){
+							tabBalles[i] = Balle(rob2.getX()+LARGEUR_ROBOT*0.7*rob2.getDirection(),rob2.getY()+HAUTEUR_ROBOT/3.6,rob2.getDirection());
+							break;
+						}
+					}
+					rob2.resetTimerTir();
+				}
+
         // gestion des collisions
         for(int i = 0; i < NB_BALLES; i++)
         {
@@ -99,7 +99,7 @@ void Jeu::draw()
     window.draw(map.getSpriteSol());
     window.draw(rob.getSprite());
     window.draw(rob2.getSprite());
-		
+
 		//affichage des pv de chaque robots
 		for(int i=0;i<rob.getPv();i++)
 			window.draw(spritesPv1[i]);
@@ -138,7 +138,7 @@ int Jeu::play()
         return EXIT_FAILURE;
     // Play the music
     music.play();*/
-	map.ajouterSpriteListeCollec(bouclier);
+	//map.ajouterSpriteListeCollec(bouclier);
     // Start the game loop
     while (window.isOpen())
     {

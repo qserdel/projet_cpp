@@ -33,7 +33,8 @@ Robot::Robot(string name){
 
 void Robot::detect_KeyPressed()
 {
-	if (( _name == "Joueur1") && (state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+	if (( _name == "Joueur1") && (state != BLESSE))
+	// Le joueur ne peut rien faire s'il est blessé ou juste apres avoir tiré
 	{
 		if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
@@ -56,23 +57,11 @@ void Robot::detect_KeyPressed()
 
 		if (Keyboard::isKeyPressed(Keyboard::Up))
 		    enPleinJump = true;
-		if (Keyboard::isKeyPressed(Keyboard::G))
-		{
-		    enPleinGrandissement = true;
-		    max_scale = 2.0;  // La taille maximale qu'il pourra atteindre
-		}
-		if (Keyboard::isKeyPressed(Keyboard::R))
-		{
-		    enPleinRapetissement = true;
-		    min_scale = 0.5;  // La taille minimale qu'il pourra atteindre
-		}
+
 		if (Keyboard::isKeyPressed(Keyboard::Space))
 		{
-			if(timerTir<=0){
-		    robotActuel = texture[15+increment_left];
-				state = TIRER;
-				timerTir=TIMER_TIR;
-	    }
+		  robotActuel = texture[15+increment_left];
+			state = TIRER;
     }
 	}
   else if ((_name == "Joueur2") && (state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
@@ -98,23 +87,11 @@ void Robot::detect_KeyPressed()
 
 		if (Keyboard::isKeyPressed(Keyboard::Z))
 		    enPleinJump = true;
-		if (Keyboard::isKeyPressed(Keyboard::G))
-		{
-		    enPleinGrandissement = true;
-		    max_scale = 2.0;  // La taille maximale qu'il pourra atteindre
-		}
-		if (Keyboard::isKeyPressed(Keyboard::R))
-		{
-		    enPleinRapetissement = true;
-		    min_scale = 0.5;  // La taille minimale qu'il pourra atteindre
-		}
+
 		if (Keyboard::isKeyPressed(Keyboard::E))
 		{
-			if(timerTir<=0){
-		    robotActuel = texture[15+increment_left];
-				state = TIRER;
-				timerTir=TIMER_TIR;
-	    }
+		  robotActuel = texture[15+increment_left];
+			state = TIRER;
     }
 	}
 }
@@ -126,9 +103,6 @@ void Robot::move(float elapsed)
 			timerTir--;
 		}
     float monte = 0.f;
-    int increment = 0;
-    if (_name == "Joueur2")
-    	increment = 20;
     if ((aGenoux == true) && (state != DOWN))  // Si le robot était baissé sur la frame précédente et qu'il se relève, alors on remonte le robot
     {
         monte = -20.f*sprite.getScale().y;
@@ -300,58 +274,58 @@ void Robot::chargement_image()
 		}
 
 		dossier = "images/";
-	    if (!texture[0+NI*i].loadFromFile(dossier.append(to_string(1)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
+	    if (!texture[0+NI*i].loadFromFile(dossier.append(to_string(1)).append("Rapide").append(fin_nom), IntRect(0, 0, 100, 190)))
 	    	exit(EXIT_FAILURE);
     	dossier = "images/";
-    	if (!texture[1+NI*i].loadFromFile(dossier.append(to_string(2)).append("Rapide").append(fin_nom), IntRect(0, 0, 120, 190)))
+    	if (!texture[1+NI*i].loadFromFile(dossier.append(to_string(2)).append("Rapide").append(fin_nom), IntRect(0, 0, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[2+NI*i].loadFromFile(dossier.append(to_string(3)).append("Rapide").append(fin_nom), IntRect(5, 25, 120, 190)))
+		if (!texture[2+NI*i].loadFromFile(dossier.append(to_string(3)).append("Rapide").append(fin_nom), IntRect(5, 25, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[3+NI*i].loadFromFile(dossier.append(to_string(4)).append("Rapide").append(fin_nom), IntRect(10, 30, 120, 190)))
+		if (!texture[3+NI*i].loadFromFile(dossier.append(to_string(4)).append("Rapide").append(fin_nom), IntRect(10, 30, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[4+NI*i].loadFromFile(dossier.append(to_string(5)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!texture[4+NI*i].loadFromFile(dossier.append(to_string(5)).append("Rapide").append(fin_nom), IntRect(0, 10, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[5+NI*i].loadFromFile(dossier.append(to_string(6)).append("Rapide").append(fin_nom), IntRect(0, 20, 120, 190)))
+		if (!texture[5+NI*i].loadFromFile(dossier.append(to_string(6)).append("Rapide").append(fin_nom), IntRect(0, 20, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[6+NI*i].loadFromFile(dossier.append(to_string(7)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!texture[6+NI*i].loadFromFile(dossier.append(to_string(7)).append("Rapide").append(fin_nom), IntRect(0, 10, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[7+NI*i].loadFromFile(dossier.append(to_string(8)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!texture[7+NI*i].loadFromFile(dossier.append(to_string(8)).append("Rapide").append(fin_nom), IntRect(0, 10, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[8+NI*i].loadFromFile(dossier.append(to_string(9)).append("Rapide").append(fin_nom), IntRect(10, 25, 120, 190)))
+		if (!texture[8+NI*i].loadFromFile(dossier.append(to_string(9)).append("Rapide").append(fin_nom), IntRect(10, 25, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[9+NI*i].loadFromFile(dossier.append(to_string(10)).append("Rapide").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!texture[9+NI*i].loadFromFile(dossier.append(to_string(10)).append("Rapide").append(fin_nom), IntRect(0, 10, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[10+NI*i].loadFromFile(dossier.append("Face").append(fin_nom),IntRect(0, 10, 120, 190)))
+		if (!texture[10+NI*i].loadFromFile(dossier.append("Face").append(fin_nom),IntRect(5, 10, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
 		if (!texture[11+NI*i].loadFromFile(dossier.append("bas").append(fin_nom)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[12+NI*i].loadFromFile(dossier.append("saut1").append(fin_nom), IntRect(0, 15, 120, 190)))
+		if (!texture[12+NI*i].loadFromFile(dossier.append("saut1").append(fin_nom), IntRect(0, 15, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[13+NI*i].loadFromFile(dossier.append("saut2").append(fin_nom), IntRect(0, 5, 120, 190)))
+		if (!texture[13+NI*i].loadFromFile(dossier.append("saut2").append(fin_nom), IntRect(0, 5, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
 		if (!texture[14+NI*i].loadFromFile(dossier.append("blesse").append(fin_nom)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[15+NI*i].loadFromFile(dossier.append("Tirer").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!texture[15+NI*i].loadFromFile(dossier.append("Tirer").append(fin_nom), IntRect(0, 10, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[16+NI*i].loadFromFile(dossier.append("sautTirer1").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!texture[16+NI*i].loadFromFile(dossier.append("sautTirer1").append(fin_nom), IntRect(0, 10, 100, 190)))
 			exit(EXIT_FAILURE);
 		dossier = "images/";
-		if (!texture[17+NI*i].loadFromFile(dossier.append("sautTirer2").append(fin_nom), IntRect(0, 10, 120, 190)))
+		if (!texture[17+NI*i].loadFromFile(dossier.append("sautTirer2").append(fin_nom), IntRect(0, 10, 100, 190)))
 			exit(EXIT_FAILURE);
 	}
 }
@@ -375,6 +349,7 @@ bool Robot::getDirection() const {return direction;};
 float Robot::getX() const {return sprite.getPosition().x;};
 float Robot::getY() const {return sprite.getPosition().y;};
 int Robot::getID() const {return ID;};
+int Robot::getTimerTir() const {return timerTir;};
 
 void Robot::setPv(int nbVie) {pv = nbVie;};
 void Robot::setNbFrame(int nbreF) {nbFrame = nbreF;};
@@ -387,6 +362,7 @@ void Robot::setHauteurSaut(int h) {hauteurSaut = h;};
 void Robot::setTextRect(float w, float h) {sprite.setTextureRect(IntRect(0, 0, w, h));};
 void Robot::setEnPleinGrandissement(bool r) {enPleinGrandissement = r;};
 void Robot::setEnPleinRapetissement(bool r) {enPleinRapetissement = r;};
+void Robot::resetTimerTir() {timerTir=TIMER_TIR;};
 
 IntRect Robot::getRectRobot() const
 {

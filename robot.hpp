@@ -20,6 +20,7 @@ using namespace sf;
 #define TIMER_BLESSE 50
 #define TIMER_PETIT 200
 #define TIMER_GRAND 200
+#define TIMER_TIR 30
 
 #define PV_MAX 30
 
@@ -48,6 +49,7 @@ class Robot {
 		int timerGrand = TIMER_GRAND;
 		int timerPetit = TIMER_PETIT;
 		int timerBlesse = TIMER_BLESSE;
+	  int timerTir = 0;
 		float min_scale = 0.5;
 		float max_scale = 2;
 		int increment_left = 0;
@@ -90,6 +92,7 @@ class Robot {
 		float getX() const;
 		float getY() const;
 		int getID() const;
+		int getTimerTir() const;
 
 		void setPv(int nbVie);
 		void setNbFrame(int nbreF);
@@ -102,6 +105,7 @@ class Robot {
 		void setTextRect(float w, float h);
 		void setEnPleinGrandissement(bool r);
 		void setEnPleinRapetissement(bool r);
+		void resetTimerTir();
 
 
 };
