@@ -18,8 +18,8 @@ using namespace sf;
 #define POS_SOL 700
 
 #define TIMER_BLESSE 30
-#define TIMER_PETIT 200
-#define TIMER_GRAND 200
+#define TIMER_PETIT 300
+#define TIMER_GRAND 300
 #define TIMER_TIR 30
 
 #define PV_MAX 25
@@ -34,7 +34,7 @@ class Robot {
 		int ID;
 		Texture texture[36];
 		Texture robotActuel;
-		int pv=PV_MAX;
+		int pv = PV_MAX;
 		Arme arme;
 		Equipement equipement;
 		float vitesse;
@@ -49,7 +49,7 @@ class Robot {
 		int timerGrand = TIMER_GRAND;
 		int timerPetit = TIMER_PETIT;
 		int timerBlesse = TIMER_BLESSE;
-	  int timerTir = 0;
+	  	int timerTir = 0;
 		float min_scale = 0.5;
 		float max_scale = 2;
 		int increment_left = 0;
@@ -105,6 +105,8 @@ class Robot {
 		void setTextRect(float w, float h);
 		void setEnPleinGrandissement(bool r);
 		void setEnPleinRapetissement(bool r);
+		void setMinScale(float min);
+		void setMaxScale(float max);
 		void resetTimerTir();
 
 

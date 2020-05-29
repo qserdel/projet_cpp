@@ -138,13 +138,13 @@ void Jeu::updateMap()
 
 int Jeu::play()
 {
-    // Load a music to play
+    /*// Load a music to play
     if (!music.openFromFile("images/BlazerRail.wav"))
         return EXIT_FAILURE;
     // Play the music
 		music.setLoop(true);
-    music.play();
-	//map.ajouterSpriteListeCollec(bouclier);
+    music.play();*/
+
     // Start the game loop
     while (window.isOpen())
     {

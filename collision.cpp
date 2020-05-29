@@ -34,7 +34,7 @@ void Collision::collisionCollec(Robot *r, Map *map)
     {
     	if (detectCollision(map->getRectColl(i), r->getRectRobot()))
     	{
-				int collec = map->getListCollec()[i].getNumber();
+			int collec = map->getListCollec()[i].getNumber();
     		map->supprimerCollec(i);
     		switch(collec)
     		{
@@ -43,10 +43,12 @@ void Collision::collisionCollec(Robot *r, Map *map)
 					case GRANDIR:
 						cout<<"Grandir !"<<endl;
 						r->setEnPleinGrandissement(true);
+						r->setMaxScale(2);
 					break;
 					case RAPETISSER:
 						cout<<"Rapetisser !"<<endl;
 						r->setEnPleinRapetissement(true);
+						r->setMinScale(0.5);
 					break;
 				case REPARER:
 					r->setPv(r->getPv()+3);
@@ -112,7 +114,7 @@ bool Collision::detectAtterrissage(const IntRect &r, const Map &map)
     	obj = map.getRectObj(i);
     	if (abs(obj.top - r.height) <= 20)
 		{
-			if (((r.left < obj.width) && (r.left > obj.left)) || ((r.width > obj.left) && (r.width < obj.width)) || ((r.left < obj.left) && (r.width > obj.width)))
+			if (detectCollision(r, obj))
 			{
 				altitude_atterrissage = obj.top;
 				return true;
