@@ -18,21 +18,24 @@ Map::Map() : timerMap(TIMER_MAP)
 
 void Map::creation_objets()
 {
-	srand(time(NULL));
 	Sprite obj(mur);
-	for (int i = 0; i < 3; i++)
-	{
-		obj.setTextureRect(IntRect(0, 0, 50, 50));
-		obj.setPosition(Vector2f(rand()%950, rand()%(POS_SOL-300)+135));
+	//placement prédéfini des objets de la map
+		obj.setTextureRect(IntRect(0,0,600,30));
+		obj.setPosition(Vector2f(200, 500));
 		objets.push_back(obj);
-	}
-	obj.setPosition(Vector2f(100, 550));
-	objets.push_back(obj);
+		obj.setTextureRect(IntRect(0,0,200,30));
+		obj.setPosition(Vector2f(50, 300));
+		objets.push_back(obj);
+		obj.setPosition(Vector2f(750,300));
+		objets.push_back(obj);
+		obj.setTextureRect(IntRect(0,0,100,30));
+		obj.setPosition(Vector2f(450, 150));
+		objets.push_back(obj);
 }
 
 void Map::ajoutCollectable()
 {
-	srand(time(NULL));
+	/*srand(time(NULL));
 	int alea = rand() % NB_COLLECTABLE;
 	switch(alea)
 	{
@@ -54,7 +57,7 @@ void Map::ajoutCollectable()
 
 		default:
 			break;
-	}
+	}*/
 }
 
 void Map::updateMap()
@@ -118,5 +121,3 @@ IntRect Map::getRectColl(int indice) const
     rectC.height = c[indice].getSprite().getPosition().y + c[indice].getSprite().getLocalBounds().height * c[indice].getSprite().getScale().y;
     return rectC;
 }
-
-
