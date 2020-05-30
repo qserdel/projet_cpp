@@ -8,3 +8,8 @@ Rapetisser::Rapetisser() : Collectable(RAPETISSER)
 	sp.setTexture(txt);
 }
 
+void Rapetisser::activation(Robot &r)
+{
+	r.setEnPleinRapetissement(true);
+	r.setMinScale(0.5);
+}

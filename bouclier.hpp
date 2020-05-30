@@ -12,6 +12,9 @@ class Bouclier : public Collectable {
 	public :
 
 		Bouclier();
+		virtual void activation(Robot &r);
+		
+		virtual ~Bouclier() {};
 
 };
 #endif

@@ -34,9 +34,10 @@ void Collision::collisionCollec(Robot *r, Map *map)
     {
     	if (detectCollision(map->getRectColl(i), r->getRectRobot()))
     	{
+    		map->gestionCollectable(map->getListCollec()[i], r);
 			int collec = map->getListCollec()[i].getNumber();
     		map->supprimerCollec(i);
-    		switch(collec)
+    		/*switch(collec)
     		{
     			case BOUCLIER:
 					break;
@@ -55,7 +56,7 @@ void Collision::collisionCollec(Robot *r, Map *map)
 					if(r->getPv()>PV_MAX)
 						r->setPv(PV_MAX);
 					break;
-    		}
+    		}*/
 		}
     }
 }

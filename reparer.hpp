@@ -12,6 +12,9 @@ class Reparer : public Collectable {
 	public :
 
 		Reparer();
+		virtual void activation(Robot &r);
+		
+		virtual ~Reparer() {};
 
 };
 #endif

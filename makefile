@@ -9,7 +9,7 @@ balle.o: balle.cpp balle.hpp
 bouclier.o: bouclier.cpp bouclier.hpp collectable.hpp
 	g++ -c bouclier.cpp -I./SFML-2.5.1/include
 
-collectable.o: collectable.cpp collectable.hpp
+collectable.o: collectable.cpp collectable.hpp robot.hpp
 	g++ -c collectable.cpp -I./SFML-2.5.1/include
 
 collision.o: collision.cpp collision.hpp robot.hpp balle.hpp

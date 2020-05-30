@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
+#include "robot.hpp"
 
 enum {BOUCLIER, GRANDIR, RAPETISSER, REPARER};
 
@@ -26,6 +27,9 @@ class Collectable {
 		Collectable(int n);
 		Collectable(Collectable const& copy);
 		
+		virtual ~Collectable() {};
+		
+		virtual void activation(Robot &r) {};
 		void move(Vector2f v);
 		void setPos(float x, float y);
 		

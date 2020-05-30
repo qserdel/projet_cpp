@@ -8,3 +8,10 @@ Grandir::Grandir() : Collectable(GRANDIR)
 	sp.setTexture(txt);
 }
 
+
+void Grandir::activation(Robot &r)
+{
+	r.setEnPleinRapetissement(true);
+	r.setMinScale(0.5);
+}
+

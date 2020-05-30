@@ -6,15 +6,15 @@ Map::Map(int i) : timerMap(TIMER_MAP)
 	switch(index){
 		case 1:
 			if(!fond.loadFromFile("images/fond.jpg",IntRect(100, 300, 1000, 1000)))
-      	exit(EXIT_FAILURE);
-    	spriteFond.setTexture(fond);
+      			exit(EXIT_FAILURE);
+    		spriteFond.setTexture(fond);
 
-    	if(!mur.loadFromFile("images/mur.jpg"))
-      	exit(EXIT_FAILURE);
-    	spriteSol.setTexture(mur);
-    	spriteSol.setTextureRect(IntRect(0, 0, 1000, 50));
-    	spriteSol.setPosition(Vector2f(0.f, POS_SOL));
-    	creation_objets();
+			if(!mur.loadFromFile("images/mur.jpg"))
+		  		exit(EXIT_FAILURE);
+			spriteSol.setTexture(mur);
+			spriteSol.setTextureRect(IntRect(0, 0, 1000, 50));
+			spriteSol.setPosition(Vector2f(0.f, POS_SOL));
+			creation_objets();
 		break;
 		case 2:
 			if(!fond.loadFromFile("images/fond2.png",IntRect(0, 0, 1000, 1000)))
@@ -39,6 +39,8 @@ Map::Map(int i) : timerMap(TIMER_MAP)
 			spriteSol.setTextureRect(IntRect(0, 0, 1000, 50));
 			spriteSol.setPosition(Vector2f(0.f, POS_SOL));
 			creation_objets();
+		break;
+		default:
 		break;
 	}
 
@@ -116,6 +118,37 @@ void Map::ajoutCollectable()
 		case 3:
 			c.push_back(*(new Reparer));
 			break;
+	}
+}
+
+void Map::gestionCollectable(Collectable &co, Robot *rob)
+{
+	switch(co.getNumber())
+	{
+		case BOUCLIER:
+		{
+			//Bouclier& b = dynamic_cast<Bouclier&>(co);
+			co.activation(*rob);
+			break;
+		}
+		case GRANDIR:
+		{
+			//Grandir& gr = dynamic_cast<Grandir&>(co);
+			co.activation(*rob);
+			break;
+		}
+		case RAPETISSER:
+		{
+			//Rapetisser& rap = dynamic_cast<Rapetisser&>(co);
+			co.activation(*rob);
+			break;
+		}
+		case REPARER:
+		{
+			//Reparer& re = dynamic_cast<Reparer&>(co);
+			co.activation(*rob);
+			break;
+		}
 	}
 }
 

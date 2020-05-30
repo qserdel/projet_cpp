@@ -252,6 +252,14 @@ void Robot::blessure()  // Le robot est paralysé pendant un certain temps
     }
 }
 
+void Robot::activerBouclier()
+{
+	bouclier = true;
+	timerBouclier--;
+	if (timerBouclier <= 0)
+		timerBouclier = TIMER_BOUCLIER;
+}
+
 void Robot::chargement_image()
 {
 	string fin_nom;

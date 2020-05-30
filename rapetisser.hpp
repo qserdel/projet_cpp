@@ -12,6 +12,9 @@ class Rapetisser : public Collectable {
 	public :
 
 		Rapetisser();
+		virtual void activation(Robot &r);
+		
+		virtual ~Rapetisser() {};
 
 };
 #endif
