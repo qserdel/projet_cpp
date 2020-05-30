@@ -29,9 +29,8 @@ class Jeu {
 			Collision collision;
 			Balle tabBalles[10];
 			Clock clock;
-    	float elapsed = 0;
-    	Bouclier bouclier;
-    	Music music;
+			float elapsed = 0;
+	    	//Music music;
 
 	public :
 

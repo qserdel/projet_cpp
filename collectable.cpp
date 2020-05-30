@@ -1,5 +1,6 @@
 #include "collectable.hpp"
 
+// Constructeurs
 
 Collectable::Collectable() : action_imediate(false)
 {
@@ -16,6 +17,17 @@ Collectable::Collectable(int n) : action_imediate(false)
 
 Collectable::Collectable(Collectable const& copy) : txt(copy.txt), sp(copy.sp), number(copy.number), spriteStable(copy.spriteStable)
 { }
+
+// Méthodes
+
+/*void Collectable::activation(Collectable co)
+{
+	
+}
+*/
+
+
+
 
 void Collectable::move(Vector2f v)
 {

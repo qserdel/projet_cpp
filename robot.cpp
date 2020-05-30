@@ -6,7 +6,7 @@
 
 
 Robot::Robot(string name){
-	_name=name;
+	_name = name;
 	vitesse = 300;
 	taille = STANDARD;
 	hauteurSaut = 500;
@@ -34,7 +34,7 @@ Robot::Robot(string name){
 void Robot::detect_KeyPressed()
 {
 	if (( _name == "Joueur1") && (state != BLESSE))
-	// Le joueur ne peut rien faire s'il est blessé ou juste apres avoir tiré
+	// Le joueur ne peut rien faire s'il est blessé ou juste après avoir tiré
 	{
 		if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
@@ -92,16 +92,16 @@ void Robot::detect_KeyPressed()
 		{
 		  robotActuel = texture[15+increment_left];
 			state = TIRER;
-    }
+    	}
 	}
 }
 
 
 void Robot::move(float elapsed)
 {
-		if(timerTir>0){
-			timerTir--;
-		}
+	if(timerTir > 0){
+		timerTir--;
+	}
     float monte = 0.f;
     if ((aGenoux == true) && (state != DOWN))  // Si le robot était baissé sur la frame précédente et qu'il se relève, alors on remonte le robot
     {
@@ -363,6 +363,8 @@ void Robot::setTextRect(float w, float h) {sprite.setTextureRect(IntRect(0, 0, w
 void Robot::setEnPleinGrandissement(bool r) {enPleinGrandissement = r;};
 void Robot::setEnPleinRapetissement(bool r) {enPleinRapetissement = r;};
 void Robot::resetTimerTir() {timerTir=TIMER_TIR;};
+void Robot::setMinScale(float min) {min_scale = min;};
+void Robot::setMaxScale(float max) {max_scale = max;};
 
 IntRect Robot::getRectRobot() const
 {
