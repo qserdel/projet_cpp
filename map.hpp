@@ -12,7 +12,7 @@
 #include <ctime>
 
 #define POS_SOL 700
-#define TIMER_MAP 200
+#define TIMER_MAP 300
 #define NB_COLLECTABLE 4
 
 using namespace sf;
@@ -21,7 +21,7 @@ using namespace std;
 class Map {
 
 	private :
-		int index; 
+		int index;
 		Texture fond;
 		Texture mur;
 		Sprite spriteFond;
