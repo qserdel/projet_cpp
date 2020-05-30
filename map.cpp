@@ -1,18 +1,47 @@
 #include "map.hpp"
 
-Map::Map() : timerMap(TIMER_MAP)
+Map::Map(int i) : timerMap(TIMER_MAP)
 {
-	if(!fond.loadFromFile("images/fond.jpg",IntRect(100, 300, 1000, 1000)))
-      exit(EXIT_FAILURE);
-    spriteFond.setTexture(fond);
-    spriteFond.setPosition(Vector2f(0.f, 0.f));
+	index=i;
+	switch(index){
+		case 1:
+			if(!fond.loadFromFile("images/fond.jpg",IntRect(100, 300, 1000, 1000)))
+      	exit(EXIT_FAILURE);
+    	spriteFond.setTexture(fond);
 
-    if(!mur.loadFromFile("images/mur.jpg"))
-      exit(EXIT_FAILURE);
-    spriteSol.setTexture(mur);
-    spriteSol.setTextureRect(IntRect(0, 0, 1000, 50));
-    spriteSol.setPosition(Vector2f(0.f, POS_SOL));
-    creation_objets();
+    	if(!mur.loadFromFile("images/mur.jpg"))
+      	exit(EXIT_FAILURE);
+    	spriteSol.setTexture(mur);
+    	spriteSol.setTextureRect(IntRect(0, 0, 1000, 50));
+    	spriteSol.setPosition(Vector2f(0.f, POS_SOL));
+    	creation_objets();
+		break;
+		case 2:
+			if(!fond.loadFromFile("images/fond2.png",IntRect(0, 0, 1000, 1000)))
+				exit(EXIT_FAILURE);
+			spriteFond.setTexture(fond);
+
+			if(!mur.loadFromFile("images/mur2.png"))
+				exit(EXIT_FAILURE);
+			spriteSol.setTexture(mur);
+			spriteSol.setTextureRect(IntRect(0, 0, 1000, 50));
+			spriteSol.setPosition(Vector2f(0.f, POS_SOL));
+			creation_objets();
+		break;
+		case 3:
+			if(!fond.loadFromFile("images/fond3.jpg",IntRect(0, 0, 1000, 1000)))
+				exit(EXIT_FAILURE);
+			spriteFond.setTexture(fond);
+
+			if(!mur.loadFromFile("images/mur3.png"))
+				exit(EXIT_FAILURE);
+			spriteSol.setTexture(mur);
+			spriteSol.setTextureRect(IntRect(0, 0, 1000, 50));
+			spriteSol.setPosition(Vector2f(0.f, POS_SOL));
+			creation_objets();
+		break;
+	}
+
 }
 
 
@@ -20,17 +49,50 @@ void Map::creation_objets()
 {
 	Sprite obj(mur);
 	//placement prédéfini des objets de la map
-		obj.setTextureRect(IntRect(0,0,600,30));
-		obj.setPosition(Vector2f(200, 500));
-		objets.push_back(obj);
-		obj.setTextureRect(IntRect(0,0,200,30));
-		obj.setPosition(Vector2f(50, 300));
-		objets.push_back(obj);
-		obj.setPosition(Vector2f(750,300));
-		objets.push_back(obj);
-		obj.setTextureRect(IntRect(0,0,100,30));
-		obj.setPosition(Vector2f(450, 150));
-		objets.push_back(obj);
+	switch(index){
+		case 1:
+			obj.setTextureRect(IntRect(0,0,600,30));
+			obj.setPosition(Vector2f(200, 500));
+			objets.push_back(obj);
+			obj.setTextureRect(IntRect(0,0,200,30));
+			obj.setPosition(Vector2f(50, 300));
+			objets.push_back(obj);
+			obj.setPosition(Vector2f(750,300));
+			objets.push_back(obj);
+			obj.setTextureRect(IntRect(0,0,100,30));
+			obj.setPosition(Vector2f(450, 150));
+			objets.push_back(obj);
+		break;
+		case 2:
+			obj.setTextureRect(IntRect(0,0,250,30));
+			obj.setPosition(Vector2f(100, 530));
+			objets.push_back(obj);
+			obj.setPosition(Vector2f(600, 530));
+			objets.push_back(obj);
+			obj.setPosition(Vector2f(100, 180));
+			objets.push_back(obj);
+			obj.setPosition(Vector2f(600, 180));
+			objets.push_back(obj);
+			obj.setTextureRect(IntRect(0,0,100,30));
+			obj.setPosition(Vector2f(450, 360));
+			objets.push_back(obj);
+		break;
+		case 3:
+			obj.setTextureRect(IntRect(0,0,700,30));
+			obj.setPosition(Vector2f(150, 360));
+			objets.push_back(obj);
+			obj.setTextureRect(IntRect(0,0,300,30));
+			obj.setPosition(Vector2f(600, 530));
+			objets.push_back(obj);
+			obj.setPosition(Vector2f(100, 530));
+			objets.push_back(obj);
+			obj.setPosition(Vector2f(600, 530));
+			objets.push_back(obj);
+			obj.setTextureRect(IntRect(0,0,100,30));
+			obj.setPosition(Vector2f(450, 180));
+			objets.push_back(obj);
+		break;
+	}
 }
 
 void Map::ajoutCollectable()
@@ -53,9 +115,6 @@ void Map::ajoutCollectable()
 
 		case 3:
 			c.push_back(*(new Reparer));
-			break;
-
-		default:
 			break;
 	}
 }

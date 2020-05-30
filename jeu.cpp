@@ -3,7 +3,7 @@
 using namespace sf;
 
 
-Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window"), rob("Joueur1"), rob2("Joueur2")
+Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window"), rob("Joueur1"), rob2("Joueur2"), map(3) //changer la map ici 
 {
 	window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
 	//chargement des textures des pv des robots et création du tableau des sprites
@@ -144,7 +144,6 @@ int Jeu::play()
     // Play the music
 		music.setLoop(true);
     music.play();
-	//map.ajouterSpriteListeCollec(bouclier);
     // Start the game loop
     while (window.isOpen())
     {

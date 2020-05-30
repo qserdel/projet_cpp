@@ -21,6 +21,7 @@ using namespace std;
 class Map {
 
 	private :
+		int index; 
 		Texture fond;
 		Texture mur;
 		Sprite spriteFond;
@@ -28,12 +29,12 @@ class Map {
 		vector<Sprite> objets;
 		vector<Collectable> c;
 		float timerMap;
-		
-	
+
+
 	public :
-	
-		Map();
-		
+
+		Map(int index);
+
 		void creation_objets();
 		void ajoutCollectable();
 		void updateMap();
@@ -41,7 +42,7 @@ class Map {
 		void supprimerCollec(int indice);
 		void setPosCollec(float x, float y, int indice);
 		void moveCollec(Vector2f v, int indice);
-		
+
 		Sprite getSpriteFond() const;
 		Sprite getSpriteSol() const;
 		Sprite getSpriteCollec(int indice) const;
