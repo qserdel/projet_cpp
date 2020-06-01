@@ -36,6 +36,7 @@ class Map {
 
 		Map(int index);
 
+		void create();
 		void creation_objets();
 		void ajoutCollectable();
 		void updateMap();
@@ -55,6 +56,7 @@ class Map {
 		IntRect getRectColl(int indice) const;
 		void setListCollec(Collectable *cnew, int i);
 		void setSpriteStable(bool a, int i);
+		void setIndex(int i);
 
 
 };

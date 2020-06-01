@@ -31,7 +31,7 @@ map.o: map.cpp map.hpp reparer.hpp
 	g++ -c map.cpp -I./SFML-2.5.1/include
 
 menu.o: menu.cpp menu.hpp
-	g++ -c menu.cpp
+	g++ -c menu.cpp -I./SFML-2.5.1/include
 
 rapetisser.o: rapetisser.cpp rapetisser.hpp collectable.hpp
 	g++ -c rapetisser.cpp -I./SFML-2.5.1/include

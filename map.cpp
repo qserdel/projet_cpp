@@ -3,11 +3,15 @@
 Map::Map(int i) : timerMap(TIMER_MAP)
 {
 	index=i;
+	create();
+}
+
+void Map::create(){
 	switch(index){
 		case 1:
 			if(!fond.loadFromFile("images/fond.jpg",IntRect(100, 300, 1000, 1000)))
-      			exit(EXIT_FAILURE);
-    		spriteFond.setTexture(fond);
+      		exit(EXIT_FAILURE);
+    	spriteFond.setTexture(fond);
 
 			if(!mur.loadFromFile("images/mur.jpg"))
 		  		exit(EXIT_FAILURE);
@@ -43,9 +47,7 @@ Map::Map(int i) : timerMap(TIMER_MAP)
 		default:
 		break;
 	}
-
 }
-
 
 void Map::creation_objets()
 {
@@ -166,6 +168,11 @@ vector<Sprite> Map::getListObjets() const { return objets; };
 vector<Collectable *> Map::getListCollec() const { return c; };
 void Map::setListCollec(Collectable *cnew, int i) { c[i] = cnew; };
 void Map::setSpriteStable(bool a, int i) { c[i]->setSpriteStable(a); };
+void Map::setIndex(int i){
+	index=i;
+	create();
+	creation_objets();
+}
 
 
 IntRect Map::getRectObj(int indice) const

@@ -8,6 +8,7 @@
 #include "balle.hpp"
 #include "collision.hpp"
 #include "collectable.hpp"
+#include "menu.hpp"
 
 
 using namespace sf;
@@ -19,6 +20,7 @@ class Jeu {
 
 	private :
 			Map map;
+			Menu menu;
 			RenderWindow window;
 			Robot rob;
 			Robot rob2;

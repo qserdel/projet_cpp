@@ -3,7 +3,7 @@
 using namespace sf;
 
 
-Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window"), rob("Joueur1"), rob2("Joueur2"), map(3)
+Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window"), rob("Joueur1"), rob2("Joueur2"),map(1)
 {
 	window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
 	// Chargement des textures des pv des robots et création du tableau des sprites
@@ -150,48 +150,79 @@ int Jeu::play()
     // Start the game loop
     while (window.isOpen())
 		{
-			while(rob.getPv()>0 && rob2.getPv()>0)
-    	{
-        // Process events
-        Event event;
-        elapsed = clock.restart().asSeconds();
-
-        while (window.pollEvent(event))
-        {
-            // Close window: exit
-            if (event.type == Event::Closed)
-                window.close();
-
-            rob.detect_KeyPressed();
-            rob2.detect_KeyPressed();
-            if (rob.getStatus() == DOWN)
-                rob.move(elapsed);
-            if (rob2.getStatus() == DOWN)
-                rob2.move(elapsed);
-        }
-
-        update();
-        updateMap();
-				draw();
-    }
-		//fin du jeu
-		window.clear();
-		if(rob.getPv()==0){
-			spriteVictoire.setTexture(victoire2);
-		} else {
-			spriteVictoire.setTexture(victoire1);
-		}
-		window.draw(spriteVictoire);
-		window.display();
-		sleep(seconds(5));
-		Event event;
-		while (window.pollEvent(event) && !Keyboard::isKeyPressed(Keyboard::Enter))
-		{
+			// Process events
+			Event event;
+			while (window.pollEvent(event)){
 				// Close window: exit
 				if (event.type == Event::Closed)
-						window.close();
+					window.close();
+				switch(menu.getIndex()){
+					case 0:
+					//menu de base
+						window.clear();
+						window.draw(menu.getFond());
+						window.draw(menu.getPlay());
+						window.display();
+						if(menu.getPlay().getGlobalBounds().contains(Mouse::getPosition().x,Mouse::getPosition().y) && Mouse::isButtonPressed(Mouse::Left))
+							menu.setIndex(1);
+					break;
+					case 1:
+					//choix de la map
+						window.clear();
+						window.draw(menu.getFondMap());
+						window.display();
+						if(Mouse::getPosition().x<333 && Mouse::isButtonPressed(Mouse::Left)){
+							map.setIndex(1);
+							menu.setIndex(2);
+							sleep(milliseconds(200));
+						}
+						if(Mouse::getPosition().x>=333 && Mouse::getPosition().x<=666 && Mouse::isButtonPressed(Mouse::Left)){
+							map.setIndex(2);
+							menu.setIndex(2);
+							sleep(milliseconds(200));
+						}
+						if(Mouse::getPosition().x>666 && Mouse::isButtonPressed(Mouse::Left)){
+							map.setIndex(3);
+							menu.setIndex(2);
+							sleep(milliseconds(200));
+						}
+					break;
+					case 2:
+					//jeu
+						while(rob.getPv()>0 && rob2.getPv()>0 && window.pollEvent(event)){
+							elapsed = clock.restart().asSeconds();
+            	// Close window: exit
+            	if (event.type == Event::Closed)
+                window.close();
 
+            	rob.detect_KeyPressed();
+            	rob2.detect_KeyPressed();
+            	if (rob.getStatus() == DOWN)
+                rob.move(elapsed);
+            	if (rob2.getStatus() == DOWN)
+                rob2.move(elapsed);
+
+        			update();
+        			updateMap();
+							draw();
+						}
+						menu.setIndex(3);
+					break;
+					case 3:
+					//fin du jeu
+						window.clear();
+						if(rob.getPv()==0){
+							spriteVictoire.setTexture(victoire2);
+						} else {
+							spriteVictoire.setTexture(victoire1);
+						}
+						window.draw(spriteVictoire);
+						window.display();
+						menu.setIndex(0);
+						sleep(seconds(5));
+					break;
+				}
+			}
 		}
-  	return EXIT_SUCCESS;
-	}
+		return EXIT_SUCCESS;
 }
