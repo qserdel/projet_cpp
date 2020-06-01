@@ -8,4 +8,7 @@ Bouclier::Bouclier() : Collectable(BOUCLIER)
 	sp.setTexture(txt);
 }
 
-
+void Bouclier::activation(Robot &r)
+{
+	r.activerBouclier();
+}

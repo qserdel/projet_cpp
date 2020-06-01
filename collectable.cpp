@@ -20,13 +20,6 @@ Collectable::Collectable(Collectable const& copy) : txt(copy.txt), sp(copy.sp), 
 
 // Méthodes
 
-/*void Collectable::activation(Collectable co)
-{
-	
-}
-*/
-
-
 
 
 void Collectable::move(Vector2f v)

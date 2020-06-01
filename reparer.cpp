@@ -7,3 +7,10 @@ Reparer::Reparer() : Collectable(REPARER)
 			exit(EXIT_FAILURE);
 	sp.setTexture(txt);
 }
+
+void Reparer::activation(Robot &r)
+{
+	r.setPv(r.getPv() + 3);
+	if(r.getPv() > PV_MAX)
+		r.setPv(PV_MAX);
+}

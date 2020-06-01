@@ -3,7 +3,6 @@
 #include "equipement.hpp"
 #include "arme.hpp"
 #include <iostream>
-#include "collectable.hpp"
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
@@ -21,6 +20,7 @@ using namespace sf;
 #define TIMER_PETIT 300
 #define TIMER_GRAND 300
 #define TIMER_TIR 30
+#define TIMER_BOUCLIER 200
 
 #define PV_MAX 25
 
@@ -50,11 +50,13 @@ class Robot {
 		int timerPetit = TIMER_PETIT;
 		int timerBlesse = TIMER_BLESSE;
 	  	int timerTir = 0;
+	  	int timerBouclier = TIMER_BOUCLIER;
 		float min_scale = 0.5;
 		float max_scale = 2;
 		int increment_left = 0;
 		float taillePrec = 0;
 		bool direction; //true vers la droite, false vers la gauche
+		bool bouclier = false;
 
 		Sprite sprite;
 
@@ -69,6 +71,7 @@ class Robot {
 		void chargement_image();
 		void sauter(float elapsed);
 		void blessure();
+		void activerBouclier();
 
 
 		// Accesseurs

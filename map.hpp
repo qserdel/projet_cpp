@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <ctime>
+#include "robot.hpp"
 
 #define POS_SOL 700
 #define TIMER_MAP 300
@@ -42,6 +43,7 @@ class Map {
 		void supprimerCollec(int indice);
 		void setPosCollec(float x, float y, int indice);
 		void moveCollec(Vector2f v, int indice);
+		void gestionCollectable(Collectable &co, Robot *rob);
 
 		Sprite getSpriteFond() const;
 		Sprite getSpriteSol() const;
