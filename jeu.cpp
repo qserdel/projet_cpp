@@ -17,6 +17,11 @@ Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window"), rob
 		spritesPv2[i].setTexture(pvRed,true);
 		spritesPv2[i].setPosition(Vector2f(TAILLE_WINDOW-20-10*i,0));
 	}
+	// Chargement des textures de fin de partie
+	if (!victoire1.loadFromFile("images/victoire1.png"))
+		exit(EXIT_FAILURE);
+	if (!victoire2.loadFromFile("images/victoire2.png"))
+		exit(EXIT_FAILURE);
 }
 
 void Jeu::gestionTirs(Robot &rob)
@@ -79,7 +84,7 @@ void Jeu::update()
     collision.gestionAtterrissage(&rob, &map, elapsed);
     collision.gestionAtterrissage(&rob2, &map, elapsed);
     collision.gestionAtterrissageCollec(&map, elapsed);
-    
+
     rob.actionBouclier();
     rob2.actionBouclier();
 }
@@ -88,6 +93,7 @@ void Jeu::draw()
 {
 	// Clear screen
     window.clear();
+
     // Draw the sprite
     window.draw(map.getSpriteFond());
     window.draw(map.getSpriteSol());
@@ -114,7 +120,7 @@ void Jeu::draw()
 		CircleShape bouclier(Bouclier::formationBouclier(rob));
 		window.draw(bouclier);
 	}
-	
+
 	if (rob2.getBouclier())
 	{
 		CircleShape bouclier2(Bouclier::formationBouclier(rob2));
@@ -143,7 +149,9 @@ int Jeu::play()
 
     // Start the game loop
     while (window.isOpen())
-    {
+		{
+			while(rob.getPv()>0 && rob2.getPv()>0)
+    	{
         // Process events
         Event event;
         elapsed = clock.restart().asSeconds();
@@ -164,7 +172,26 @@ int Jeu::play()
 
         update();
         updateMap();
-		draw();
+				draw();
     }
-    return EXIT_SUCCESS;
+		//fin du jeu
+		window.clear();
+		if(rob.getPv()==0){
+			spriteVictoire.setTexture(victoire2);
+		} else {
+			spriteVictoire.setTexture(victoire1);
+		}
+		window.draw(spriteVictoire);
+		window.display();
+		sleep(seconds(5));
+		Event event;
+		while (window.pollEvent(event) && !Keyboard::isKeyPressed(Keyboard::Enter))
+		{
+				// Close window: exit
+				if (event.type == Event::Closed)
+						window.close();
+
+		}
+  	return EXIT_SUCCESS;
+	}
 }

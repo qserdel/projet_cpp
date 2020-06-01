@@ -24,8 +24,11 @@ class Jeu {
 			Robot rob2;
 			Texture pvBlue;
 			Texture pvRed;
+			Texture victoire1;
+			Texture victoire2;
 			Sprite spritesPv1[PV_MAX];
 			Sprite spritesPv2[PV_MAX];
+			Sprite spriteVictoire;
 			Collision collision;
 			vector<Balle> tabBalles;
 			Clock clock;
