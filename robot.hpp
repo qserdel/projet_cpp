@@ -17,7 +17,7 @@ using namespace sf;
 #define GRAVITE -10
 #define POS_SOL 700
 
-#define TIMER_BLESSE 30
+#define TIMER_BLESSE 20
 #define TIMER_PETIT 300
 #define TIMER_GRAND 300
 #define TIMER_TIR 30

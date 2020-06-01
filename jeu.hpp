@@ -30,7 +30,7 @@ class Jeu {
 			Balle tabBalles[10];
 			Clock clock;
 			float elapsed = 0;
-	    	//Music music;
+	    Music music;
 
 	public :
 

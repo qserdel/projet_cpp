@@ -3,7 +3,7 @@
 using namespace sf;
 
 
-Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window"), rob("Joueur1"), rob2("Joueur2"), map(2)
+Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window"), rob("Joueur1"), rob2("Joueur2"), map(3)
 {
 	window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
 	//chargement des textures des pv des robots et création du tableau des sprites
@@ -138,12 +138,12 @@ void Jeu::updateMap()
 
 int Jeu::play()
 {
-    /*// Load a music to play
+    // Load a music to play
     if (!music.openFromFile("images/BlazerRail.wav"))
         return EXIT_FAILURE;
     // Play the music
 		music.setLoop(true);
-    music.play();*/
+    music.play();
 
     // Start the game loop
     while (window.isOpen())
