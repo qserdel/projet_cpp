@@ -8,7 +8,7 @@
 #include "balle.hpp"
 #include "collision.hpp"
 #include "collectable.hpp"
-#include "bouclier.hpp"
+
 
 using namespace sf;
 
@@ -27,10 +27,10 @@ class Jeu {
 			Sprite spritesPv1[PV_MAX];
 			Sprite spritesPv2[PV_MAX];
 			Collision collision;
-			Balle tabBalles[10];
+			vector<Balle> tabBalles;
 			Clock clock;
 			float elapsed = 0;
-	    Music music;
+	    	//Music music;
 
 	public :
 
@@ -40,6 +40,9 @@ class Jeu {
 		void update();
 		void draw();
 		void updateMap();
+		void gestionTirs(Robot &rob);
+		void updateActionRobot(Robot &rob);
+		void gestionAttaques(Robot &rob);
 		//void playMusic();
 
 

@@ -4,14 +4,17 @@ Collision::Collision() : altitude_atterrissage(0)
 {}
 
 
-void Collision::gestionCollisionBalle(Robot *r, Balle *b, Map *map, float elapsed)
+void Collision::gestionCollisionBalle(Robot *r, vector<Balle> &tBalles, int i, Map *map, float elapsed)
 {
-	if (detectCollision(b->getRectBalle(), r->getRectRobot()))
+	if (detectCollision(tBalles[i].getRectBalle(), r->getRectRobot()) && tBalles[i].getID() != r->getID())
     {
-        r->setStatus(BLESSE);
-        r->setRobotActuel(r->getTexture(14+r->getIncrementLeft()));
-        r->setPv(r->getPv()-1);
-				b->setX(-100);
+    	if (r->getBouclier() == false)
+    	{
+		    r->setStatus(BLESSE);
+		    r->setRobotActuel(r->getTexture(14+r->getIncrementLeft()));
+		    r->setPv(r->getPv()-1);
+	    }
+		tBalles.erase(tBalles.begin() + i);
     }
 }
 
@@ -35,28 +38,7 @@ void Collision::collisionCollec(Robot *r, Map *map)
     	if (detectCollision(map->getRectColl(i), r->getRectRobot()))
     	{
     		map->gestionCollectable(map->getListCollec()[i], r);
-			int collec = map->getListCollec()[i].getNumber();
     		map->supprimerCollec(i);
-    		/*switch(collec)
-    		{
-    			case BOUCLIER:
-					break;
-					case GRANDIR:
-						cout<<"Grandir !"<<endl;
-						r->setEnPleinGrandissement(true);
-						r->setMaxScale(2);
-					break;
-					case RAPETISSER:
-						cout<<"Rapetisser !"<<endl;
-						r->setEnPleinRapetissement(true);
-						r->setMinScale(0.5);
-					break;
-				case REPARER:
-					r->setPv(r->getPv()+3);
-					if(r->getPv()>PV_MAX)
-						r->setPv(PV_MAX);
-					break;
-    		}*/
 		}
     }
 }
@@ -146,3 +128,5 @@ void Collision::atterrissage(float altitude, Robot *r)
     else if (r->getStatus() == DOWN)
 		r->setPosSprite(r->getSprite().getPosition().x, altitude-r->getSprite().getScale().y*HAUTEUR_ROBOT+20.f*r->getSprite().getScale().y);
 }
+
+

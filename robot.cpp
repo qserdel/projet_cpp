@@ -12,6 +12,7 @@ Robot::Robot(string name){
 	hauteurSaut = 500;
 	nbFrame = 0;
 	chargement_image();
+	gestionMunitions();
 	if(_name == "Joueur1")
 	{
 		ID = 0;
@@ -60,9 +61,9 @@ void Robot::detect_KeyPressed()
 
 		if (Keyboard::isKeyPressed(Keyboard::Space))
 		{
-		  robotActuel = texture[15+increment_left];
+		  	robotActuel = texture[15+increment_left];
 			state = TIRER;
-    }
+    	}
 	}
   else if ((_name == "Joueur2") && (state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
     {
@@ -90,7 +91,7 @@ void Robot::detect_KeyPressed()
 
 		if (Keyboard::isKeyPressed(Keyboard::E))
 		{
-		  robotActuel = texture[15+increment_left];
+		  	robotActuel = texture[15+increment_left];
 			state = TIRER;
     	}
 	}
@@ -102,16 +103,16 @@ void Robot::move(float elapsed)
 	if(timerTir > 0){
 		timerTir--;
 	}
-    float monte = 0.f;
+
     if ((aGenoux == true) && (state != DOWN))  // Si le robot était baissé sur la frame précédente et qu'il se relève, alors on remonte le robot
     {
-        monte = -20.f*sprite.getScale().y;
+    	sprite.move(Vector2f(0, -20.f*sprite.getScale().y));
         aGenoux = false;
     }
 
 	if (state == WALK_RIGHT && sprite.getPosition().x < TAILLE_WINDOW-LARGEUR_ROBOT)  // Si le robot n'est pas hors de la fenêtre à droite
     {
-        sprite.move(Vector2f(vitesse*elapsed, monte));  // Déplacement par rapport à la position actuelle
+        sprite.move(Vector2f(vitesse*elapsed, 0));  // Déplacement par rapport à la position actuelle
         (nbFrame)++;
         if(nbFrame == 10)
 	        nbFrame = 0;
@@ -119,7 +120,7 @@ void Robot::move(float elapsed)
 	}
     else if (state == WALK_LEFT && sprite.getPosition().x > 0)  // Si le robot n'est pas hors de la fenêtre à gauche
     {
-    	sprite.move(Vector2f(-vitesse*elapsed, monte));  // Déplacement vers la gauche
+    	sprite.move(Vector2f(-vitesse*elapsed, 0));  // Déplacement vers la gauche
     	(nbFrame)++;
     	if(nbFrame == 10)
     		nbFrame = 0;
@@ -128,15 +129,11 @@ void Robot::move(float elapsed)
 	else if ((state == DOWN) && (aGenoux == false))
 	{
 	    robotActuel = texture[11+increment_left];
-	    sprite.move(Vector2f(0.f, 20.f*sprite.getScale().y));
+	    sprite.move(Vector2f(0.f, 20.f*sprite.getScale().y)); // Le robot se baisse
         aGenoux = true;
 	}
 	else if (state == NORMAL)
-	{
 	    robotActuel = texture[10+increment_left];
-	    if(monte != 0.f)  // Si le robot n'est pas au niveau du sol parce que le robot s'est baissé sur la frame précédente, je remonte
-	        sprite.move(Vector2f(0.f, monte));
-    }
 
     if (enPleinJump == true)
     	sauter(elapsed);
@@ -243,7 +240,6 @@ void Robot::rapetisser()
 void Robot::blessure()  // Le robot est paralysé pendant un certain temps
 {
     timerBlesse--;
-
     if (timerBlesse <= 0)
     {
         state = NORMAL;
@@ -252,12 +248,25 @@ void Robot::blessure()  // Le robot est paralysé pendant un certain temps
     }
 }
 
-void Robot::activerBouclier()
+void Robot::actionBouclier()
 {
-	bouclier = true;
 	timerBouclier--;
 	if (timerBouclier <= 0)
+	{
 		timerBouclier = TIMER_BOUCLIER;
+		bouclier = false;
+	}
+}
+
+void Robot::gestionMunitions()
+{
+	if (nbMunitions == 0)
+		nbMunitions = 5;
+}
+
+void Robot::effacerMunition()
+{
+	nbMunitions--;
 }
 
 void Robot::chargement_image()
@@ -358,6 +367,8 @@ float Robot::getX() const {return sprite.getPosition().x;};
 float Robot::getY() const {return sprite.getPosition().y;};
 int Robot::getID() const {return ID;};
 int Robot::getTimerTir() const {return timerTir;};
+bool Robot::getBouclier() const {return bouclier;};
+int Robot::getMunitions() const {return nbMunitions;};
 
 void Robot::setPv(int nbVie) {pv = nbVie;};
 void Robot::setNbFrame(int nbreF) {nbFrame = nbreF;};
@@ -373,6 +384,8 @@ void Robot::setEnPleinRapetissement(bool r) {enPleinRapetissement = r;};
 void Robot::resetTimerTir() {timerTir=TIMER_TIR;};
 void Robot::setMinScale(float min) {min_scale = min;};
 void Robot::setMaxScale(float max) {max_scale = max;};
+void Robot::setBouclier(bool a) {bouclier = a;};
+void Robot::setMunitions(int nbM) {nbMunitions = nbM;};
 
 IntRect Robot::getRectRobot() const
 {

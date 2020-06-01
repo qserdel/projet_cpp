@@ -2,6 +2,7 @@
 #define ROBOT_HPP
 #include "equipement.hpp"
 #include "arme.hpp"
+#include "balle.hpp"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
@@ -11,16 +12,16 @@ using namespace sf;
 
 #define HAUTEUR_ROBOT 135
 #define LARGEUR_ROBOT 100
-#define TAILLE_WINDOW 1000 //taille de la fenetre de jeu
+#define TAILLE_WINDOW 1000 // Taille de la fenêtre de jeu
 
 #define GRAVITE -10
 #define POS_SOL 700
 
-#define TIMER_BLESSE 20
+#define TIMER_BLESSE 30
 #define TIMER_PETIT 300
 #define TIMER_GRAND 300
 #define TIMER_TIR 30
-#define TIMER_BOUCLIER 200
+#define TIMER_BOUCLIER 400
 
 #define PV_MAX 25
 
@@ -57,6 +58,7 @@ class Robot {
 		float taillePrec = 0;
 		bool direction; //true vers la droite, false vers la gauche
 		bool bouclier = false;
+		int nbMunitions;
 
 		Sprite sprite;
 
@@ -71,7 +73,8 @@ class Robot {
 		void chargement_image();
 		void sauter(float elapsed);
 		void blessure();
-		void activerBouclier();
+		void actionBouclier();
+		void gestionMunitions();
 
 
 		// Accesseurs
@@ -96,6 +99,8 @@ class Robot {
 		float getY() const;
 		int getID() const;
 		int getTimerTir() const;
+		bool getBouclier() const;
+		int getMunitions() const;
 
 		void setPv(int nbVie);
 		void setNbFrame(int nbreF);
@@ -111,6 +116,9 @@ class Robot {
 		void setMinScale(float min);
 		void setMaxScale(float max);
 		void resetTimerTir();
+		void setBouclier(bool a);
+		void effacerMunition();
+		void setMunitions(int nbM);
 
 
 };

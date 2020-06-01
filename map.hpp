@@ -28,7 +28,7 @@ class Map {
 		Sprite spriteFond;
 		Sprite spriteSol;
 		vector<Sprite> objets;
-		vector<Collectable> c;
+		vector<Collectable *> c;
 		float timerMap;
 
 
@@ -39,11 +39,11 @@ class Map {
 		void creation_objets();
 		void ajoutCollectable();
 		void updateMap();
-		void ajouterSpriteListeCollec(Collectable cnew);
+		void ajouterSpriteListeCollec(Collectable *cnew);
 		void supprimerCollec(int indice);
 		void setPosCollec(float x, float y, int indice);
 		void moveCollec(Vector2f v, int indice);
-		void gestionCollectable(Collectable &co, Robot *rob);
+		void gestionCollectable(Collectable *co, Robot *rob);
 
 		Sprite getSpriteFond() const;
 		Sprite getSpriteSol() const;
@@ -51,9 +51,9 @@ class Map {
 		bool getSpriteStable(int i) const;
 		vector<Sprite> getListObjets() const;
 		IntRect getRectObj(int indice) const;
-		vector<Collectable> getListCollec() const;
+		vector<Collectable *> getListCollec() const;
 		IntRect getRectColl(int indice) const;
-		void setListCollec(Collectable cnew, int i);
+		void setListCollec(Collectable *cnew, int i);
 		void setSpriteStable(bool a, int i);
 
 

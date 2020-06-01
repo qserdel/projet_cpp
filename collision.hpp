@@ -20,7 +20,7 @@ class Collision
 
         Collision();
         
-        void gestionCollisionBalle(Robot *r, Balle *b, Map *map, float elapsed);
+        void gestionCollisionBalle(Robot *r, vector<Balle> &tBalles, int i, Map *map, float elapsed);
         void gestionAtterrissage(Robot *r, Map *map, float elapsed);
         bool detectCollision(const IntRect &b, const IntRect &r);
         bool detectAtterrissage(const IntRect &r,  const Map &map);

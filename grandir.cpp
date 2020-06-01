@@ -11,7 +11,7 @@ Grandir::Grandir() : Collectable(GRANDIR)
 
 void Grandir::activation(Robot &r)
 {
-	r.setEnPleinRapetissement(true);
-	r.setMinScale(0.5);
+	r.setEnPleinGrandissement(true);
+	r.setMaxScale(2);
 }
 

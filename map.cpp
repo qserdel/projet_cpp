@@ -104,52 +104,26 @@ void Map::ajoutCollectable()
 	switch(alea)
 	{
 		case 0:
-			c.push_back(*(new Bouclier));
+			c.push_back((new Bouclier));
 			break;
 
 		case 1:
-			c.push_back(*(new Grandir));
+			c.push_back((new Grandir));
 			break;
 
 		case 2:
-			c.push_back(*(new Rapetisser));
+			c.push_back((new Rapetisser));
 			break;
 
 		case 3:
-			c.push_back(*(new Reparer));
+			c.push_back((new Reparer));
 			break;
 	}
 }
 
-void Map::gestionCollectable(Collectable &co, Robot *rob)
+void Map::gestionCollectable(Collectable *co, Robot *rob)
 {
-	switch(co.getNumber())
-	{
-		case BOUCLIER:
-		{
-			//Bouclier& b = dynamic_cast<Bouclier&>(co);
-			co.activation(*rob);
-			break;
-		}
-		case GRANDIR:
-		{
-			//Grandir& gr = dynamic_cast<Grandir&>(co);
-			co.activation(*rob);
-			break;
-		}
-		case RAPETISSER:
-		{
-			//Rapetisser& rap = dynamic_cast<Rapetisser&>(co);
-			co.activation(*rob);
-			break;
-		}
-		case REPARER:
-		{
-			//Reparer& re = dynamic_cast<Reparer&>(co);
-			co.activation(*rob);
-			break;
-		}
-	}
+	co->activation(*rob);
 }
 
 void Map::updateMap()
@@ -162,7 +136,7 @@ void Map::updateMap()
 	}
 }
 
-void Map::ajouterSpriteListeCollec(Collectable cnew)
+void Map::ajouterSpriteListeCollec(Collectable *cnew)
 {
 	c.push_back(cnew);
 }
@@ -174,24 +148,24 @@ void Map::supprimerCollec(int indice)
 
 void Map::setPosCollec(float x, float y, int indice)
 {
-	c[indice].setPos(x, y);
+	c[indice]->setPos(x, y);
 }
 
 void Map::moveCollec(Vector2f v, int indice)
 {
-	c[indice].move(v);
+	c[indice]->move(v);
 }
 
 
 
 Sprite Map::getSpriteSol() const { return spriteSol; };
 Sprite Map::getSpriteFond() const { return spriteFond; };
-Sprite Map::getSpriteCollec(int indice) const { return c[indice].getSprite(); };
-bool Map::getSpriteStable(int i) const { return c[i].getSpriteStable(); };
+Sprite Map::getSpriteCollec(int indice) const { return c[indice]->getSprite(); };
+bool Map::getSpriteStable(int i) const { return c[i]->getSpriteStable(); };
 vector<Sprite> Map::getListObjets() const { return objets; };
-vector<Collectable> Map::getListCollec() const { return c; };
-void Map::setListCollec(Collectable cnew, int i) { c[i] = cnew; };
-void Map::setSpriteStable(bool a, int i) { c[i].setSpriteStable(a); };
+vector<Collectable *> Map::getListCollec() const { return c; };
+void Map::setListCollec(Collectable *cnew, int i) { c[i] = cnew; };
+void Map::setSpriteStable(bool a, int i) { c[i]->setSpriteStable(a); };
 
 
 IntRect Map::getRectObj(int indice) const
@@ -207,9 +181,9 @@ IntRect Map::getRectObj(int indice) const
 IntRect Map::getRectColl(int indice) const
 {
     IntRect rectC;
-    rectC.left = c[indice].getSprite().getPosition().x;
-    rectC.width = c[indice].getSprite().getPosition().x + c[indice].getSprite().getLocalBounds().width * c[indice].getSprite().getScale().x;
-    rectC.top = c[indice].getSprite().getPosition().y;
-    rectC.height = c[indice].getSprite().getPosition().y + c[indice].getSprite().getLocalBounds().height * c[indice].getSprite().getScale().y;
+    rectC.left = c[indice]->getSprite().getPosition().x;
+    rectC.width = c[indice]->getSprite().getPosition().x + c[indice]->getSprite().getLocalBounds().width * c[indice]->getSprite().getScale().x;
+    rectC.top = c[indice]->getSprite().getPosition().y;
+    rectC.height = c[indice]->getSprite().getPosition().y + c[indice]->getSprite().getLocalBounds().height * c[indice]->getSprite().getScale().y;
     return rectC;
 }
