@@ -3,7 +3,7 @@
 using namespace sf;
 
 
-Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW), "SFML window"), rob("Joueur1"), rob2("Joueur2"),map(1)
+Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW-290), "SFML window"), rob("Joueur1"), rob2("Joueur2"),map(1)
 {
 	window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
 	// Chargement des textures des pv des robots et création du tableau des sprites
@@ -189,7 +189,8 @@ int Jeu::play()
 					break;
 					case 2:
 					//jeu
-						while(rob.getPv()>0 && rob2.getPv()>0 && window.pollEvent(event)){
+						while(rob.getPv()>0 && rob2.getPv()>0){
+							window.pollEvent(event);
 							elapsed = clock.restart().asSeconds();
             	// Close window: exit
             	if (event.type == Event::Closed)
@@ -218,6 +219,8 @@ int Jeu::play()
 						}
 						window.draw(spriteVictoire);
 						window.display();
+						rob.setPv(PV_MAX);
+						rob2.setPv(PV_MAX);
 						menu.setIndex(0);
 						sleep(seconds(5));
 					break;
