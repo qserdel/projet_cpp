@@ -12,7 +12,7 @@ class Balle
 
         Texture textureBalle;
 
-        Sprite sp; // un pour chaque instance
+        Sprite sp; // Un pour chaque instance
 
         bool direction;
         int ID_Joueur;
@@ -28,6 +28,8 @@ class Balle
         IntRect getRectBalle() const;
         float getX() const;
         int getID() const;
+        bool getDir() const;
         void setX(float newX);
+        void setDir(bool a);
 };
 #endif

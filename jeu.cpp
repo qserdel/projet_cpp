@@ -56,7 +56,7 @@ void Jeu::gestionAttaques(Robot &rob)
     {
       if(tabBalles[i].getX() >= 0 && tabBalles[i].getX() <= TAILLE_WINDOW)
       {
-        collision.gestionCollisionBalle(&rob, tabBalles, i, &map, elapsed);
+        collision.gestionCollisionBalle(&rob, tabBalles, i);
         tabBalles[i].action();
       }
       else
@@ -100,7 +100,7 @@ void Jeu::draw()
     window.draw(rob.getSprite());
     window.draw(rob2.getSprite());
 
-	//affichage des pv de chaque robots
+	// Affichage des PVs de chaque robot
 	for(int i = 0; i < rob.getPv(); i++)
 		window.draw(spritesPv1[i]);
 	for(int i = 0; i < rob2.getPv(); i++)

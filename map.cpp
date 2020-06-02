@@ -2,7 +2,7 @@
 
 Map::Map(int i) : timerMap(TIMER_MAP)
 {
-	index=i;
+	index = i;
 	create();
 }
 
@@ -180,8 +180,10 @@ Sprite Map::getSpriteCollec(int indice) const { return c[indice]->getSprite(); }
 bool Map::getSpriteStable(int i) const { return c[i]->getSpriteStable(); };
 vector<Sprite> Map::getListObjets() const { return objets; };
 vector<Collectable *> Map::getListCollec() const { return c; };
+int Map::getTimerMap() const { return timerMap; };
 void Map::setListCollec(Collectable *cnew, int i) { c[i] = cnew; };
 void Map::setSpriteStable(bool a, int i) { c[i]->setSpriteStable(a); };
+void Map::setTimerMap(int t) { timerMap = t; };
 void Map::setIndex(int i){
 	vider();
 	index=i;

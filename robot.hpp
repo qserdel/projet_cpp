@@ -1,11 +1,11 @@
 #ifndef ROBOT_HPP
 #define ROBOT_HPP
-#include "equipement.hpp"
-#include "arme.hpp"
-#include "balle.hpp"
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <cstdlib>
+#include <cmath>
 
+using namespace std;
 using namespace sf;
 
 #define NI 18 // Nombre d'images dans un sens (robot profil droit par exemple)
@@ -23,7 +23,7 @@ using namespace sf;
 #define TIMER_TIR 30
 #define TIMER_BOUCLIER 400
 
-#define PV_MAX 1
+#define PV_MAX 1 //25
 
 enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, STANDARD, GRAND, BLESSE, TIRER};
 
@@ -36,8 +36,6 @@ class Robot {
 		Texture texture[36];
 		Texture robotActuel;
 		int pv = PV_MAX;
-		Arme arme;
-		Equipement equipement;
 		float vitesse;
 		int taille;
 		int hauteurSaut;
@@ -56,7 +54,7 @@ class Robot {
 		float max_scale = 2;
 		int increment_left = 0;
 		float taillePrec = 0;
-		bool direction; //true vers la droite, false vers la gauche
+		bool direction; // true vers la droite, false vers la gauche
 		bool bouclier = false;
 		int nbMunitions;
 
@@ -101,6 +99,7 @@ class Robot {
 		int getTimerTir() const;
 		bool getBouclier() const;
 		int getMunitions() const;
+		int getTimerBouclier() const;
 
 		void setPv(int nbVie);
 		void setNbFrame(int nbreF);

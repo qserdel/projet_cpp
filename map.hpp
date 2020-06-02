@@ -1,23 +1,18 @@
 #ifndef MAP_HPP
 #define MAP_HPP
-#include "collectable.hpp"
 #include "bouclier.hpp"
 #include "grandir.hpp"
 #include "rapetisser.hpp"
 #include "reparer.hpp"
-#include <cstdlib>
-#include <iostream>
-#include <SFML/Graphics.hpp>
+#include "robot.hpp"
 #include <vector>
 #include <ctime>
-#include "robot.hpp"
+
 
 #define POS_SOL 700
 #define TIMER_MAP 250
 #define NB_COLLECTABLE 4
 
-using namespace sf;
-using namespace std;
 
 class Map {
 
@@ -56,9 +51,11 @@ class Map {
 		IntRect getRectObj(int indice) const;
 		vector<Collectable *> getListCollec() const;
 		IntRect getRectColl(int indice) const;
+		int getTimerMap() const;
 		void setListCollec(Collectable *cnew, int i);
 		void setSpriteStable(bool a, int i);
 		void setIndex(int i);
+		void setTimerMap(int t);
 
 
 };

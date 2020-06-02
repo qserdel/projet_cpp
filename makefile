@@ -1,8 +1,5 @@
 all: main tests_catch clean
 
-arme.o: arme.cpp arme.hpp
-	g++ -c arme.cpp
-
 balle.o: balle.cpp balle.hpp
 	g++ -c balle.cpp -I./SFML-2.5.1/include
 
@@ -12,11 +9,8 @@ bouclier.o: bouclier.cpp bouclier.hpp collectable.hpp
 collectable.o: collectable.cpp collectable.hpp robot.hpp
 	g++ -c collectable.cpp -I./SFML-2.5.1/include
 
-collision.o: collision.cpp collision.hpp robot.hpp balle.hpp
+collision.o: collision.cpp collision.hpp robot.hpp balle.hpp map.hpp
 	g++ -c collision.cpp -I./SFML-2.5.1/include
-
-equipement.o: equipement.cpp equipement.hpp
-	g++ -c equipement.cpp
 
 grandir.o: grandir.cpp grandir.hpp collectable.hpp
 	g++ -c grandir.cpp -I./SFML-2.5.1/include
@@ -27,7 +21,7 @@ main.o: main.cpp robot.hpp
 jeu.o: jeu.cpp jeu.hpp
 	g++ -c jeu.cpp -I./SFML-2.5.1/include
 
-map.o: map.cpp map.hpp reparer.hpp
+map.o: map.cpp map.hpp bouclier.hpp grandir.hpp rapetisser.hpp reparer.hpp robot.hpp
 	g++ -c map.cpp -I./SFML-2.5.1/include
 
 menu.o: menu.cpp menu.hpp
@@ -42,23 +36,31 @@ reparer.o: reparer.cpp reparer.hpp collectable.hpp
 robot.o: robot.cpp robot.hpp balle.hpp
 	g++ -c robot.cpp -I./SFML-2.5.1/include
 
-main: arme.o balle.o bouclier.o collectable.o collision.o equipement.o grandir.o jeu.o main.o map.o menu.o robot.o rapetisser.o reparer.o
+main: balle.o bouclier.o collectable.o collision.o grandir.o jeu.o main.o map.o menu.o robot.o rapetisser.o reparer.o
 	g++ -o main $^ -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 play:
 	export LD_LIBRARY_PATH=./SFML-2.5.1/lib && ./main
 
+
 # Tests
+tests_catch: tests_catch_balle.o balle.o tests_catch_collision.o collision.o tests_catch_map.o map.o tests_catch_robot.o robot.o bouclier.o collectable.o grandir.o map.o rapetisser.o reparer.o
+	g++ -o tests_catch $^ -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system
 
-#tests_catch: tests_catch_robot.o robot.o
-#	g++ -o tests_catch $^ -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system
+tests_catch_balle.o: tests_catch_balle.cpp balle.hpp catch.hpp
+	g++ -c tests_catch_balle.cpp -I./SFML-2.5.1/include
 
+tests_catch_collision.o: tests_catch_collision.cpp collision.hpp catch.hpp
+	g++ -c tests_catch_collision.cpp -I./SFML-2.5.1/include
 
-#tests_catch_robot.o: tests_catch_robot.cpp robot.hpp catch.hpp
-#	g++ -c tests_catch_robot.cpp -I./SFML-2.5.1/include
+tests_catch_map.o: tests_catch_map.cpp map.hpp catch.hpp
+	g++ -c tests_catch_map.cpp -I./SFML-2.5.1/include
 
-#tests:
-#	export LD_LIBRARY_PATH=./SFML-2.5.1/lib && ./tests_catch
+tests_catch_robot.o: tests_catch_robot.cpp robot.hpp catch.hpp
+	g++ -c tests_catch_robot.cpp -I./SFML-2.5.1/include
+
+tests:
+	export LD_LIBRARY_PATH=./SFML-2.5.1/lib && ./tests_catch
 
 
 clean:

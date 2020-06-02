@@ -4,7 +4,7 @@ Collision::Collision() : altitude_atterrissage(0)
 {}
 
 
-void Collision::gestionCollisionBalle(Robot *r, vector<Balle> &tBalles, int i, Map *map, float elapsed)
+void Collision::gestionCollisionBalle(Robot *r, vector<Balle> &tBalles, int i)
 {
 	if (detectCollision(tBalles[i].getRectBalle(), r->getRectRobot()) && tBalles[i].getID() != r->getID())
     {
@@ -68,7 +68,7 @@ void Collision::gestionAtterrissageCollec(Map *map, float elapsed)
 				map->setPosCollec(obj1.left, POS_SOL - (obj1.height - obj1.top), i);
 				map->setSpriteStable(true, i);
 			}
-			else
+			else if (!map->getSpriteStable(i))
 				map->moveCollec(Vector2f(0.f, 200.f*elapsed), i);
 		}
 	}
@@ -95,13 +95,10 @@ bool Collision::detectAtterrissage(const IntRect &r, const Map &map)
 	for (size_t i = 0; i < map.getListObjets().size(); i++)
     {
     	obj = map.getRectObj(i);
-    	if (abs(obj.top - r.height) <= 20)
+    	if (detectCollision(r, obj) && abs(obj.top - r.height) <= 20) // 20 car on autorise une petite marge d'erreur
 		{
-			if (detectCollision(r, obj))
-			{
-				altitude_atterrissage = obj.top;
-				return true;
-			}
+			altitude_atterrissage = obj.top;
+			return true;
 		}
     }
     if (POS_SOL - r.height <= 0)
@@ -129,4 +126,5 @@ void Collision::atterrissage(float altitude, Robot *r)
 		r->setPosSprite(r->getSprite().getPosition().x, altitude-r->getSprite().getScale().y*HAUTEUR_ROBOT+20.f*r->getSprite().getScale().y);
 }
 
+float Collision::getAltitude_atterrissage() const {return altitude_atterrissage;};
 
