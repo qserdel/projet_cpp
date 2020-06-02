@@ -11,7 +11,7 @@ Menu::Menu(){
     exit(EXIT_FAILURE);
   spriteFond.setTexture(fond);
   spritePlay.setTexture(play);
-  spritePlay.setPosition(350,425);
+  spritePlay.setPosition(350,275);
   spriteFondMap.setTexture(fondMap);
 }
 

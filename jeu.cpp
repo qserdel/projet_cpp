@@ -171,6 +171,7 @@ int Jeu::play()
 						window.clear();
 						window.draw(menu.getFondMap());
 						window.display();
+						sleep(milliseconds(200));
 						if(Mouse::getPosition().x<333 && Mouse::isButtonPressed(Mouse::Left)){
 							map.setIndex(1);
 							menu.setIndex(2);
