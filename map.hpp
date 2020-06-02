@@ -42,9 +42,11 @@ class Map {
 		void updateMap();
 		void ajouterSpriteListeCollec(Collectable *cnew);
 		void supprimerCollec(int indice);
+		void supprimerObjet(int indice);
 		void setPosCollec(float x, float y, int indice);
 		void moveCollec(Vector2f v, int indice);
 		void gestionCollectable(Collectable *co, Robot *rob);
+		void vider();
 
 		Sprite getSpriteFond() const;
 		Sprite getSpriteSol() const;

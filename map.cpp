@@ -148,6 +148,11 @@ void Map::supprimerCollec(int indice)
 	c.erase(c.begin() + indice);
 }
 
+void Map::supprimerObjet(int indice)
+{
+	objets.erase(objets.begin() + indice);
+}
+
 void Map::setPosCollec(float x, float y, int indice)
 {
 	c[indice]->setPos(x, y);
@@ -156,6 +161,15 @@ void Map::setPosCollec(float x, float y, int indice)
 void Map::moveCollec(Vector2f v, int indice)
 {
 	c[indice]->move(v);
+}
+
+void Map::vider(){
+	for(int i=0;i<c.size();i++){
+		supprimerCollec(i);
+	}
+	for(int i=0;i<objets.size();i++){
+		supprimerObjet(i);
+	}
 }
 
 
@@ -169,6 +183,7 @@ vector<Collectable *> Map::getListCollec() const { return c; };
 void Map::setListCollec(Collectable *cnew, int i) { c[i] = cnew; };
 void Map::setSpriteStable(bool a, int i) { c[i]->setSpriteStable(a); };
 void Map::setIndex(int i){
+	vider();
 	index=i;
 	create();
 	creation_objets();

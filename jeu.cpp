@@ -171,21 +171,18 @@ int Jeu::play()
 						window.clear();
 						window.draw(menu.getFondMap());
 						window.display();
-						sleep(milliseconds(200));
+						sleep(milliseconds(50));
 						if(Mouse::getPosition().x<333 && Mouse::isButtonPressed(Mouse::Left)){
 							map.setIndex(1);
 							menu.setIndex(2);
-							sleep(milliseconds(200));
 						}
 						if(Mouse::getPosition().x>=333 && Mouse::getPosition().x<=666 && Mouse::isButtonPressed(Mouse::Left)){
 							map.setIndex(2);
 							menu.setIndex(2);
-							sleep(milliseconds(200));
 						}
 						if(Mouse::getPosition().x>666 && Mouse::isButtonPressed(Mouse::Left)){
 							map.setIndex(3);
 							menu.setIndex(2);
-							sleep(milliseconds(200));
 						}
 					break;
 					case 2:
@@ -222,6 +219,9 @@ int Jeu::play()
 						window.display();
 						rob.setPv(PV_MAX);
 						rob2.setPv(PV_MAX);
+						rob.setPosSprite(20.f, POS_SOL-HAUTEUR_ROBOT);
+						rob2.setPosSprite(TAILLE_WINDOW - LARGEUR_ROBOT - 20.f, POS_SOL-HAUTEUR_ROBOT);
+						map.vider();
 						menu.setIndex(0);
 						sleep(seconds(5));
 					break;

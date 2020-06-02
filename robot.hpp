@@ -23,7 +23,7 @@ using namespace sf;
 #define TIMER_TIR 30
 #define TIMER_BOUCLIER 400
 
-#define PV_MAX 25
+#define PV_MAX 1
 
 enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, STANDARD, GRAND, BLESSE, TIRER};
 
