@@ -13,7 +13,7 @@
 #include "robot.hpp"
 
 #define POS_SOL 700
-#define TIMER_MAP 300
+#define TIMER_MAP 250
 #define NB_COLLECTABLE 4
 
 using namespace sf;

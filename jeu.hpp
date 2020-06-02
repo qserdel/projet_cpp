@@ -13,9 +13,6 @@
 
 using namespace sf;
 
-#define NB_BALLES 5 // Nombre de balles par personnage sur une frame
-
-
 class Jeu {
 
 	private :
