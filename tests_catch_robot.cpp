@@ -4,6 +4,8 @@
 //Ou si installé par la distribution : #include <catch2/catch.hpp>
 
 #include "robot.hpp"
+using namespace std;
+using namespace sf;
 
 TEST_CASE( "Robots can be created", "[robot]" ) {
 
@@ -15,11 +17,11 @@ TEST_CASE( "Robots can be created", "[robot]" ) {
 
     // Tests constructeur
     REQUIRE(r.getName() == "Joueur1");
-    REQUIRE(r.getPv() == 3);
+    REQUIRE(r.getPv() == 25);
     REQUIRE(r.getTaille() == STANDARD);
 
     REQUIRE(r2.getName() == "Joueur2");
-    REQUIRE(r2.getPv() == 3);
+    REQUIRE(r2.getPv() == 25);
 
 
 

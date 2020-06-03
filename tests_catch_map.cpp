@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "map.hpp"
+using namespace std;
+using namespace sf;
 
 TEST_CASE( "Map can be created", "[map]" ) {
 

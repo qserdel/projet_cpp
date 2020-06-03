@@ -1,5 +1,6 @@
 #include "balle.hpp"
 
+using namespace sf;
 
 Balle::Balle(){}
 
@@ -38,10 +39,14 @@ void Balle::action()
     }
 }
 
+Balle::~Balle()
+{}
+
 Sprite Balle::getSprite() const {return sp;};
 float Balle::getX() const {return sp.getPosition().x;};
 int Balle::getID() const {return ID_Joueur;};
 bool Balle::getDir() const {return direction;};
+float Balle::getLargeur() const {return sp.getLocalBounds().width;};
 void Balle::setX(float newX) {sp.setPosition(newX,sp.getPosition().y);};
 void Balle::setDir(bool a) {direction = a;};
 

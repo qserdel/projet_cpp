@@ -6,17 +6,14 @@
 #include <vector>
 #include <ctime>
 #include "robot.hpp"
+#include "parametres.hpp"
 
-enum {BOUCLIER, GRANDIR, RAPETISSER, REPARER};
-
-using namespace sf;
-
-
+// Classe abstraite
 class Collectable {
 
 	protected :
-		Texture txt;
-		Sprite sp;
+		sf::Texture txt;
+		sf::Sprite sp;
 		bool action_imediate;
 		int number;
 		bool spriteStable = false;
@@ -27,16 +24,16 @@ class Collectable {
 		Collectable(int n);
 		Collectable(Collectable const& copy);
 		
-		virtual ~Collectable() {};
+		virtual ~Collectable();
 		
-		virtual void activation(Robot &r) {};
-		void move(Vector2f v);
+		virtual void activation(Robot &r) = 0; // Fonction virtuelle pure
+		void move(sf::Vector2f v);
 		void setPos(float x, float y);
 		
-		Sprite getSprite() const;
+		sf::Sprite getSprite() const;
 		int getNumber() const;
 		bool getSpriteStable() const;
-		void setSprite(Sprite s);
+		void setSprite(sf::Sprite s);
 		void setSpriteStable(bool a);
 
 

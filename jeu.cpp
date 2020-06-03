@@ -2,7 +2,6 @@
 
 using namespace sf;
 
-
 Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW-290), "SFML window"), rob("Joueur1"), rob2("Joueur2"),map(1)
 {
 	window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
@@ -28,8 +27,8 @@ void Jeu::gestionTirs(Robot &rob)
 {
 	if (rob.getStatus() == TIRER && rob.getTimerTir() <= 0)
 	{
-		tabBalles.push_back(*(new Balle(rob.getX()+rob.getSprite().getGlobalBounds().width*0.7*rob.getDirection(),
-											rob.getY()+rob.getSprite().getGlobalBounds().height/3.6, rob.getDirection(), rob.getID())));
+		tabBalles.push_back(new Balle(rob.getX()+rob.getSprite().getGlobalBounds().width*0.7*rob.getDirection(),
+											rob.getY()+rob.getSprite().getGlobalBounds().height/3.6, rob.getDirection(), rob.getID()));
 		rob.effacerMunition();
 		rob.resetTimerTir();
 	}
@@ -54,13 +53,16 @@ void Jeu::gestionAttaques(Robot &rob)
 {
 	for(int i = 0; i < tabBalles.size(); i++)
     {
-      if(tabBalles[i].getX() >= 0 && tabBalles[i].getX() <= TAILLE_WINDOW)
+      if(tabBalles[i]->getX() >= 0 && tabBalles[i]->getX() <= TAILLE_WINDOW-tabBalles[i]->getLargeur())
       {
         collision.gestionCollisionBalle(&rob, tabBalles, i);
-        tabBalles[i].action();
+        tabBalles[i]->action();
       }
-      else
+      else // Si la balle est hors de la fenêtre, on la supprime
+      {
+      	delete tabBalles[i];
       	tabBalles.erase(tabBalles.begin() + i);
+	  }
   	}
   	if (rob.getStatus() == BLESSE)
     	rob.blessure();
@@ -107,7 +109,7 @@ void Jeu::draw()
 		window.draw(spritesPv2[i]);
 
     for(int i = 0; i < tabBalles.size(); i++)
-  		window.draw(tabBalles[i].getSprite());
+  		window.draw(tabBalles[i]->getSprite());
 
     for (int i = 0; i < map.getListObjets().size(); i++)
     	window.draw(map.getListObjets()[i]);
@@ -136,6 +138,15 @@ void Jeu::updateMap()
 	map.updateMap();
 	collision.collisionCollec(&rob, &map);
 	collision.collisionCollec(&rob2, &map);
+}
+
+void Jeu::clearBalles()
+{
+	while (!tabBalles.empty())
+	{
+		delete tabBalles.back();
+		tabBalles.pop_back();
+	}
 }
 
 int Jeu::play()
@@ -228,5 +239,7 @@ int Jeu::play()
 				}
 			}
 		}
+		map.vider();
+		clearBalles();
 		return EXIT_SUCCESS;
 }

@@ -14,9 +14,9 @@ class Bouclier : public Collectable {
 
 		Bouclier();
 		virtual void activation(Robot &r);
-		static CircleShape formationBouclier(Robot &rob);
+		static sf::CircleShape formationBouclier(Robot &rob);
 		
-		virtual ~Bouclier() {};
+		virtual ~Bouclier();
 
 };
 #endif

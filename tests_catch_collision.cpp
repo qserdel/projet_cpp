@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "collision.hpp"
+using namespace std;
+using namespace sf;
 
 TEST_CASE( "Collision can be created", "[collision]" ) {
 
@@ -53,11 +55,11 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     
     SECTION( "Tests gestionCollisionBalle" ) {
     	Robot r("Joueur1");
-    	vector<Balle> tBalles;
+    	vector<Balle*> tBalles;
     	Balle *b1 = new Balle(160, 300, true, 1);
-    	tBalles.push_back(*b1);
+    	tBalles.push_back(b1);
     	b1 = new Balle(600, 300, true, 1);
-    	tBalles.push_back(*b1);
+    	tBalles.push_back(b1);
     	
     	REQUIRE( tBalles.size() == 2 ); // Il y a 2 Balles
     	REQUIRE( r.getStatus() == NORMAL );

@@ -1,5 +1,8 @@
 #include "collectable.hpp"
 
+using namespace sf;
+using namespace std;
+
 // Constructeurs
 
 Collectable::Collectable() : action_imediate(false)
@@ -7,20 +10,15 @@ Collectable::Collectable() : action_imediate(false)
 	srand(time(NULL));
 	sp.setPosition(Vector2f(rand()%950, 0));
 }
-
-Collectable::Collectable(int n) : action_imediate(false)
-{
-	number = n;
-	srand(time(NULL));
-	sp.setPosition(Vector2f(rand()%950, 0));
-}		
+		
 
 Collectable::Collectable(Collectable const& copy) : txt(copy.txt), sp(copy.sp), number(copy.number), spriteStable(copy.spriteStable)
-{ }
+{}
+
+Collectable::~Collectable()
+{}
 
 // Méthodes
-
-
 
 void Collectable::move(Vector2f v)
 {

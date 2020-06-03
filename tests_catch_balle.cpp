@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "balle.hpp"
+using namespace std;
+using namespace sf;
 
 TEST_CASE( "Balle can be created", "[balle]" ) {
 

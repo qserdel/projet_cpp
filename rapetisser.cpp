@@ -1,7 +1,7 @@
 #include "rapetisser.hpp"
 
 
-Rapetisser::Rapetisser() : Collectable(RAPETISSER)
+Rapetisser::Rapetisser() : Collectable()
 {
 	if (!txt.loadFromFile("images/rapetisser.png"))
 			exit(EXIT_FAILURE);
@@ -13,3 +13,6 @@ void Rapetisser::activation(Robot &r)
 	r.setEnPleinRapetissement(true);
 	r.setMinScale(0.5);
 }
+
+Rapetisser::~Rapetisser()
+{}

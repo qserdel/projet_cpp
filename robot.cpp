@@ -1,5 +1,7 @@
 #include "robot.hpp"
 
+using namespace std;
+using namespace sf;
 
 Robot::Robot(string name){
 	_name = name;
@@ -326,7 +328,6 @@ void Robot::chargement_image()
 }
 
 
-
 int Robot::getStatus() const {return state;}
 int Robot::getNbFrame() const {return nbFrame;}
 int Robot::getHauteurSaut() const {return hauteurSaut;}
@@ -349,6 +350,8 @@ int Robot::getTimerTir() const {return timerTir;};
 bool Robot::getBouclier() const {return bouclier;};
 int Robot::getMunitions() const {return nbMunitions;};
 int Robot::getTimerBouclier() const {return timerBouclier;};
+int Robot::getTimerPetit() const {return timerPetit;};
+int Robot::getTimerGrand() const {return timerGrand;};
 
 void Robot::setPv(int nbVie) {pv = nbVie;};
 void Robot::setNbFrame(int nbreF) {nbFrame = nbreF;};
@@ -361,11 +364,13 @@ void Robot::setHauteurSaut(int h) {hauteurSaut = h;};
 void Robot::setTextRect(float w, float h) {sprite.setTextureRect(IntRect(0, 0, w, h));};
 void Robot::setEnPleinGrandissement(bool r) {enPleinGrandissement = r;};
 void Robot::setEnPleinRapetissement(bool r) {enPleinRapetissement = r;};
-void Robot::resetTimerTir() {timerTir=TIMER_TIR;};
+void Robot::resetTimerTir() {timerTir = TIMER_TIR;};
+void Robot::setTimerTir(int a) {timerTir = a;};
 void Robot::setMinScale(float min) {min_scale = min;};
 void Robot::setMaxScale(float max) {max_scale = max;};
 void Robot::setBouclier(bool a) {bouclier = a;};
 void Robot::setMunitions(int nbM) {nbMunitions = nbM;};
+void Robot::setTaille(int t) {taille = t;};
 
 IntRect Robot::getRectRobot() const
 {

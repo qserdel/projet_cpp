@@ -3,16 +3,16 @@
 #include <cstdlib>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "parametres.hpp"
 
-using namespace sf;
 
 class Balle
 {
     private :
 
-        Texture textureBalle;
+        sf::Texture textureBalle;
 
-        Sprite sp; // Un pour chaque instance
+        sf::Sprite sp; // Un pour chaque instance
 
         bool direction;
         int ID_Joueur;
@@ -21,14 +21,17 @@ class Balle
         Balle();
         Balle(float x, float y, bool dir, int ID);
         Balle(Balle const& copy);
+        
+        ~Balle();
 
         void action();
 
-        Sprite getSprite() const;
-        IntRect getRectBalle() const;
+        sf::Sprite getSprite() const;
+        sf::IntRect getRectBalle() const;
         float getX() const;
         int getID() const;
         bool getDir() const;
+        float getLargeur() const;
         void setX(float newX);
         void setDir(bool a);
 };

@@ -1,12 +1,15 @@
 #include "collision.hpp"
 
+using namespace sf;
+using namespace std;
+
 Collision::Collision() : altitude_atterrissage(0)
 {}
 
 
-void Collision::gestionCollisionBalle(Robot *r, vector<Balle> &tBalles, int i)
+void Collision::gestionCollisionBalle(Robot *r, vector<Balle*> &tBalles, int i)
 {
-	if (detectCollision(tBalles[i].getRectBalle(), r->getRectRobot()) && tBalles[i].getID() != r->getID())
+	if (detectCollision(tBalles[i]->getRectBalle(), r->getRectRobot()) && tBalles[i]->getID() != r->getID())
     {
     	if (r->getBouclier() == false)
     	{
@@ -14,6 +17,7 @@ void Collision::gestionCollisionBalle(Robot *r, vector<Balle> &tBalles, int i)
 		    r->setRobotActuel(r->getTexture(14+r->getIncrementLeft()));
 		    r->setPv(r->getPv()-1);
 	    }
+	    delete tBalles[i];
 		tBalles.erase(tBalles.begin() + i);
     }
 }

@@ -7,6 +7,7 @@
 #include "robot.hpp"
 #include "balle.hpp"
 #include "map.hpp"
+#include "parametres.hpp"
 
 
 class Collision
@@ -19,15 +20,16 @@ class Collision
 
         Collision();
         
-        void gestionCollisionBalle(Robot *r, vector<Balle> &tBalles, int i);
+        void gestionCollisionBalle(Robot *r, std::vector<Balle*> &tBalles, int i);
         void gestionAtterrissage(Robot *r, Map *map, float elapsed);
-        bool detectCollision(const IntRect &b, const IntRect &r);
-        bool detectAtterrissage(const IntRect &r,  const Map &map);
+        bool detectCollision(const sf::IntRect &b, const sf::IntRect &r);
+        bool detectAtterrissage(const sf::IntRect &r,  const Map &map);
         void atterrissage(float altitude, Robot *r);
         void gestionAtterrissageCollec(Map *map, float elapsed);
         void collisionCollec(Robot *r, Map *map);
         
         float getAltitude_atterrissage() const;
+        
 
 };
 

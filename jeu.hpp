@@ -9,6 +9,7 @@
 #include "collision.hpp"
 #include "collectable.hpp"
 #include "menu.hpp"
+#include "parametres.hpp"
 
 
 using namespace sf;
@@ -21,16 +22,16 @@ class Jeu {
 			RenderWindow window;
 			Robot rob;
 			Robot rob2;
-			Texture pvBlue;
-			Texture pvRed;
-			Texture victoire1;
-			Texture victoire2;
-			Sprite spritesPv1[PV_MAX];
-			Sprite spritesPv2[PV_MAX];
-			Sprite spriteVictoire;
+			sf::Texture pvBlue;
+			sf::Texture pvRed;
+			sf::Texture victoire1;
+			sf::Texture victoire2;
+			sf::Sprite spritesPv1[PV_MAX];
+			sf::Sprite spritesPv2[PV_MAX];
+			sf::Sprite spriteVictoire;
 			Collision collision;
-			vector<Balle> tabBalles;
-			Clock clock;
+			std::vector<Balle*> tabBalles;
+			sf::Clock clock;
 			float elapsed = 0;
 	    	//Music music;
 
@@ -45,7 +46,11 @@ class Jeu {
 		void gestionTirs(Robot &rob);
 		void updateActionRobot(Robot &rob);
 		void gestionAttaques(Robot &rob);
+		void clearBalles();
 		//void playMusic();
+		
+		std::vector<Balle*> getTab() const {return tabBalles;};
+		void setElapsed(float time) {elapsed = time;}; // Pour les tests unitaires uniquement
 
 
 };

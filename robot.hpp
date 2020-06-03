@@ -4,26 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
 #include <cmath>
-
-using namespace std;
-using namespace sf;
-
-#define NI 18 // Nombre d'images dans un sens (robot profil droit par exemple)
-
-#define HAUTEUR_ROBOT 135
-#define LARGEUR_ROBOT 100
-#define TAILLE_WINDOW 1000 // Taille de la fenêtre de jeu
-
-#define GRAVITE -10
-#define POS_SOL 700
-
-#define TIMER_BLESSE 30
-#define TIMER_PETIT 300
-#define TIMER_GRAND 300
-#define TIMER_TIR 30
-#define TIMER_BOUCLIER 400
-
-#define PV_MAX 1 //25
+#include "parametres.hpp"
 
 enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, STANDARD, GRAND, BLESSE, TIRER};
 
@@ -31,10 +12,10 @@ enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, STANDARD, GRAND, BLESSE, TIRER
 class Robot {
 
 	private :
-		string _name;
+		std::string _name;
 		int ID;
-		Texture texture[36];
-		Texture robotActuel;
+		sf::Texture texture[36];
+		sf::Texture robotActuel;
 		int pv = PV_MAX;
 		float vitesse;
 		int taille;
@@ -58,11 +39,11 @@ class Robot {
 		bool bouclier = false;
 		int nbMunitions;
 
-		Sprite sprite;
+		sf::Sprite sprite;
 
 	public :
 
-		Robot(string name);
+		Robot(std::string name);
 
 		void detect_KeyPressed();
 		void move(float elapsed);
@@ -86,12 +67,12 @@ class Robot {
 		float getMaxScale() const;
 		int getTaille() const;
 		int getIncrementLeft() const;
-		Texture getTexture(int indice) const;
-		Sprite getSprite() const;
-		IntRect getRectRobot() const;
+		sf::Texture getTexture(int indice) const;
+		sf::Sprite getSprite() const;
+		sf::IntRect getRectRobot() const;
 		int getTimerBlesse() const;
 		int getPv() const;
-		string getName() const;
+		std::string getName() const;
 		bool getDirection() const;
 		float getX() const;
 		float getY() const;
@@ -100,10 +81,12 @@ class Robot {
 		bool getBouclier() const;
 		int getMunitions() const;
 		int getTimerBouclier() const;
+		int getTimerPetit() const;
+		int getTimerGrand() const;
 
 		void setPv(int nbVie);
 		void setNbFrame(int nbreF);
-		void setRobotActuel(Texture robAct);
+		void setRobotActuel(sf::Texture robAct);
 		void setStatus(int etat);
 		void setTimerBlesse(int t);
 		void setPosSprite(float x, float y);
@@ -115,9 +98,11 @@ class Robot {
 		void setMinScale(float min);
 		void setMaxScale(float max);
 		void resetTimerTir();
+		void setTimerTir(int a);
 		void setBouclier(bool a);
 		void effacerMunition();
 		void setMunitions(int nbM);
+		void setTaille(int t);
 
 
 };

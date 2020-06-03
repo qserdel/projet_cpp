@@ -1,7 +1,7 @@
 #include "reparer.hpp"
 
 
-Reparer::Reparer() : Collectable(REPARER)
+Reparer::Reparer() : Collectable()
 {
 	if (!txt.loadFromFile("images/reparer.png"))
 			exit(EXIT_FAILURE);
@@ -14,3 +14,6 @@ void Reparer::activation(Robot &r)
 	if(r.getPv() > PV_MAX)
 		r.setPv(PV_MAX);
 }
+
+Reparer::~Reparer()
+{}

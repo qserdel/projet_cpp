@@ -14,7 +14,7 @@ class Grandir : public Collectable {
 		Grandir();
 		virtual void activation(Robot &r);
 		
-		virtual ~Grandir() {};
+		virtual ~Grandir();
 
 };
 #endif

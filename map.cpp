@@ -1,5 +1,8 @@
 #include "map.hpp"
 
+using namespace std;
+using namespace sf;
+
 Map::Map(int i) : timerMap(TIMER_MAP)
 {
 	index = i;
@@ -52,7 +55,7 @@ void Map::create(){
 void Map::creation_objets()
 {
 	Sprite obj(mur);
-	//placement prédéfini des objets de la map
+	// Placement prédéfini des objets de la map
 	switch(index){
 		case 1:
 			obj.setTextureRect(IntRect(0,0,600,30));
@@ -106,19 +109,19 @@ void Map::ajoutCollectable()
 	switch(alea)
 	{
 		case 0:
-			c.push_back((new Bouclier));
+			c.push_back(new Bouclier);
 			break;
 
 		case 1:
-			c.push_back((new Grandir));
+			c.push_back(new Grandir);
 			break;
 
 		case 2:
-			c.push_back((new Rapetisser));
+			c.push_back(new Rapetisser);
 			break;
 
 		case 3:
-			c.push_back((new Reparer));
+			c.push_back(new Reparer);
 			break;
 	}
 }
@@ -145,6 +148,7 @@ void Map::ajouterSpriteListeCollec(Collectable *cnew)
 
 void Map::supprimerCollec(int indice)
 {
+	delete c[indice];
 	c.erase(c.begin() + indice);
 }
 
@@ -164,14 +168,15 @@ void Map::moveCollec(Vector2f v, int indice)
 }
 
 void Map::vider(){
-	for(int i=0;i<c.size();i++){
-		supprimerCollec(i);
+	while (!c.empty())
+	{
+		delete c.back();
+		c.pop_back();
 	}
 	for(int i=0;i<objets.size();i++){
 		supprimerObjet(i);
 	}
 }
-
 
 
 Sprite Map::getSpriteSol() const { return spriteSol; };

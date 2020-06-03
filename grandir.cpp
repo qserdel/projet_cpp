@@ -1,7 +1,7 @@
 #include "grandir.hpp"
 
 
-Grandir::Grandir() : Collectable(GRANDIR)
+Grandir::Grandir() : Collectable()
 {
 	if (!txt.loadFromFile("images/grandir.png"))
 			exit(EXIT_FAILURE);
@@ -15,3 +15,6 @@ void Grandir::activation(Robot &r)
 	r.setMaxScale(2);
 }
 
+
+Grandir::~Grandir()
+{}

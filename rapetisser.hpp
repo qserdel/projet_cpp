@@ -14,7 +14,7 @@ class Rapetisser : public Collectable {
 		Rapetisser();
 		virtual void activation(Robot &r);
 		
-		virtual ~Rapetisser() {};
+		virtual ~Rapetisser();
 
 };
 #endif
