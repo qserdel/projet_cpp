@@ -1,6 +1,54 @@
 Projet C++ ROB4 de Manon Silva et Quentin Serdel
 Manuel d'utilisation du jeu Space Fighter Mega Legends
-Pour compiler le projet, lancer la commande "make" dans le terminal
-Pour lancer le jeu, lancer la commande "make play" dans le terminal
+
+###Compilation et execution###
+
+Pour compiler le projet, lancer la commande "make" dans le terminal.
+Pour lancer le jeu, lancer la commande "make play" dans le terminal.
 Dans la fenêtre SFML ouverte, cliquer sur "play" puis cliquer sur la map sur laquelle vous souhaitez jouer.
+
+###Principe du jeu###
+
+Space Fighter Mega Legends est un jeu de combat d'arcade en 2D jouable en 1v1 sur le même clavier.
+Chaque joueur contrôle l'un des 2 robots présents sur l'écran.
+Le robot bleu se déplace avec les touches directionnelles et tire avec la barre espace.
+Le robot rouge se déplace avec les touches ZQSD et tire avec la touche E.
+Le but est de réduire les PV de l'adversaire à 0.
+
+Des objets collectables tombent aléatoirement sur la map, chacun a son propre effet:
+Clé anglaise: rend 3 PV.
+Bouclier: rend invulnérable pendant une durée déterminée.
+Fourmi: rétrécis le robot pendant une durée déterminée.
+Baleine: agrandi le robot pendant une durée déterminée.
+
+###Biliothèques et outils utilisés###
+
+Les bibliothèques standards utilisées pour le projet sont: cstdlib, iolib, cmath, vector et ctime.
+La bibliothèque graphique utilisée est SFML.
+Les images ont été partiellement trouvées sur Internet (sprites de base du robot, fond des maps) et traitées à l'aide de Gimp.
+Certaines images ont été dessinées sur Gimp (collectables, tirs, menus).
+
+###Concernant le code###
+
+Les points positifs:
+Nous sommes satisfaits du résultat final. La physique du jeu est fluide et cohérente, le gameplay est assez dynamique et plaisant, le jeu est assez beau à nos yeux et a tout de même pas mal de contenu. Il est, comme spécifié dans le cahier des charges, possible d'y implémenter une IA facilement en modifiant la fonction de détection des touches du robot.
+
+Éléments notables concernant l'organisation:
+Le projet contient une classe abstraite: la classe Collectable dont hérite les classes Bouclier, Reparer, Grandir, Rapetisser. La fonction "action()" de la classe Collectable fait appel au polymorphisme. La boucle de fonctionnement général du jeu se trouve dans le fichier jeu.cpp.
+La classe Collision gère toutes les interactions entre les objets du jeu. La classe Map contient tous les objets indépendants des joueurs (plateformes et collectables). La classe Robot comprend toutes les actions du joueur et ce qui concerne l'état des robots.
+Le main est très peu fourni, le jeu est facilement portable.
+
+Ce qui ne marche pas bien:
+On observe quelques problèmes de placement des plateformes, quelques bugs avec les collectables et des problèmes d'état des robots lorsque l'on recommence une partie après en avoir terminé une. L'implémentation de la musique ne fonctionnant que partiellement, nous l'avons enlevé. Nous observons quelques petits sauts de frames pendant le jeu. La plupart de ces problèmes auraient pu être résolus avec plus de temps.
+
+##Répartition du travail##
+
+Nous avons collaboré sur gitHub tout le long du projet.
+
+Manon s'est occupé majoritairement des tests Valgrind, des collisions, du déplacement des robots et de la physique de la gravité, de l'expérimentation du fonctionnement de la bibliothèque SFML, de la gestion des sprites pour les robots, et de la détection des touches.
+
+Quentin s'est occupé majoritairement des éléments graphiques, de la gestion des menu, de la gestion des tirs, de la création des maps, du readme, de la détection des clics, et de l'affinage des mécaniques de jeu.
+
+Le reste est le fruit d'un travail commun et chacun s'est régulièrement impliqué dans le travail de l'autre.
+
 
