@@ -1,0 +1,6 @@
+Projet C++ ROB4 de Manon Silva et Quentin Serdel
+Manuel d'utilisation du jeu Space Fighter Mega Legends
+Pour compiler le projet, lancer la commande "make" dans le terminal
+Pour lancer le jeu, lancer la commande "make play" dans le terminal
+Dans la fenêtre SFML ouverte, cliquer sur "play" puis cliquer sur la map sur laquelle vous souhaitez jouer.
+
