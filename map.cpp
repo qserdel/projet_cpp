@@ -6,7 +6,6 @@ using namespace sf;
 Map::Map(int i) : timerMap(TIMER_MAP)
 {
 	index = i;
-	create();
 }
 
 void Map::create(){
