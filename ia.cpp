@@ -11,7 +11,15 @@ Ia::Ia(int id) : Joueur(id)
 Ia::~Ia()
 {}
 
-Touche Ia::detect_Choix() // Reste à remplir selon les envies
+std::vector<Touche*> Ia::detect_Choix() // Reste à remplir selon les envies
 {
-	return RIEN;
+	Touche t;
+	while (!touches.empty())
+	{
+		delete touches.back();
+		touches.pop_back();
+	}
+	t=RIEN;
+	touches.push_back(&t);
+	return touches;
 }
