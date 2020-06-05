@@ -13,49 +13,39 @@ Humain::Humain(int id) : Joueur(id)
 Humain::~Humain()
 {}
 
-std::vector<Touche*> Humain::detect_Choix()
+vector<Touche> Humain::detect_Choix()
 {
-	Touche t;
-	while (!touches.empty())
-	{
-		delete touches.back();
-		touches.pop_back();
-	}
+	vector<Touche> touches;
 	if (ID == 0)
 	{
 		if (Keyboard::isKeyPressed(Keyboard::Right))
-			t=RIGHT;
-		  touches.push_back(&t);
-		if (Keyboard::isKeyPressed(Keyboard::Left))
-			t=LEFT;
-			touches.push_back(&t);
-		if (Keyboard::isKeyPressed(Keyboard::Down))
-			t=DOWN1;
-			touches.push_back(&t);
+		    touches.push_back(RIGHT);
+		else if (Keyboard::isKeyPressed(Keyboard::Left))
+		    touches.push_back(LEFT);
+		else if (Keyboard::isKeyPressed(Keyboard::Down))
+		    touches.push_back(DOWN1);
+		
 		if (Keyboard::isKeyPressed(Keyboard::Up))
-			t=UP;
-			touches.push_back(&t);
+		    touches.push_back(UP);
+		
 		if (Keyboard::isKeyPressed(Keyboard::Space))
-			t=SHOOT;
-			touches.push_back(&t);
+			touches.push_back(SHOOT);
 	}
 	else if (ID == 1)
     {
 		if (Keyboard::isKeyPressed(Keyboard::D))
-			t=RIGHT1;
-			touches.push_back(&t);
-		if (Keyboard::isKeyPressed(Keyboard::Q))
-			t=LEFT1;
-			touches.push_back(&t);
-		if (Keyboard::isKeyPressed(Keyboard::S))
-			t=DOWN2;
-			touches.push_back(&t);
+			touches.push_back(RIGHT1);
+		else if (Keyboard::isKeyPressed(Keyboard::Q))
+		    touches.push_back(LEFT1);
+		else if (Keyboard::isKeyPressed(Keyboard::S))
+		    touches.push_back(DOWN2);
+		
 		if (Keyboard::isKeyPressed(Keyboard::Z))
-			t=UP1;
-			touches.push_back(&t);
+		    touches.push_back(UP1);
+		
 		if (Keyboard::isKeyPressed(Keyboard::E))
-			t=SHOOT1;
-			touches.push_back(&t);
+			touches.push_back(SHOOT1);
 	}
+	touches.push_back(RIEN);
 	return touches;
 }

@@ -6,11 +6,14 @@
 
 class Rapetisser : public Collectable {
 
+	protected :
+
+
 	public :
 
 		Rapetisser();
 		virtual void activation(Robot &r);
-
+		
 		virtual ~Rapetisser();
 
 };

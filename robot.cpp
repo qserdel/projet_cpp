@@ -75,78 +75,79 @@ void Robot::resetRobot()
   	sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, HAUTEUR_ROBOT));
 }
 
+bool Robot::choix_Present(vector<Touche> v, Touche to)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		if (v[i] == to)
+			return true;
+	}
+	return false;
+}
+
 void Robot::detect_KeyPressed()
 {
-	vector<Touche*> touches=joueur->detect_Choix();
-	Touche choix;
-	while (!touches.empty())
+	vector<Touche> choix = joueur->detect_Choix();
+	if ((ID == 0) && (state != BLESSE))
+	// Le joueur ne peut rien faire s'il est blessé ou juste après avoir tiré
 	{
-		choix=*touches.back();
-		if ((ID == 0) && (state != BLESSE))
-		// Le joueur ne peut rien faire s'il est blessé ou juste après avoir tiré
+		if (choix_Present(choix, RIGHT))
 		{
-			if (choix == RIGHT)
-			{
-				if (state != WALK_RIGHT)
-					increment_left = 0;
+			if (state != WALK_RIGHT)
+				increment_left = 0;
 		    state = WALK_RIGHT;
-				direction = true;
+			direction = true;
 	    }
-			else if (choix == LEFT)
-			{
-				if (state != WALK_LEFT)
-					increment_left = NI;
+		else if (choix_Present(choix, LEFT))
+		{
+			if (state != WALK_LEFT)
+				increment_left = NI;
 		    state = WALK_LEFT;
-				direction = false;
+			direction = false;
 	    }
-			else if (choix == DOWN1)
+		else if (choix_Present(choix, DOWN1))
 		    state = DOWN;
-			else
-				state = NORMAL;
+		else
+			state = NORMAL;
 
-			if (choix == UP)
+		if (choix_Present(choix, UP))
 		    enPleinJump = true;
 
-			if (choix == SHOOT)
-			{
+		if (choix_Present(choix, SHOOT))
+		{
 		  	robotActuel = texture[15+increment_left];
-				state = TIRER;
+			state = TIRER;
     	}
-		}
+	}
   	else if ((ID == 1) && (state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
     {
-			if (choix == RIGHT1)
-			{
-				if (state != WALK_RIGHT)
-					increment_left = 0;
+		if (choix_Present(choix, RIGHT1))
+		{
+			if (state != WALK_RIGHT)
+				increment_left = 0;
 		    state = WALK_RIGHT;
-				direction = true;
+			direction = true;
 	    }
-			else if (choix == LEFT1)
-			{
-				if (state != WALK_LEFT)
-					increment_left = NI;
+		else if (choix_Present(choix, LEFT1))
+		{
+			if (state != WALK_LEFT)
+				increment_left = NI;
 		    state = WALK_LEFT;
-				direction = false;
+			direction = false;
 	    }
-			else if (choix == DOWN2)
+		else if (choix_Present(choix, DOWN2))
 		    state = DOWN;
-			else
-				state = NORMAL;
+		else
+			state = NORMAL;
 
-			if (choix == UP1)
+		if (choix_Present(choix, UP1))
 		    enPleinJump = true;
 
-			if (choix == SHOOT1)
-			{
+		if (choix_Present(choix, SHOOT1))
+		{
 		  	robotActuel = texture[15+increment_left];
-				state = TIRER;
+			state = TIRER;
     	}
-		}
-		delete touches.back();
-		std::cout<<"coucou"<<endl;
-		touches.pop_back();
-		std::cout<<"coucou2"<<endl;
 	}
 }
 

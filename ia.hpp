@@ -1,19 +1,18 @@
 #ifndef IA_HPP
 #define IA_HPP
 #include "joueur.hpp"
-#include <vector>
 
 class Ia : public Joueur {
 
 	protected:
-
-
+	
+	
 	public:
 		Ia();
 		Ia(int id);
 		virtual ~Ia();
-
-		virtual std::vector<Touche*> detect_Choix();
-
+		
+		virtual std::vector<Touche> detect_Choix();
+		
 };
 #endif

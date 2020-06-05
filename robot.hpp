@@ -48,6 +48,7 @@ class Robot {
 
 		Robot(std::string name, int id, Type type);
 
+		bool choix_Present(std::vector<Touche> v, Touche to);
 		void detect_KeyPressed();
 		void move(float elapsed);
 		void grandir();

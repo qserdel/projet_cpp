@@ -33,7 +33,7 @@ TEST_CASE( "Robots can be created", "[robot]" ) {
         REQUIRE( r.getMunitions() == 3 );
     }
     
-    SECTION( "Test resetRobot" ) {
+    SECTION( "Tests resetRobot" ) {
         r.setPv(10);
         r.setStatus(DOWN);
         r.setTaille(PETIT);
@@ -73,6 +73,22 @@ TEST_CASE( "Robots can be created", "[robot]" ) {
         REQUIRE( r.getX() == 20 );
         REQUIRE( r.getY() == POS_SOL-HAUTEUR_ROBOT );
         REQUIRE( r.getSprite().getScale() == 1 );
+    }
+    
+    SECTION( "Tests choix_Present" ) {
+        vector<Touche> choix;
+        choix.push_back(SHOOT);
+        choix.push_back(LEFT);
+        choix.push_back(UP);
+        choix.push_back(RIGHT1);
+        choix.push_back(RIEN);
+        
+        REQUIRE( choix_Present(choix, LEFT) == true );
+        REQUIRE( choix_Present(choix, SHOOT) == true );
+        REQUIRE( choix_Present(choix, DOWN) == false );
+        REQUIRE( choix_Present(choix, UP) == true );
+        REQUIRE( choix_Present(choix, RIGHT1) == true );
+        REQUIRE( choix_Present(choix, RIEN) == true );
     }
     
     SECTION( "Test rapetisser" ) {
