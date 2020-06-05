@@ -6,14 +6,11 @@
 
 class Reparer : public Collectable {
 
-	protected :
-
-
 	public :
 
 		Reparer();
 		virtual void activation(Robot &r);
-		
+
 		virtual ~Reparer();
 
 };

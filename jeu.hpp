@@ -15,7 +15,7 @@
 class Jeu {
 
 	private :
-	
+
 		Map map;
 		Menu menu;
 		RenderWindow window;
@@ -32,7 +32,7 @@ class Jeu {
 		std::vector<Balle*> tabBalles;
 		sf::Clock clock;
 		float elapsed = 0;
-    	sf::Music music;
+    sf::Music music;
 
 	public :
 
