@@ -4,23 +4,26 @@
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
 #include <cmath>
+#include "joueur.hpp"
+#include "humain.hpp"
+#include "ia.hpp"
 #include "parametres.hpp"
-
-enum {NORMAL, WALK_LEFT, WALK_RIGHT, DOWN, PETIT, STANDARD, GRAND, BLESSE, TIRER};
 
 
 class Robot {
 
 	private :
+	
+		Joueur *joueur;
 		std::string _name;
 		int ID;
 		sf::Texture texture[36];
 		sf::Texture robotActuel;
 		int pv = PV_MAX;
 		float vitesse;
-		int taille;
+		TailleRob taille;
 		int hauteurSaut;
-		int state = NORMAL;
+		Etat state = NORMAL;
 		int nbFrame;
 		bool enPleinJump = false;
 		bool aGenoux = false;
@@ -43,7 +46,7 @@ class Robot {
 
 	public :
 
-		Robot(std::string name);
+		Robot(std::string name, int id, Type type);
 
 		void detect_KeyPressed();
 		void move(float elapsed);
@@ -54,10 +57,12 @@ class Robot {
 		void blessure();
 		void actionBouclier();
 		void gestionMunitions();
+		void resetRobot();
+		void vider();
 
 
 		// Accesseurs
-		int getStatus() const;
+		Etat getStatus() const;
 		int getNbFrame() const;
 		int getHauteurSaut() const;
 		bool getEnPleinJump() const;
@@ -65,7 +70,7 @@ class Robot {
 		bool getEnPleinRapetissement() const;
 		float getMinScale() const;
 		float getMaxScale() const;
-		int getTaille() const;
+		TailleRob getTaille() const;
 		int getIncrementLeft() const;
 		sf::Texture getTexture(int indice) const;
 		sf::Sprite getSprite() const;
@@ -87,7 +92,7 @@ class Robot {
 		void setPv(int nbVie);
 		void setNbFrame(int nbreF);
 		void setRobotActuel(sf::Texture robAct);
-		void setStatus(int etat);
+		void setStatus(Etat etat);
 		void setTimerBlesse(int t);
 		void setPosSprite(float x, float y);
 		void setEnPleinJump(bool a);
@@ -99,10 +104,13 @@ class Robot {
 		void setMaxScale(float max);
 		void resetTimerTir();
 		void setTimerTir(int a);
+		void setTimerBouclier(int t);
+		void setTimerPetit(int a);
+		void setTimerGrand(int a);
 		void setBouclier(bool a);
 		void effacerMunition();
 		void setMunitions(int nbM);
-		void setTaille(int t);
+		void setTaille(TailleRob t);
 
 
 };

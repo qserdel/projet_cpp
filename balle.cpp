@@ -27,12 +27,12 @@ Balle::Balle(float x, float y, bool dir, int ID)
 void Balle::action()
 {
     if(direction){
-      if (sp.getPosition().x < 1000)
+      if (sp.getPosition().x < TAILLE_WINDOW_X)
       {
           sp.move(Vector2f(10.f, 0.f));
       }
     } else {
-        if (sp.getPosition().x > 0)
+        if (sp.getPosition().x > 0-sp.getLocalBounds().width)
         {
             sp.move(Vector2f(-10.f, 0.f));
         }

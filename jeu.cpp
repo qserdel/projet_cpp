@@ -1,8 +1,9 @@
 #include "jeu.hpp"
 
 using namespace sf;
+using namespace std;
 
-Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW-290), "SFML window"), rob("Joueur1"), rob2("Joueur2"),map(1)
+Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW_X, TAILLE_WINDOW_Y), "SFML window"), rob("Joueur1", 0, HUMAIN), rob2("Joueur2", 1, HUMAIN), map(1)
 {
 	window.setFramerateLimit(60); // Limite la fenêtre à 60 images par seconde
 	// Chargement des textures des pv des robots et création du tableau des sprites
@@ -10,17 +11,20 @@ Jeu::Jeu() : window(VideoMode(TAILLE_WINDOW, TAILLE_WINDOW-290), "SFML window"),
 		exit(EXIT_FAILURE);
 	if (!pvRed.loadFromFile("images/PVRed.png"))
 		exit(EXIT_FAILURE);
-	for(int i = 0; i < PV_MAX; i++){
+	for(int i = 0; i < PV_MAX; i++){ // Placement des PVs dans la fenêtre
 		spritesPv1[i].setTexture(pvBlue,true);
 		spritesPv1[i].setPosition(Vector2f(10+10*i,0));
 		spritesPv2[i].setTexture(pvRed,true);
-		spritesPv2[i].setPosition(Vector2f(TAILLE_WINDOW-20-10*i,0));
+		spritesPv2[i].setPosition(Vector2f(TAILLE_WINDOW_X-20-10*i,0));
 	}
 	// Chargement des textures de fin de partie
 	if (!victoire1.loadFromFile("images/victoire1.png"))
 		exit(EXIT_FAILURE);
 	if (!victoire2.loadFromFile("images/victoire2.png"))
 		exit(EXIT_FAILURE);
+	// Load a music to play
+    if (!music.openFromFile("images/BlazerRail.wav"))
+        exit(EXIT_FAILURE);
 }
 
 void Jeu::gestionTirs(Robot &rob)
@@ -45,6 +49,9 @@ void Jeu::updateActionRobot(Robot &rob)
 
 	    if (rob.getEnPleinRapetissement() || (rob.getTaille() == PETIT))
 	        rob.rapetisser();
+        
+        if (rob.getBouclier() == true)
+			rob.actionBouclier();
     }
     rob.gestionMunitions();
 }
@@ -53,7 +60,7 @@ void Jeu::gestionAttaques(Robot &rob)
 {
 	for(int i = 0; i < tabBalles.size(); i++)
     {
-      if(tabBalles[i]->getX() >= 0 && tabBalles[i]->getX() <= TAILLE_WINDOW-tabBalles[i]->getLargeur())
+      if(tabBalles[i]->getX() >= 0-tabBalles[i]->getLargeur() && tabBalles[i]->getX() <= TAILLE_WINDOW_X)
       {
         collision.gestionCollisionBalle(&rob, tabBalles, i);
         tabBalles[i]->action();
@@ -87,8 +94,6 @@ void Jeu::update()
     collision.gestionAtterrissage(&rob2, &map, elapsed);
     collision.gestionAtterrissageCollec(&map, elapsed);
 
-    rob.actionBouclier();
-    rob2.actionBouclier();
 }
 
 void Jeu::draw()
@@ -112,7 +117,7 @@ void Jeu::draw()
   		window.draw(tabBalles[i]->getSprite());
 
     for (int i = 0; i < map.getListObjets().size(); i++)
-    	window.draw(map.getListObjets()[i]);
+    	window.draw(map.getSpriteObj(i));
 
     for (int i = 0; i < map.getListCollec().size(); i++)
     	window.draw(map.getSpriteCollec(i));
@@ -151,12 +156,9 @@ void Jeu::clearBalles()
 
 int Jeu::play()
 {
-    /*// Load a music to play
-    if (!music.openFromFile("images/BlazerRail.wav"))
-        return EXIT_FAILURE;
     // Play the music
-		music.setLoop(true);
-    music.play();*/
+	music.setLoop(true);
+    music.play();
 
     // Start the game loop
     while (window.isOpen())
@@ -169,70 +171,69 @@ int Jeu::play()
 					window.close();
 				switch(menu.getIndex()){
 					case 0:
-					//menu de base
+					// Menu de base
 						window.clear();
 						window.draw(menu.getFond());
 						window.draw(menu.getPlay());
 						window.display();
-						if(menu.getPlay().getGlobalBounds().contains(Mouse::getPosition().x,Mouse::getPosition().y) && Mouse::isButtonPressed(Mouse::Left))
+						if(menu.getPlay().getGlobalBounds().contains(Mouse::getPosition(window).x, Mouse::getPosition(window).y) && Mouse::isButtonPressed(Mouse::Left))
 							menu.setIndex(1);
 					break;
 					case 1:
-					//choix de la map
+					// Choix de la map
 						window.clear();
 						window.draw(menu.getFondMap());
 						window.display();
 						sleep(milliseconds(70));
-						if(Mouse::getPosition().x<333 && Mouse::isButtonPressed(Mouse::Left)){
+						if(Mouse::getPosition(window).x<TAILLE_WINDOW_X/3 && Mouse::isButtonPressed(Mouse::Left)){
 							map.setIndex(1);
 							menu.setIndex(2);
 						}
-						if(Mouse::getPosition().x>=333 && Mouse::getPosition().x<=666 && Mouse::isButtonPressed(Mouse::Left)){
+						if(Mouse::getPosition(window).x>=TAILLE_WINDOW_X/3 && Mouse::getPosition(window).x<=2*TAILLE_WINDOW_X/3 && Mouse::isButtonPressed(Mouse::Left)){
 							map.setIndex(2);
 							menu.setIndex(2);
 						}
-						if(Mouse::getPosition().x>666 && Mouse::isButtonPressed(Mouse::Left)){
+						if(Mouse::getPosition(window).x>2*TAILLE_WINDOW_X/3 && Mouse::isButtonPressed(Mouse::Left)){
 							map.setIndex(3);
 							menu.setIndex(2);
 						}
 					break;
 					case 2:
-					//jeu
+					// Jeu
 						while(rob.getPv()>0 && rob2.getPv()>0){
 							window.pollEvent(event);
 							elapsed = clock.restart().asSeconds();
-            	// Close window: exit
-            	if (event.type == Event::Closed)
-                window.close();
+							// Close window: exit
+							if (event.type == Event::Closed)
+						    	window.close();
 
-            	rob.detect_KeyPressed();
-            	rob2.detect_KeyPressed();
-            	if (rob.getStatus() == DOWN)
-                rob.move(elapsed);
-            	if (rob2.getStatus() == DOWN)
-                rob2.move(elapsed);
+							rob.detect_KeyPressed();
+							rob2.detect_KeyPressed();
+							if (rob.getStatus() == DOWN)
+						    	rob.move(elapsed);
+							if (rob2.getStatus() == DOWN)
+						    	rob2.move(elapsed);
 
-        			update();
-        			updateMap();
+							update();
+							updateMap();
 							draw();
 						}
 						menu.setIndex(3);
 					break;
 					case 3:
-					//fin du jeu
+					// Fin du jeu
 						window.clear();
-						if(rob.getPv()==0){
+						if(rob.getPv() == 0){
 							spriteVictoire.setTexture(victoire2);
 						} else {
 							spriteVictoire.setTexture(victoire1);
 						}
 						window.draw(spriteVictoire);
 						window.display();
-						rob.setPv(PV_MAX);
-						rob2.setPv(PV_MAX);
-						rob.setPosSprite(20.f, POS_SOL-HAUTEUR_ROBOT);
-						rob2.setPosSprite(TAILLE_WINDOW - LARGEUR_ROBOT - 20.f, POS_SOL-HAUTEUR_ROBOT);
+						rob.resetRobot();
+						rob2.resetRobot();						
 						map.vider();
+						clearBalles();
 						menu.setIndex(0);
 						sleep(seconds(5));
 					break;
@@ -241,5 +242,7 @@ int Jeu::play()
 		}
 		map.vider();
 		clearBalles();
+		rob.vider();
+		rob2.vider();
 		return EXIT_SUCCESS;
 }

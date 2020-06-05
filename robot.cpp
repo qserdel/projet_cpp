@@ -3,91 +3,137 @@
 using namespace std;
 using namespace sf;
 
-Robot::Robot(string name){
+Robot::Robot(string name, int id, Type type){
 	_name = name;
+	ID = id;
 	vitesse = 300;
 	taille = STANDARD;
 	hauteurSaut = 500;
 	nbFrame = 0;
 	chargement_image();
 	gestionMunitions();
-	if(_name == "Joueur1")
+	if(ID == 0)
 	{
-		ID = 0;
+		if (type == HUMAIN)
+			joueur = new Humain(0);
+		else
+			joueur = new Ia(0);
   		sprite.setPosition(Vector2f(20.f, POS_SOL-HAUTEUR_ROBOT)); // Choix de la position du sprite
   		robotActuel = texture[10];
 		direction = true;
 	}
 	else
 	{
-		ID = 1;
-		sprite.setPosition(Vector2f(TAILLE_WINDOW - LARGEUR_ROBOT - 20.f, POS_SOL-HAUTEUR_ROBOT));
+		if (type == HUMAIN)
+			joueur = new Humain(1);
+		else
+			joueur = new Ia(1);
+		sprite.setPosition(Vector2f(TAILLE_WINDOW_X - LARGEUR_ROBOT - 20.f, POS_SOL-HAUTEUR_ROBOT));
 		increment_left = NI;
 		robotActuel = texture[10+increment_left];
 		direction = false;
 	}
+	sprite.setScale(1.f, 1.f);
+	sprite.setTexture(robotActuel);
+  	sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, HAUTEUR_ROBOT));
+}
+
+void Robot::resetRobot()
+{
+	taille = STANDARD;
+	hauteurSaut = 500;
+	nbFrame = 0;
+	setMunitions(5);
+	pv = PV_MAX;
+	state = NORMAL;
+	enPleinJump = false;
+	aGenoux = false;
+	enPleinGrandissement = false;
+	enPleinRapetissement = false;
+	timerGrand = TIMER_GRAND;
+	timerPetit = TIMER_PETIT;
+	timerBlesse = TIMER_BLESSE;
+  	timerTir = 0;
+  	timerBouclier = TIMER_BOUCLIER;
+	taillePrec = 0;
+	bouclier = false;
+	if(ID == 0)
+	{
+		sprite.setPosition(Vector2f(20.f, POS_SOL-HAUTEUR_ROBOT)); // Choix de la position du sprite
+  		robotActuel = texture[10];
+		direction = true;
+	}
+	else
+	{
+		sprite.setPosition(Vector2f(TAILLE_WINDOW_X - LARGEUR_ROBOT - 20.f, POS_SOL-HAUTEUR_ROBOT));
+		increment_left = NI;
+		robotActuel = texture[10+increment_left];
+		direction = false;
+	}
+	sprite.setScale(1.f, 1.f);
 	sprite.setTexture(robotActuel);
   	sprite.setTextureRect(IntRect(0, 0, LARGEUR_ROBOT, HAUTEUR_ROBOT));
 }
 
 void Robot::detect_KeyPressed()
 {
-	if (( _name == "Joueur1") && (state != BLESSE))
+	Touche choix = joueur->detect_Choix();
+	if ((ID == 0) && (state != BLESSE))
 	// Le joueur ne peut rien faire s'il est blessé ou juste après avoir tiré
 	{
-		if (Keyboard::isKeyPressed(Keyboard::Right))
+		if (choix == RIGHT)
 		{
 			if (state != WALK_RIGHT)
 				increment_left = 0;
 		    state = WALK_RIGHT;
 			direction = true;
 	    }
-		else if (Keyboard::isKeyPressed(Keyboard::Left))
+		else if (choix == LEFT)
 		{
 			if (state != WALK_LEFT)
 				increment_left = NI;
 		    state = WALK_LEFT;
 			direction = false;
 	    }
-		else if (Keyboard::isKeyPressed(Keyboard::Down))
+		else if (choix == DOWN1)
 		    state = DOWN;
 		else
 			state = NORMAL;
 
-		if (Keyboard::isKeyPressed(Keyboard::Up))
+		if (choix == UP)
 		    enPleinJump = true;
 
-		if (Keyboard::isKeyPressed(Keyboard::Space))
+		if (choix == SHOOT)
 		{
 		  	robotActuel = texture[15+increment_left];
 			state = TIRER;
     	}
 	}
-  else if ((_name == "Joueur2") && (state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
+  	else if ((ID == 1) && (state != BLESSE))  // Le joueur ne peut rien faire s'il est blessé
     {
-		if (Keyboard::isKeyPressed(Keyboard::D))
+		if (choix == RIGHT1)
 		{
 			if (state != WALK_RIGHT)
 				increment_left = 0;
 		    state = WALK_RIGHT;
 			direction = true;
 	    }
-		else if (Keyboard::isKeyPressed(Keyboard::Q))
+		else if (choix == LEFT1)
 		{
 			if (state != WALK_LEFT)
 				increment_left = NI;
 		    state = WALK_LEFT;
 			direction = false;
 	    }
-		else if (Keyboard::isKeyPressed(Keyboard::S))
+		else if (choix == DOWN2)
 		    state = DOWN;
 		else
 			state = NORMAL;
 
-		if (Keyboard::isKeyPressed(Keyboard::Z))
+		if (choix == UP1)
 		    enPleinJump = true;
 
-		if (Keyboard::isKeyPressed(Keyboard::E))
+		if (choix == SHOOT1)
 		{
 		  	robotActuel = texture[15+increment_left];
 			state = TIRER;
@@ -108,7 +154,7 @@ void Robot::move(float elapsed)
         aGenoux = false;
     }
 
-	if (state == WALK_RIGHT && sprite.getPosition().x < TAILLE_WINDOW-LARGEUR_ROBOT)  // Si le robot n'est pas hors de la fenêtre à droite
+	if (state == WALK_RIGHT && sprite.getPosition().x < TAILLE_WINDOW_X-LARGEUR_ROBOT)  // Si le robot n'est pas hors de la fenêtre à droite
     {
         sprite.move(Vector2f(vitesse*elapsed, 0));  // Déplacement par rapport à la position actuelle
         (nbFrame)++;
@@ -327,14 +373,18 @@ void Robot::chargement_image()
 	}
 }
 
+void Robot::vider()
+{
+	delete joueur;
+}
 
-int Robot::getStatus() const {return state;}
+Etat Robot::getStatus() const {return state;}
 int Robot::getNbFrame() const {return nbFrame;}
 int Robot::getHauteurSaut() const {return hauteurSaut;}
 bool Robot::getEnPleinJump() const {return enPleinJump;}
 bool Robot::getEnPleinGrandissement() const {return enPleinGrandissement;};
 bool Robot::getEnPleinRapetissement() const {return enPleinRapetissement;};
-int Robot::getTaille() const {return taille;};
+TailleRob Robot::getTaille() const {return taille;};
 float Robot::getMinScale() const {return min_scale;};
 float Robot::getMaxScale() const {return max_scale;};
 Sprite Robot::getSprite() const {return sprite;};
@@ -356,7 +406,7 @@ int Robot::getTimerGrand() const {return timerGrand;};
 void Robot::setPv(int nbVie) {pv = nbVie;};
 void Robot::setNbFrame(int nbreF) {nbFrame = nbreF;};
 void Robot::setRobotActuel(Texture robAct) {robotActuel = robAct;};
-void Robot::setStatus(int etat) {state = etat;};
+void Robot::setStatus(Etat etat) {state = etat;};
 void Robot::setTimerBlesse(int t) {timerBlesse = t;};
 void Robot::setPosSprite(float x, float y) {sprite.setPosition(x, y);};
 void Robot::setEnPleinJump(bool a) {enPleinJump = a;};
@@ -366,11 +416,14 @@ void Robot::setEnPleinGrandissement(bool r) {enPleinGrandissement = r;};
 void Robot::setEnPleinRapetissement(bool r) {enPleinRapetissement = r;};
 void Robot::resetTimerTir() {timerTir = TIMER_TIR;};
 void Robot::setTimerTir(int a) {timerTir = a;};
+void Robot::setTimerPetit(int a) {timerPetit = a;};
+void Robot::setTimerGrand(int a) {timerGrand = a;};
+void Robot::setTimerBouclier(int t) {timerBouclier = t;};
 void Robot::setMinScale(float min) {min_scale = min;};
 void Robot::setMaxScale(float max) {max_scale = max;};
 void Robot::setBouclier(bool a) {bouclier = a;};
 void Robot::setMunitions(int nbM) {nbMunitions = nbM;};
-void Robot::setTaille(int t) {taille = t;};
+void Robot::setTaille(TailleRob t) {taille = t;};
 
 IntRect Robot::getRectRobot() const
 {

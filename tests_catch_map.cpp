@@ -12,14 +12,28 @@ TEST_CASE( "Map can be created", "[map]" ) {
     Map map3(3);
 
     // Tests constructeur
-    REQUIRE( map.getListObjets().size() == 4 );
-    REQUIRE( map2.getListObjets().size() == 5 );
-    REQUIRE( map3.getListObjets().size() == 5 );
+    REQUIRE( map.getListObjets().size() == 0 );
+    REQUIRE( map2.getListObjets().size() == 0 );
+    REQUIRE( map3.getListObjets().size() == 0 );
     REQUIRE( map.getListCollec().size() == 0 );
     REQUIRE( map2.getListCollec().size() == 0 );
     REQUIRE( map3.getListCollec().size() == 0 );
-
-
+    
+    
+    
+    
+    SECTION( "Test creation_objets" ) {
+    	map.create();
+    	map2.create();
+    	map3.create();
+    	
+    	REQUIRE( map.getListObjets().size() == 4 );
+		REQUIRE( map2.getListObjets().size() == 5 );
+		REQUIRE( map3.getListObjets().size() == 5 );
+		REQUIRE( map.getListCollec().size() == 0 );
+		REQUIRE( map2.getListCollec().size() == 0 );
+		REQUIRE( map3.getListCollec().size() == 0 );
+    }
 
     SECTION( "Test creation_objets" ) {
     	 map.creation_objets();
@@ -69,38 +83,43 @@ TEST_CASE( "Map can be created", "[map]" ) {
     	 REQUIRE( pos3.y == map3.getRectObj(3).top );
     	 REQUIRE( pos4.x == map3.getRectObj(4).left );
     	 REQUIRE( pos4.y == map3.getRectObj(4).top );
+    	 REQUIRE( map3.getListObjets().size() == 5 );
+    	 map3.vider();
+    	 REQUIRE( map3.getListObjets().size() == 0 );
     }
     
     SECTION( "Tests d'ajouts et de suppression de collectables" ) {
     	 Collectable *co = new Bouclier;
-    	 map.ajouterSpriteListeCollec(co);
+    	 map.ajouterListeCollec(co);
     	 REQUIRE( map.getListCollec().size() == 1 );
     	 
     	 co = new Grandir;
-    	 map.ajouterSpriteListeCollec(co);
+    	 map.ajouterListeCollec(co);
     	 REQUIRE( map.getListCollec().size() == 2 );
     	 
     	 map.supprimerCollec(1);
     	 REQUIRE( map.getListCollec().size() == 1 );
     	 
-    	 map.supprimerCollec(0);
+    	 map.vider();
     	 REQUIRE( map.getListCollec().size() == 0 ); // La liste de collectables est vide
     }
     
     SECTION( "Test setPosCollec" ) {
     	 Collectable *co = new Rapetisser;
-    	 map.ajouterSpriteListeCollec(co);
+    	 map.ajouterListeCollec(co);
     	 REQUIRE( map.getListCollec().size() == 1 );
     	 
     	 IntRect rec(map.getRectColl(0));
     	 map.setPosCollec(rec.left + 15, rec.top + 95, 0);
     	 REQUIRE( rec.left != map.getRectColl(0).left );
     	 REQUIRE( rec.top != map.getRectColl(0).top );
+    	 map.vider();
+    	 REQUIRE( map.getListCollec().size() == 0 );
     }
     
     SECTION( "Test moveCollec" ) {
     	 Collectable *co = new Reparer;
-    	 map.ajouterSpriteListeCollec(co);
+    	 map.ajouterListeCollec(co);
     	 REQUIRE( map.getListCollec().size() == 1 );
     	 
     	 IntRect rec(map.getRectColl(0));
@@ -108,12 +127,16 @@ TEST_CASE( "Map can be created", "[map]" ) {
     	 map.moveCollec(v, 0);
     	 REQUIRE( rec.left != map.getRectColl(0).left );
     	 REQUIRE( rec.top != map.getRectColl(0).top );
+    	 map.vider();
+    	 REQUIRE( map.getListCollec().size() == 0 );
     }
     
     SECTION( "Test ajoutCollectable" ) {
     	 REQUIRE( map.getListCollec().size() == 0 );
     	 map.ajoutCollectable();
     	 REQUIRE( map.getListCollec().size() == 1 );
+    	 map.vider();
+    	 REQUIRE( map.getListCollec().size() == 0 );
     }
     
     SECTION( "Tests updateMap" ) {
@@ -125,22 +148,23 @@ TEST_CASE( "Map can be created", "[map]" ) {
     	 map.updateMap();
     	 REQUIRE( map.getListCollec().size() == 1 ); // On ajoute un collectable à liste des collectables
     	 REQUIRE( map.getTimerMap() == TIMER_MAP ); // On relance le timer
+    	 map.vider();
     }
     
     SECTION( "Tests gestionCollectable" ) {
-    	 Robot r("Joueur1");
+    	 Robot r("Joueur1", 0, HUMAIN);
     	 
     	 Collectable *co = new Bouclier;
-    	 map.ajouterSpriteListeCollec(co);
+    	 map.ajouterListeCollec(co);
     	 
     	 co = new Grandir;
-    	 map.ajouterSpriteListeCollec(co);
+    	 map.ajouterListeCollec(co);
     	 
     	 co = new Rapetisser;
-    	 map.ajouterSpriteListeCollec(co);
+    	 map.ajouterListeCollec(co);
     	 
     	 co = new Reparer;
-    	 map.ajouterSpriteListeCollec(co);
+    	 map.ajouterListeCollec(co);
     	 REQUIRE( map.getListCollec().size() == 4 );
     	 
     	 map.gestionCollectable(map.getListCollec()[0], &r);
@@ -160,6 +184,8 @@ TEST_CASE( "Map can be created", "[map]" ) {
     	 REQUIRE( r.getPv() == PV_MAX - 2 );
     	 map.gestionCollectable(map.getListCollec()[3], &r); // Le robot atteint son quota maximum de PVs
     	 REQUIRE( r.getPv() == PV_MAX );
+    	 map.vider();
+    	 REQUIRE( map.getListCollec().size() == 0 );
     }
 }
 

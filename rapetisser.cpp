@@ -10,6 +10,10 @@ Rapetisser::Rapetisser() : Collectable()
 
 void Rapetisser::activation(Robot &r)
 {
+	if (r.getEnPleinGrandissement() == true)
+    	r.setEnPleinGrandissement(false);
+	if (r.getTaille() == GRAND)
+	 	r.setTimerGrand(TIMER_GRAND);
 	r.setEnPleinRapetissement(true);
 	r.setMinScale(0.5);
 }

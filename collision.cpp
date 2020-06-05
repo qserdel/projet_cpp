@@ -9,7 +9,7 @@ Collision::Collision() : altitude_atterrissage(0)
 
 void Collision::gestionCollisionBalle(Robot *r, vector<Balle*> &tBalles, int i)
 {
-	if (detectCollision(tBalles[i]->getRectBalle(), r->getRectRobot()) && tBalles[i]->getID() != r->getID())
+	if (detectCollision(tBalles[i]->getRectBalle(), r->getRectRobot()) && tBalles[i]->getID() != r->getID())  // Un robot ne peut pas s'auto-blesser
     {
     	if (r->getBouclier() == false)
     	{

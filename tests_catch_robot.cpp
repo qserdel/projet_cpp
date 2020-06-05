@@ -11,8 +11,8 @@ TEST_CASE( "Robots can be created", "[robot]" ) {
 
     // Pour chaque SECTION, cet initialisation est faite - voir https://github.com/catchorg/Catch2/blob/master/docs/tutorial.md#test-cases-and-sections
     // Et pour plus d'infos : https://github.com/catchorg/Catch2/blob/master/docs/test-cases-and-sections.md#type-parametrised-test-cases
-    Robot r("Joueur1");
-    Robot r2("Joueur2");
+    Robot r("Joueur1", 0, HUMAIN);
+    Robot r2("Joueur2", 1, HUMAIN);
 
 
     // Tests constructeur

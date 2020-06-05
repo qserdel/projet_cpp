@@ -18,7 +18,7 @@ class Map {
 		sf::Texture mur;
 		sf::Sprite spriteFond;
 		sf::Sprite spriteSol;
-		std::vector<sf::Sprite> objets;
+		std::vector<sf::Sprite *> objets;
 		std::vector<Collectable *> c;
 		float timerMap;
 
@@ -31,7 +31,7 @@ class Map {
 		void creation_objets();
 		void ajoutCollectable();
 		void updateMap();
-		void ajouterSpriteListeCollec(Collectable *cnew);
+		void ajouterListeCollec(Collectable *cnew);
 		void supprimerCollec(int indice);
 		void supprimerObjet(int indice);
 		void setPosCollec(float x, float y, int indice);
@@ -42,8 +42,9 @@ class Map {
 		sf::Sprite getSpriteFond() const;
 		sf::Sprite getSpriteSol() const;
 		sf::Sprite getSpriteCollec(int indice) const;
+		sf::Sprite getSpriteObj(int indice) const;
 		bool getSpriteStable(int i) const;
-		std::vector<sf::Sprite> getListObjets() const;
+		std::vector<sf::Sprite *> getListObjets() const;
 		sf::IntRect getRectObj(int indice) const;
 		std::vector<Collectable *> getListCollec() const;
 		sf::IntRect getRectColl(int indice) const;

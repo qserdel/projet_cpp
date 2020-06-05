@@ -15,8 +15,8 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
 
 
     SECTION( "Tests collisions" ) {
-    	Robot r("Joueur1");
-    	Robot r2("Joueur2");
+    	Robot r("Joueur1", 0, HUMAIN);
+    	Robot r2("Joueur2", 1, HUMAIN);
     	
     	r.setPosSprite(150, 200);
     	r2.setPosSprite(150, 200);
@@ -51,10 +51,12 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
         balle.setX(rec1.left + 10);
         rec2 = IntRect(balle.getRectBalle());
         REQUIRE( col.detectCollision(rec1, rec2) == true ); // rec2 a l'intérieur de rec1
+        r.vider();
+        r2.vider();
     }
     
     SECTION( "Tests gestionCollisionBalle" ) {
-    	Robot r("Joueur1");
+    	Robot r("Joueur1", 0, HUMAIN);
     	vector<Balle*> tBalles;
     	Balle *b1 = new Balle(160, 300, true, 1);
     	tBalles.push_back(b1);
@@ -75,12 +77,19 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
         REQUIRE( tBalles.size() == 1 );
         REQUIRE( r.getStatus() == BLESSE ); // Le robot est blessé
     	REQUIRE( r.getPv() == 24 ); // Il perd 1 PV
-        
+    	while (!tBalles.empty())
+    	{
+    		tBalles.back();
+    		tBalles.pop_back();
+    	}
+    	REQUIRE( tBalles.size() == 0 );
+        r.vider();
     }
     
     SECTION( "Tests detectAtterrissage" ) {
-    	Robot r("Joueur1");
+    	Robot r("Joueur1", 0, HUMAIN);
     	Map map(1);  // Il y a un support d'atterrissage sur l'intervalle de coordonnées [450, 550] en x et 150 en y
+    	map.create();
     	r.setPosSprite(500, 200 - HAUTEUR_ROBOT);
 		IntRect rec1(r.getRectRobot());
 		
@@ -92,17 +101,18 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     	
     	r.setPosSprite(650, 140 - HAUTEUR_ROBOT);
     	rec1 = IntRect(r.getRectRobot());
-    	REQUIRE( col.detectAtterrissage(rec1, map) == false ); // Détecte atterrissage sur un objet de la map lorsque le robot en est proche à 20 pixels près
+    	REQUIRE( col.detectAtterrissage(rec1, map) == false );
     	
     	r.setPosSprite(500, POS_SOL - HAUTEUR_ROBOT);
     	rec1 = IntRect(r.getRectRobot());
     	REQUIRE( col.detectAtterrissage(rec1, map) == true ); // Détecte une atterrissage au sol
-        
+    	map.vider();
+        r.vider();
     }
     
     
     SECTION( "Tests atterrissage" ) {
-    	Robot r("Joueur1");
+    	Robot r("Joueur1", 0, HUMAIN);
     	Sprite robInit = r.getSprite();
     	r.setEnPleinJump(true);
     	r.sauter(0.1);
@@ -122,9 +132,9 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     	REQUIRE( r.getSprite().getLocalBounds().width == LARGEUR_ROBOT );
     	REQUIRE( robPrec.getPosition().x == r.getSprite().getPosition().x );
     	REQUIRE( robPrec.getPosition().y < r.getSprite().getPosition().y ); // Le robot vient de retourner au sol
-    	REQUIRE( robInit.getPosition().y == r.getSprite().getPosition().y ); // Le robot vient de retourner au sol
+    	REQUIRE( robInit.getPosition().y == r.getSprite().getPosition().y );
     	
-    	Robot r2("Joueur2");
+    	Robot r2("Joueur2", 1, HUMAIN);
     	r2.setEnPleinJump(true);
     	r2.sauter(0.1);
     	r2.setStatus(DOWN);
@@ -136,11 +146,12 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     	REQUIRE( r2.getSprite().getLocalBounds().width == LARGEUR_ROBOT );
     	REQUIRE( rob2Init.getPosition().x == r2.getSprite().getPosition().x );
     	REQUIRE( rob2Init.getPosition().y < r2.getSprite().getPosition().y ); // Le robot vient de retourner au sol en étant baissé
-        
+        r.vider();
+        r2.vider();
     }
     
     SECTION( "Tests gestionAtterrissage" ) {
-    	Robot r("Joueur1");
+    	Robot r("Joueur1", 0, HUMAIN);
     	r.setEnPleinJump(true);
     	r.sauter(0.1);
     	Sprite robPrec = r.getSprite();
@@ -149,6 +160,7 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     	REQUIRE( r.getEnPleinJump() == true );
     	
     	Map map(1);  // Il y a un support d'atterrissage sur l'intervalle de coordonnées [450, 550] en x et 150 en y
+    	map.create();
 		IntRect rec1(r.getRectRobot());
     	REQUIRE( col.detectAtterrissage(rec1, map) == false );
     	col.gestionAtterrissage(&r, &map, 0.1);
@@ -158,7 +170,7 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     	REQUIRE( r.getEnPleinJump() == true );
 
 		r.setHauteurSaut(-15);
-		r.setPosSprite(500, 155 - r.getSprite().getLocalBounds().height);
+		r.setPosSprite(500, 150 - r.getSprite().getLocalBounds().height);
 		robPrec = r.getSprite();
     	rec1 = IntRect(r.getRectRobot());
     	REQUIRE( col.detectAtterrissage(rec1, map) == true );
@@ -167,7 +179,7 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     	REQUIRE( r.getHauteurSaut() == 500 ); // Les variables de saut sont réinitialisées
     	REQUIRE( r.getEnPleinJump() == false );
     	
-    	Robot r2("Joueur2");
+    	Robot r2("Joueur2", 1, HUMAIN);
     	r2.setPosSprite(545, 150 - r2.getSprite().getLocalBounds().height); // Le robot est en bordure d'un support d'atterrissage
     	rec1 = IntRect(r2.getRectRobot());
     	REQUIRE( col.detectAtterrissage(rec1, map) == true );
@@ -177,12 +189,16 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     	robPrec = r2.getSprite();
 		col.gestionAtterrissage(&r2, &map, 0.01); // Le robot est en chute libre
 		REQUIRE( robPrec.getPosition().y < r2.getSprite().getPosition().y );
+		map.vider();
+		r.vider();
+		r2.vider();
         
     }
     
     SECTION( "Tests gestionAtterrissageCollec" ) {    	
     	Map map(1);  // Il y a un support d'atterrissage sur l'intervalle de coordonnées [450, 550] en x et 150 en y
-    	map.ajouterSpriteListeCollec(new Bouclier);
+    	map.create();
+    	map.ajouterListeCollec(new Bouclier);
     	REQUIRE( map.getListCollec().size() == 1 );
     	
     	IntRect obj(map.getRectColl(0)); // La position du collectable est initialisée à y = 0, il n'y a donc aucun atterrissage à détecter pour le moment
@@ -201,7 +217,7 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     	REQUIRE( map.getRectObj(3).top == map.getRectColl(0).height );
     	REQUIRE( map.getSpriteStable(0) == true ); // Le collectable a atterri
     	
-    	map.ajouterSpriteListeCollec(new Bouclier);
+    	map.ajouterListeCollec(new Bouclier);
     	REQUIRE( map.getListCollec().size() == 2 );
     	obj = IntRect(map.getRectColl(1));
     	
@@ -214,15 +230,18 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     	col.gestionAtterrissageCollec(&map, 0.01); // Le collectable peut désormais atterrir
     	REQUIRE( POS_SOL == map.getRectColl(1).height );
     	REQUIRE( map.getSpriteStable(1) == true ); // Le collectable a atterri
+    	map.vider();
+    	REQUIRE( map.getListCollec().size() == 0 );
     	
     }
     
     SECTION( "Tests collisionCollec" ) {  
-    	Robot r("Joueur1");  	
+    	Robot r("Joueur1", 0, HUMAIN);  	
     	Map map(1);  // Il y a un support d'atterrissage sur l'intervalle de coordonnées [450, 550] en x et 150 en y
-    	map.ajouterSpriteListeCollec(new Bouclier);
+    	map.create();
+    	map.ajouterListeCollec(new Bouclier);
     	map.setPosCollec(835, 530, 0);
-    	map.ajouterSpriteListeCollec(new Bouclier);
+    	map.ajouterListeCollec(new Bouclier);
     	map.setPosCollec(500, 650, 1);
     	REQUIRE( map.getListCollec().size() == 2 );
     	
@@ -236,7 +255,8 @@ TEST_CASE( "Collision can be created", "[collision]" ) {
     	r.setPosSprite(510, 666); // Le robot est en contact avec le dernier collectable
     	col.collisionCollec(&r, &map);
     	REQUIRE( map.getListCollec().size() == 0 ); // Il n'y a plus de collectable
-    	
+    	map.vider();
+    	r.vider();
     }
 
 
