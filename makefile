@@ -54,20 +54,32 @@ play:
 
 
 # Tests
-tests_catch: tests_catch_balle.o balle.o tests_catch_collision.o collision.o tests_catch_jeu.o jeu.o tests_catch_map.o map.o menu.o tests_catch_robot.o robot.o bouclier.o collectable.o grandir.o map.o rapetisser.o reparer.o joueur.o humain.o ia.o
+tests_catch: tests_catch_balle.o balle.o tests_catch_collision.o collision.o tests_catch_jeu.o jeu.o tests_catch_map.o map.o menu.o tests_catch_robot.o robot.o tests_catch_bouclier.o bouclier.o collectable.o tests_catch_grandir.o grandir.o map.o tests_catch_rapetisser.o rapetisser.o tests_catch_reparer.o reparer.o joueur.o humain.o ia.o
 	g++ -o tests_catch $^ -L./SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 tests_catch_balle.o: tests_catch_balle.cpp balle.hpp catch.hpp
 	g++ -c tests_catch_balle.cpp -I./SFML-2.5.1/include
 
+tests_catch_bouclier.o: tests_catch_bouclier.cpp bouclier.hpp catch.hpp
+	g++ -c tests_catch_bouclier.cpp -I./SFML-2.5.1/include
+
 tests_catch_collision.o: tests_catch_collision.cpp collision.hpp catch.hpp
 	g++ -c tests_catch_collision.cpp -I./SFML-2.5.1/include
+
+tests_catch_grandir.o: tests_catch_grandir.cpp grandir.hpp catch.hpp
+	g++ -c tests_catch_grandir.cpp -I./SFML-2.5.1/include
 
 tests_catch_jeu.o: tests_catch_jeu.cpp jeu.hpp catch.hpp
 	g++ -c tests_catch_jeu.cpp -I./SFML-2.5.1/include
 
 tests_catch_map.o: tests_catch_map.cpp map.hpp catch.hpp
 	g++ -c tests_catch_map.cpp -I./SFML-2.5.1/include
+
+tests_catch_rapetisser.o: tests_catch_rapetisser.cpp rapetisser.hpp catch.hpp
+	g++ -c tests_catch_rapetisser.cpp -I./SFML-2.5.1/include
+
+tests_catch_reparer.o: tests_catch_reparer.cpp reparer.hpp catch.hpp
+	g++ -c tests_catch_reparer.cpp -I./SFML-2.5.1/include
 
 tests_catch_robot.o: tests_catch_robot.cpp robot.hpp catch.hpp
 	g++ -c tests_catch_robot.cpp -I./SFML-2.5.1/include

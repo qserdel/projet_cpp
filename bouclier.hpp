@@ -1,6 +1,5 @@
 #ifndef BOUCLIER_HPP
 #define BOUCLIER_HPP
-#include <SFML/Graphics.hpp>
 #include <cmath>
 #include "collectable.hpp"
 

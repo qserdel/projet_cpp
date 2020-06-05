@@ -15,13 +15,11 @@ class Collectable {
 		sf::Texture txt;
 		sf::Sprite sp;
 		bool action_imediate;
-		int number;
 		bool spriteStable = false;
 
 	public :
 
 		Collectable();
-		Collectable(int n);
 		Collectable(Collectable const& copy);
 		
 		virtual ~Collectable();
@@ -31,7 +29,6 @@ class Collectable {
 		void setPos(float x, float y);
 		
 		sf::Sprite getSprite() const;
-		int getNumber() const;
 		bool getSpriteStable() const;
 		void setSprite(sf::Sprite s);
 		void setSpriteStable(bool a);

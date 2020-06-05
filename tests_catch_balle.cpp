@@ -1,7 +1,7 @@
 #include "catch.hpp"
-#include <SFML/Graphics.hpp>
 
 #include "balle.hpp"
+
 using namespace std;
 using namespace sf;
 
@@ -33,7 +33,6 @@ TEST_CASE( "Balle can be created", "[balle]" ) {
     	 balle.action(); // Déplacement vers la gauche
     	 REQUIRE( posXPrec > balle.getX() );
     }
-    
 
 }
 
