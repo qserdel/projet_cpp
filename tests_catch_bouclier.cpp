@@ -45,9 +45,9 @@ TEST_CASE( "Bouclier can be created", "[bouclier]" ) {
     	 REQUIRE( (int)protect.getRadius() == (int)sqrt(pow(HAUTEUR_ROBOT, 2) + pow(LARGEUR_ROBOT, 2))/2 );
     	 REQUIRE( protect.getPosition().x == r.getX()+LARGEUR_ROBOT/2-protect.getRadius() );
     	 REQUIRE( floor(protect.getPosition().y) == ceil(r.getY()+HAUTEUR_ROBOT/2-protect.getRadius()) );
-    	 REQUIRE( protect.getFillColor().r == 255 );
+    	 REQUIRE( protect.getFillColor().r == 0 );
     	 REQUIRE( protect.getFillColor().g == 0 );
-    	 REQUIRE( protect.getFillColor().b == 0 );
+    	 REQUIRE( protect.getFillColor().b == 255 );
     	 REQUIRE( protect.getFillColor().a == 50 );
     	 r.vider();
     	 
@@ -56,9 +56,9 @@ TEST_CASE( "Bouclier can be created", "[bouclier]" ) {
     	 REQUIRE( (int)protect.getRadius() == (int)sqrt(pow(HAUTEUR_ROBOT, 2) + pow(LARGEUR_ROBOT, 2))/2 );
     	 REQUIRE( protect.getPosition().x == r2.getX()+LARGEUR_ROBOT/2-protect.getRadius() );
     	 REQUIRE( floor(protect.getPosition().y) == ceil(r2.getY()+HAUTEUR_ROBOT/2-protect.getRadius()) );
-    	 REQUIRE( protect.getFillColor().r == 0 );
+    	 REQUIRE( protect.getFillColor().r == 255 );
     	 REQUIRE( protect.getFillColor().g == 0 );
-    	 REQUIRE( protect.getFillColor().b == 255 );
+    	 REQUIRE( protect.getFillColor().b == 0 );
     	 REQUIRE( protect.getFillColor().a == 50 );
     	 r2.vider();
     }
