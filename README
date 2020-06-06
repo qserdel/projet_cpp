@@ -6,6 +6,7 @@ Manuel d'utilisation du jeu Space Fighter Mega Legends
 Pour compiler le projet, lancez la commande "make" dans le terminal.
 Pour lancer le jeu, lancez la commande "make play" dans le terminal.
 Dans la fenêtre SFML ouverte, cliquez sur "play" puis cliquez sur la map sur laquelle vous souhaitez jouer.
+Pour lancer les tests unitaires, lancez la commande "make tests" dans le terminal.
 
 ###Principe du jeu###
 
