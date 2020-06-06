@@ -20,7 +20,7 @@ CircleShape Bouclier::formationBouclier(Robot &rob)
 	float rayon(sqrt(pow(HAUTEUR_ROBOT*rob.getSprite().getScale().x, 2) + pow(LARGEUR_ROBOT*rob.getSprite().getScale().y, 2))/2);
 	CircleShape bouclier(rayon);
 	bouclier.setPosition(Vector2f(rob.getX()+LARGEUR_ROBOT*rob.getSprite().getScale().x/2-rayon, rob.getY()+HAUTEUR_ROBOT*rob.getSprite().getScale().y/2-rayon));
-	if(rob.getID() == 0){
+	if(rob.getID()){
 		bouclier.setFillColor(Color(255,0,0,50));
 	} else {
 		bouclier.setFillColor(Color(0,0,255,50));
